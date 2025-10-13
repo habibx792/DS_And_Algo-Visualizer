@@ -1,29 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link the generated Tailwind CSS file -->
-    <link rel="stylesheet" href="./src/output.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>AlgoViz</title>
-</head>
-<body>
+  </head>
+  <body class="bg-white text-black">
     <header>
-        <nav class="flex justify-between items-center bg-black h-20 text-white">
-            <h1 class="text-amber-400 text-5xl font-bold">AlgoViz</h1>
-            <div class="flex">
-                <ul class="text-2xl text-shadow-white">
-                    <a href=""  class="" href="">Home</a>
-                    <a href="">Contact</a>
-                    <a href="">Help</a>
-                    <a href="" class="p-3"><button>Login</button></a>
-                </ul>
+      <nav
+        class="flex justify-between items-center bg-red-400 text-white h-20 px-4"
+      >
+        <!-- Logo -->
+        <h1 class="text-amber-300 text-4xl font-bold">DsaViz</h1>
+
+        <!-- Desktop Links -->
+        <div class="flex justify-between">
+          <div>
+            <ul class="hidden md:flex gap-8 text-2xl">
+              <li class=""><a href="#" class="hover:text-black text-4xl">Home</a></li>
+              <li><a href="#" class="hover:text-black text-4xl">Contact</a></li>
+              <li><a href="#" class="hover:text-black text-4xl">Help</a></li>
+              <li>
+                <a href="#" class="flex justify-center">
+                  <button
+                    class="bg-gray-400  p-1 text-black  rounded-lg hover:bg-yellow-500 text-4xl transition"
+                  >
+                    Login
+                  </button>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="ml-2 flex gap-4">
+              <!-- Moon Icon -->
+              <i
+                id="theme-toggle"
+                class="fa-solid fa-moon text-3xl cursor-pointer text-white hover:text-gray-400 transition duration-300"
+              ></i>
             </div>
-        </nav>
+          </div>
+        </div>
+
+        <!-- Icons Section -->
+      </nav>
+
+      <!-- Mobile Menu (Visible only on small screens) -->
+      <div
+        class="flex flex-col items-center bg-black text-white md:hidden space-y-4 py-6 text-xl"
+      >
+        <a href="#" class="hover:text-amber-400">Home</a>
+        <a href="#" class="hover:text-amber-400">Contact</a>
+        <a href="#" class="hover:text-amber-400">Help</a>
+        <button
+          class="bg-fuchsia-600 px-4 py-2 rounded-lg hover:bg-fuchsia-700 transition"
+        >
+          Login
+        </button>
+      </div>
     </header>
+
     <main></main>
     <footer></footer>
-
-
-</body>
+  </body>
 </html>
+
+<!-- npx @tailwindcss/cli -i ./code/src/input.css -o ./code/src/output.css --watch -->
