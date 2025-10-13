@@ -51,6 +51,7 @@
     --text-5xl--line-height: 1;
     --font-weight-bold: 700;
     --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -233,6 +234,9 @@
   .h-20 {
     height: calc(var(--spacing) * 20);
   }
+  .w-full {
+    width: 100%;
+  }
   .border-collapse {
     border-collapse: collapse;
   }
@@ -272,6 +276,9 @@
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
+  }
+  .rounded-xl {
+    border-radius: var(--radius-xl);
   }
   .rounded-b-lg {
     border-bottom-right-radius: var(--radius-lg);
