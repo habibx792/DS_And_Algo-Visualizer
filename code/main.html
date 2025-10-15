@@ -1,11 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./src/output.css" />
+    <script src="footer.js" defer></script>
+    <script src="Learn.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Document</title>
-</head>
-<body>
-    <h1>hello world</h1>
-</body>
+  </head>
+  <body>
+    <header>
+      <nav class="md:bg-gray-700 flex justify-between py-4">
+        <h1 class="ml-2 text-amber-400 text-4xl font-bold">DsaViz</h1>
+        <ul class="mr-3 text-2xl hidden md:flex md:justify-between gap-3.5">
+          <li
+            class="font-bold hover:text-3xl hover:text-amber-600 transition-all duration-300"
+          >
+            <a href="">Data structures</a>
+          </li>
+          <li
+            class="font-bold hover:text-3xl hover:text-amber-600 transition-all duration-300"
+          >
+            <a href=""></a> Algorithm
+          </li>
+          <li
+            class="font-bold hover:text-3xl hover:text-amber-600 transition-all duration-300"
+          >
+            <a href=""></a>Exercises
+          </li>
+          <li
+            class="font-bold hover:text-3xl hover:text-amber-600 transition-all duration-300"
+          >
+            <a href=""></a>Editor
+          </li>
+          <button class="bg-blue-500 p-2 rounded-md font-bold">
+            <a href="">Login</a>
+          </button>
+        </ul>
+        <div class="flex justify-between items-center p-4 text-white md:hidden">
+          <i class="fa-solid fa-bars text-2xl text-gray-700 cursor-pointer"></i>
+        </div>
+      </nav>
+
+      <div class="hero-color">
+        <div>
+          <h3
+            class="text-3xl font-extrabold text-center h-[200px] md:h-52 py-10"
+          >
+            Welcome To Dsa Viz
+          </h3>
+        </div>
+      </div>
+    </header>
+    <main
+      class="hero-color flex justify-center text-center border-amber-300 justify-items-start h-[1000px]"
+    >
+      <div class="flex flex-col gap-4 w-full items-center">
+        <div class="bg-white flex flex-row ml-2 border-b-blue-600 rounded-3xl p-2 md:w-1/2 justify-between">
+          <input id="inputText"
+            type="text"
+            placeholder="Get AI Help to Learn Data Structures and Algorithms"
+            class="text-black rounded-3xl px-4 py-3 border-none outline-none focus:ring-0 bg-gray-100 w-full "
+          />
+          <button
+            id="btnAi"
+            class="p-3 flex justify-center items-center rounded-full hover:bg-gray-300"
+          >
+            <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+          </button>
+        </div>
+        <!-- this div will have text about htat i got from a=t -->
+         <div id="Ai_Data" class="bg-gray-700 h-80 w-full"></div>
+      </div>
+    </main>
+    <footer
+      class="bg-gradient-to-b from-gray-900 to-gray-700 text-white py-10 px-6"
+      id="foot"
+    ></footer>
+  </body>
 </html>
