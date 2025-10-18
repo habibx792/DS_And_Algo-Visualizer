@@ -3,7 +3,11 @@
 Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers visualize and understand **Data Structures and Algorithms** with ease. This project provides a clean and intuitive interface, making learning algorithms both fun and efficient.
 
 ---
+## 🚀 Installation
 
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 ## 🛠️ Features
 
 - **Fully Responsive Navbar** – Smooth navigation across all pages.
@@ -26,8 +30,7 @@ Welcome to **DS & Algo Visualizer** – an interactive web application designed 
 
 -  Fail to deploy on azure
 ---
-## 🚀 Installation
-
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
+## versions
+- v1.0
+- v1.1
+- v1.2
