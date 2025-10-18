@@ -23,9 +23,9 @@ Welcome to **DS & Algo Visualizer** – an interactive web application designed 
 
 ---
 ##   failures 
+
+- **fail to deploy on azure
 ---
--fail to deploy on azure
---
 ## 🚀 Installation
 
 1. Clone the repository:  
