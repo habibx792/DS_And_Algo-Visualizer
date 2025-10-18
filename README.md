@@ -4,27 +4,44 @@ Welcome to **DS & Algo Visualizer** – an interactive web application designed 
 
 ---
 
+## 🚀 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
+```
+
+---
+
 ## 🛠️ Features
 
-- **Fully Responsive Navbar** – Smooth navigation across all pages.
-- **Home Page** – Clean layout showcasing the project and key features.
-- **Contact Form** – Simple and functional contact form for users to reach out.
-- **Algorithm Visualizations** – Interactive animations for popular data structures and algorithms.
-- **Bug-Free & Optimized** – Over 50 fixes applied to enhance user experience.
+- Fully Responsive Navbar – Smooth navigation across all pages.  
+- Home Page – Clean layout showcasing the project and key features.  
+- Contact Form – Simple and functional contact form for users to reach out.  
+- Algorithm Visualizations – Interactive animations for popular data structures and algorithms.  
+- Bug-Free & Optimized – Over 50 fixes applied to enhance user experience.  
 
 ---
 
 ## 💡 What’s New Today
 
-- Fixed the **navigation bar** to ensure seamless user experience.
-- Polished the **home page** layout and styling.
-- Fixed and improved the **contact form** functionality.
-- General bug fixes and performance improvements across the project.
+- Fixed the navigation bar to ensure seamless user experience.  
+- Polished the home page layout and styling.  
+- Fixed and improved the contact form functionality.  
+- General bug fixes and performance improvements across the project.  
 
 ---
 
-## 🚀 Installation
+## ⚠️ Failures
 
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
+- Deployment on **Azure** currently failing.  
+
+---
+
+## 🗂️ Versions
+
+- **Homepage**  
+- **v1.0**  
+- **v1.1**  
+- **v1.2**  
