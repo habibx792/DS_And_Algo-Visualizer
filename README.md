@@ -62,3 +62,8 @@ git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 - Thanks for joingin us
 
 ---
+
+| Name         | Join       |
+| ------------ | ---------- |
+| Ghulam Habib | 10-15-2025 |
+| Javaria      | 10-19-2025 |
