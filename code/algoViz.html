@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Algorithm Visualizer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="algoVisCss.css" />
+    <link rel="stylesheet" href="./src/output.css" />
+    <script src="algoVisJs.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <div class="logo">AL</div>
+          <div class="hero-Bar">
+            <h1>Algorithm Visualizer</h1>
+            <div class="tag">Sorting · Searching · Step-by-step</div>
+          </div>
+        </div>
+        <nav class="top-actions flex justify-between gap-4">
+          <a href="test.html" class="Ai-Home">Homes</a>
+          <button class="btn ghost" id="themeToggle" title="Toggle theme">
+            Theme
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero card">
+        <div class="hero-left">
+          <h2>See -algorithms- Working</h2>
+          <p class="muted">
+            Enter numbers, choose an algorithm, and visualize. Adjust speed and
+            size for better control.
+          </p>
+
+          <div class="row controls">
+            <input
+              id="arrayInput"
+              class="text-input"
+              placeholder="e.g. 5,3,8,1,9"
+              value="12,45,3,20,7,25,9,50,32,10"
+              aria-label="Array input"
+            />
+            <div class="btn-row">
+              <button class="btn" id="useBtn">Use</button>
+              <button class="btn" id="randomBtn">Random</button>
+              <button class="btn" id="shuffleBtn">Shuffle</button>
+              <button class="btn danger" id="clearBtn">Clear</button>
+            </div>
+          </div>
+
+          <div class="row params">
+            <div class="param">
+              <label>Array size</label>
+              <input type="range" id="sizeRange" min="5" max="60" value="10" />
+              <span id="sizeVal">10</span>
+            </div>
+            <div class="param">
+              <label>Speed</label>
+              <input
+                type="range"
+                id="speedRange"
+                min="20"
+                max="900"
+                value="180"
+              />
+              <span id="speedVal">180ms</span>
+            </div>
+          </div>
+
+          <div class="row algos">
+            <select id="algoSelect" class="select">
+              <option value="bubble">Bubble Sort</option>
+              <option value="selection">Selection Sort</option>
+              <option value="quick">Quick Sort</option>
+              <option value="merge">Merge Sort</option>
+            </select>
+
+            <div class="sort-order">
+              <label
+                ><input type="radio" name="order" value="asc" checked />
+                Asc</label
+              >
+              <label
+                ><input type="radio" name="order" value="desc" /> Desc</label
+              >
+            </div>
+
+            <div class="search-block">
+              <input
+                id="searchInput"
+                class="text-input small"
+                placeholder="search value"
+                aria-label="Search value"
+              />
+              <button class="btn" id="linearBtn">Linear</button>
+              <button class="btn" id="binaryBtn">Binary</button>
+            </div>
+          </div>
+
+          <div class="row play-controls">
+            <button class="btn primary" id="playBtn">Play</button>
+            <button class="btn" id="pauseBtn">Pause</button>
+            <button class="btn" id="stepBtn">Step</button>
+            <button class="btn" id="resetBtn">Reset</button>
+            <div class="status">
+              <div id="currentOp">Idle</div>
+              <div id="statusText" class="muted">Ready</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-right card inset">
+          <div class="small">Snapshot & quick info</div>
+          <div class="stat-row">
+            <div>
+              <div id="elemCount" class="big">10</div>
+              <div class="muted">Elements</div>
+            </div>
+            <div>
+              <div id="algoName" class="big">—</div>
+              <div class="muted">Algorithm</div>
+            </div>
+          </div>
+
+          <div class="tips">
+            <strong>Tip:</strong> Binary search requires an ascending-sorted
+            array. Use <em>Quick / Merge</em> then Binary to demonstrate
+            log-time search.
+          </div>
+        </aside>
+      </section>
+
+      <section class="visual card">
+        <div id="canvas" class="canvas" aria-label="Array visualizer"></div>
+      </section>
+      <section class="w-full">
+        <div class="flex justify-between w-full gap-4">
+          <div id="code" class="border-black w-3xl w-1/2 h-96">
+            <h2 class="font-semibold text-2xl text-center p-3">Code</h2>
+          </div>
+          <div id="codeComp" class="border-black w-3xl w-1/2 h-96">
+            <h2 class="font-semibold text-2xl text-center p-3">complexity</h2>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

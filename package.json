@@ -1,5 +1,17 @@
 {
+  "name": "ds_and_algo-visualizer",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./code/server.js"
+  },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
     "tailwindcss": "^4.1.14"
   }
 }

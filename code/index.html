@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./src/output.css" />
+
+
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -12,34 +14,28 @@
       referrerpolicy="no-referrer"
     />
     <title>AlgoViz</title>
+        <script src="footer.js" defer></script>
+        <link rel="stylesheet" href="./src/output.css">
+
   </head>
-  <body class="bg-white text-black">
-    <header>
+  <body class="bg-white text-black sticky top-0">
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
       <!--nav section  -->
       <nav
-        class="flex justify-between items-center bg-gray-900 text-white h-20 px-4"
+        class="flex  justify-between items-center bg-white border-b border-gray-200 h-20 px-4"
       >
         <!-- Logo -->
-        <h1 class="text-amber-300 text-4xl font-bold  tracking-widest">DsaViz</h1>
+        <h1 class="text-black text-4xl font-bold tracking-widest">DsaViz</h1>
 
         <!-- Desktop Links -->
         <div class="flex justify-between">
           <div>
             <ul class="hidden md:flex gap-8 text-2xl">
               <li class="">
-                <a href="#" class="hover:text-black text-4xl">Home</a>
+                <a href="index.html" class="hover:text-black text-4xl text-gray-700">Home</a>
               </li>
-              <li><a href="#" class="hover:text-black text-4xl">Contact</a></li>
-              <li><a href="#" class="hover:text-black text-4xl">Help</a></li>
-              <li>
-                <a href="#" class="flex justify-center">
-                  <button
-                    class="bg-gray-900 p-1 text-white rounded-lg hover:bg-blue-400 text-4xl transition"
-                  >
-                    Login
-                  </button>
-                </a>
-              </li>
+              <li><a href="contact.html" class="hover:text-black text-4xl text-gray-700">Contact</a></li>
+              <li><a href="help.html" class="hover:text-black text-4xl text-gray-700">Help</a></li>
             </ul>
           </div>
           <div>
@@ -47,7 +43,7 @@
               <!-- Moon Icon -->
               <i
                 id="theme-toggle"
-                class="fa-solid fa-moon text-3xl cursor-pointer text-white hover:text-gray-400 "
+                class="fa-solid fa-moon text-3xl cursor-pointer text-white hover:text-gray-400"
               ></i>
             </div>
           </div>
@@ -60,114 +56,95 @@
       <div
         class="flex flex-col items-center bg-black text-white md:hidden space-y-4 py-6 text-xl"
       >
-        <a href="#" class="hover:text-amber-400">Home</a>
-        <a href="#" class="hover:text-amber-400">Contact</a>
-        <a href="#" class="hover:text-amber-400">Help</a>
+        <a href="#" class="hover:text-amber-400 text-gray-700">Home</a>
+        <a href="contact.html" class="hover:text-amber-400 text-gray-700">Contact</a>
+        <a href="help.html" class="hover:text-amber-400 text-gray-700">Help</a>
         <button
           class="bg-fuchsia-600 px-4 py-2 rounded-lg hover:bg-fuchsia-700 transition"
         >
           Login
         </button>
       </div>
-      <div>
-        <!-- gallary content  -->
-        <div>
-  <video
-    src="./video/algi.mp4"
-    autoplay
-    muted
-    loop
-    playsinline
-    class="w-full ">
-  </video>
-</div>
-      </div>
+
     </header>
-
-    <main class="bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white py-16 px-6">
-  <div class="max-w-5xl mx-auto text-center">
-    <h2 class="text-4xl md:text-5xl font-extrabold text-amber-400 mb-6 tracking-wide">
-      Data Structure & Algorithm Visualizer
-    </h2>
-    <p class="text-gray-300 text-lg md:text-xl mb-10 leading-relaxed">
-      Experience the beauty of algorithms and data structures brought to life!
-      <span class="text-amber-400 font-semibold">DSA Viz</span> helps students, developers, and educators
-      visualize complex logic through stunning animations and interactive elements —
-      making learning intuitive, engaging, and unforgettable.
-    </p>
-    <div class="grid md:grid-cols-3 gap-8 text-left">
-      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition">
-        <i class="fa-solid fa-cubes text-4xl text-amber-400 mb-4"></i>
-        <h3 class="text-2xl font-semibold mb-2">Visual Data Structures</h3>
-        <p class="text-gray-400">
-          Explore linked lists, stacks, queues, trees, and graphs with real-time animations and intuitive visuals.
-        </p>
+ <div>
+        <div>
+          <video
+            src="./video/algi.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            class="w-full"
+          ></video>
+        </div>
       </div>
-      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition">
-        <i class="fa-solid fa-gears text-4xl text-amber-400 mb-4"></i>
-        <h3 class="text-2xl font-semibold mb-2">Algorithm Simulation</h3>
-        <p class="text-gray-400">
-          Watch sorting, searching, and traversal algorithms in motion with step-by-step breakdowns.
-        </p>
-      </div>
-      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition">
-        <i class="fa-solid fa-code text-4xl text-amber-400 mb-4"></i>
-        <h3 class="text-2xl font-semibold mb-2">Interactive Learning</h3>
-        <p class="text-gray-400">
-          Experiment, visualize, and understand complex concepts by interacting directly with data and logic.
-        </p>
-      </div>
-    </div>
-
-
-    <div class="mt-12 w-full  flex justify-between items-center text-center  py-4">
-      <a href="main.html"
-        class="block py-7 text-5xl w-full bg-white text-amber-400 hover:bg-amber-400 hover:text-black l   font-bold px-8  rounded-full shadow-lg transition duration-600 ease-in-out">
-        Explore Now
-      </a>
-    </div>
-  </div>
-</main>
-
-  <footer class="bg-gradient-to-b from-gray-900 to-gray-700 text-white py-10 px-6 " id="foot">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <h2 class="text-2xl font-semibold mb-4">
-          Future Vision
+    <main
+      class="bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white py-16 px-6"
+    >
+      <div class="max-w-5xl mx-auto text-center">
+        <h2
+          class="text-4xl md:text-5xl font-extrabold text-amber-400 mb-6 tracking-wide"
+        >
+          Data Structure & Algorithm Visualizer
         </h2>
-        <p class="text-gray-300 leading-relaxed">
-          In the future, we’ll develop this project into a problem-solving platform like
-          <span class="text-amber-400 font-semibold">LeetCode</span>,
-          powered by advanced AI and intelligent agents.
+        <p class="text-gray-300 text-lg md:text-xl mb-10 leading-relaxed">
+          Experience the beauty of algorithms and data structures brought to
+          life!
+          <span class="text-amber-400 font-semibold">DSA Viz</span> helps
+          students, developers, and educators visualize complex logic through
+          stunning animations and interactive elements — making learning
+          intuitive, engaging, and unforgettable.
         </p>
+        <div class="grid md:grid-cols-3 gap-8 text-left">
+          <div
+            class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition"
+          >
+            <i class="fa-solid fa-cubes text-4xl text-amber-400 mb-4"></i>
+            <h3 class="text-2xl font-semibold mb-2">Visual Data Structures</h3>
+            <p class="text-gray-400">
+              Explore linked lists, stacks, queues, trees, and graphs with
+              real-time animations and intuitive visuals.
+            </p>
+          </div>
+          <div
+            class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition"
+          >
+            <i class="fa-solid fa-gears text-4xl text-amber-400 mb-4"></i>
+            <h3 class="text-2xl font-semibold mb-2">Algorithm Simulation</h3>
+            <p class="text-gray-400">
+              Watch sorting, searching, and traversal algorithms in motion with
+              step-by-step breakdowns.
+            </p>
+          </div>
+          <div
+            class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-amber-500/30 transition"
+          >
+            <i class="fa-solid fa-code text-4xl text-amber-400 mb-4"></i>
+            <h3 class="text-2xl font-semibold mb-2">Interactive Learning</h3>
+            <p class="text-gray-400">
+              Experiment, visualize, and understand complex concepts by
+              interacting directly with data and logic.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="mt-12 w-full flex justify-between items-center text-center py-4"
+        >
+          <a
+            href="test.html"
+            class="block py-7 text-5xl w-full bg-white text-amber-400 hover:bg-amber-400 hover:text-black l font-bold px-8 rounded-full shadow-lg transition duration-600 ease-in-out"
+          >
+            Explore Now
+          </a>
+        </div>
       </div>
+    </main>
 
-      <div class="md:text-right">
-        <h3 class="text-xl font-semibold mb-4">Links</h3>
-        <ul class="space-y-2 text-gray-300">
-          <li><a href="#" class="hover:text-amber-400 transition">Google</a></li>
-          <li><a href="#" class="hover:text-amber-400 transition">Microsoft</a></li>
-          <li><a href="#" class="hover:text-amber-400 transition">Facebook</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-
-    <div class="border-t border-gray-600 my-8"></div>
-
-
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-      <div>
-        <h2 class="text-white text-lg font-semibold">About Me</h2>
-        <p class="text-gray-300 text-7xl">Hi My Name is Ghulam Habib . I am software Engineer</p>
-      </div>
-
-      <p class="mt-4 md:mt-0">&copy; 2025 All rights reserved</p>
-    </div>
-  </footer>
-
+     <footer class="bg-gray-900 text-white py-8 px-6" id="foot"></footer>
   </body>
 </html>
 
 <!-- npx @tailwindcss/cli -i ./code/src/input.css -o ./code/src/output.css --watch -->
+ <!-- npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch -->
