@@ -55,13 +55,13 @@ git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 
 ---
 
-
-
 ## Thanks Note:
 
 - Thanks for joingin us
 
 ---
+
+## Team:
 
 | Name         | Join       |
 | ------------ | ---------- |
