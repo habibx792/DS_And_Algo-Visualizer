@@ -31,7 +31,9 @@
   const statusText = document.getElementById("statusText");
 
   const snapshotBtn = document.getElementById("snapshotBtn");
+  // chages the  the of age
   const them = document.querySelector(".ghost");
+  const aiHome = document.querySelector(".Ai-Home");
   const hero=document.querySelector(".hero-Bar");
   const topbar = document.querySelector(".topbar");
   const tag = document.querySelector(".tag");
@@ -42,6 +44,7 @@
     hero.style.color = "black";
     them.style.color = "black";
     topbar.style.color="black";
+    aiHome.style.color="black";
     tag.style.color="black";
 
   });

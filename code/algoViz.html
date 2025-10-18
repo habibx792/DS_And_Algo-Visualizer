@@ -13,17 +13,17 @@
     <script src="algoVisJs.js" defer></script>
   </head>
   <body>
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <div class="brand">
+    <header class="topbar flex flex-col  md:flex-row justify-between py-5"
+      <div class="container topbar-inner  ">
+        <div class="brand ml-4">
           <div class="logo">AL</div>
           <div class="hero-Bar">
             <h1>Algorithm Visualizer</h1>
             <div class="tag">Sorting · Searching · Step-by-step</div>
           </div>
         </div>
-        <nav class="top-actions flex justify-between gap-4">
-          <a href="test.html" class="Ai-Home">Homes</a>
+        <nav class="top-actions flex md:flex-row  flex-col md:justify-between  md:mt-0 mt-3 gap-4 md:mr-5 ">
+          <a href="test.html" class="Ai-Home text-center">Homes</a>
           <button class="btn ghost" id="themeToggle" title="Toggle theme">
             Theme
           </button>
@@ -32,8 +32,8 @@
     </header>
 
     <main class="container">
-      <section class="hero card">
-        <div class="hero-left">
+      <div class="hero card flex md:flex-row flex-col">
+        <div class="hero-left flex justify-between flex-col md:flex-row flex-wrap">
           <h2>See -algorithms- Working</h2>
           <p class="muted">
             Enter numbers, choose an algorithm, and visualize. Adjust speed and
@@ -117,6 +117,7 @@
           </div>
         </div>
 
+
         <aside class="hero-right card inset">
           <div class="small">Snapshot & quick info</div>
           <div class="stat-row">
@@ -136,17 +137,34 @@
             log-time search.
           </div>
         </aside>
+      </div>
       </section>
 
       <section class="visual card">
         <div id="canvas" class="canvas" aria-label="Array visualizer"></div>
       </section>
       <section class="w-full">
-        <div class="flex justify-between w-full gap-4">
-          <div id="code" class="border-black w-3xl w-1/2 h-96">
+        <div class="flex md:flex-row justify-between w-full gap-4 flex-col">
+          <div id="code" class="border-black w-3xl md:w-1/2 h-[500px] w-full">
             <h2 class="font-semibold text-2xl text-center p-3">Code</h2>
+            <div id="codeLang"
+              class="flex justify-between gap-6  flex-wrap"
+            >
+              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600">
+                Python
+              </button>
+              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600">
+                C++
+              </button>
+              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600">
+                Java
+              </button>
+            </div>
           </div>
-          <div id="codeComp" class="border-black w-3xl w-1/2 h-96">
+          <div
+            id="codeComp"
+            class="border-black w-3xl md:w-1/2 w-full h-[500px]"
+          >
             <h2 class="font-semibold text-2xl text-center p-3">complexity</h2>
           </div>
         </div>

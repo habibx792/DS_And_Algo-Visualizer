@@ -403,6 +403,7 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
     order: 1;
   }
 }
+/* Habib code  */
 #code
 {
   background: var(--glass);
@@ -412,4 +413,7 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
 {
     background: var(--glass);
       border: 1px solid var(--glassBorder);
+}
+#codeLang{
+  border: 1px solid var(--glassBorder);
 }
