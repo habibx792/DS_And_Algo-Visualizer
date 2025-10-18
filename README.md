@@ -1,7 +1,8 @@
 # DS & Algo Visualizer
 
-Welcome to **DS & Algo Visualizer** – an interactive platform to visualize and learn **Data Structures & Algorithms** effortlessly.  
-Clean, responsive, and intuitive – designed for students and developers alike.
+Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers **visualize and learn Data Structures and Algorithms effortlessly**.
+
+With a clean interface and responsive design, this project makes algorithm learning interactive, intuitive, and fun.
 
 ![DS & Algo Visualizer](https://img.shields.io/badge/DS%2520%2526%2520Algo-Visualizer-blue)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
@@ -9,17 +10,10 @@ Clean, responsive, and intuitive – designed for students and developers alike.
 
 ---
 
-## 📢 Developer Message Board
+## 📢 Developer Messages
 
-A live “team status board” for updates, progress, and daily messages.  
-> ⚠️ GitHub README is static – updates are manual, but this section keeps the team synchronized.
-
----
-
-### 💬 How to Leave a Message
-1. Edit this `README.md` file.  
-2. Add your message under **Recent Messages** using this format:  
-
-```markdown
-**🔵 [Date] Your Name:**  
-"Your message here"
+### 🎯 Current Focus
+```bash
+# Working on: Navigation Bar & Home Page Polish
+# Status: In Progress 🟡
+# Priority: High
