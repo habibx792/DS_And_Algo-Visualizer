@@ -22,7 +22,10 @@ Welcome to **DS & Algo Visualizer** – an interactive web application designed 
 - General bug fixes and performance improvements across the project.
 
 ---
-
+##   failures 
+---
+fail to deploy on azure
+--
 ## 🚀 Installation
 
 1. Clone the repository:  
