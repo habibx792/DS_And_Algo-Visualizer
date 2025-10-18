@@ -28,5 +28,3 @@ Welcome to **DS & Algo Visualizer** – an interactive web application designed 
 1. Clone the repository:  
    ```bash
    git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
-## message 
---edit reame to leave a message
