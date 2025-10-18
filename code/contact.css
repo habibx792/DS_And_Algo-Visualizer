@@ -1,0 +1,29 @@
+:root {
+    --bg: #1b1d35;
+    --panel: #000001;
+    --muted: rgb(255, 255, 255);
+    --accent1: #edf1ff;
+    --accent2: #0207106e;
+    --accent3: #395461;
+    --glass: rgba(39, 15, 15, 0.03);
+    --success: #0cb54a;
+    --danger: #ef4444;
+    --cardShadow: 0 10px 30px rgba(2, 8, 20, 0.6);
+    --glassBorder: rgba(71, 135, 214, 0.04);
+
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    /* color-scheme: dark; */
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {}
+
+#dsNav {
+    background-color: #1b1d35;
+
+}
