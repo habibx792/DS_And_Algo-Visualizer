@@ -45,7 +45,7 @@ git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 - **v1.0**
 - **v1.1**
 - **v1.2**
-- **current Version->v1.3**
+- **current Version->v2.1.0**
 
 ---
 
