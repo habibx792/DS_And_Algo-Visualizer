@@ -37,17 +37,25 @@
   const hero=document.querySelector(".hero-Bar");
   const topbar = document.querySelector(".topbar");
   const tag = document.querySelector(".tag");
-  them.addEventListener("click", () => {
-    alert("Hello");
+  // them.addEventListener("click", () => {
+  //   alert("Hello");
 
-    topbar.style.backgroundColor = "white";
-    hero.style.color = "black";
-    them.style.color = "black";
-    topbar.style.color="black";
-    aiHome.style.color="black";
-    tag.style.color="black";
+  //   topbar.style.backgroundColor = "white";
+  //   hero.style.color = "black";
+  //   them.style.color = "black";
+  //   topbar.style.color="black";
+  //   aiHome.style.color="black";
+  //   tag.style.color="black";
 
+  // });
+
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+    const light = document.body.classList.contains("light-theme");
+    themeToggle.textContent = light ? "Dark Mode" : "Light Mode";
   });
+
 
 
 
