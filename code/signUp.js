@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Close button redirect (go back or to login)
   closeBtn.addEventListener("click", () => {
-    window.location.href = "login.html"; // or history.back()
+    window.location.href = "test.html"; // or history.back()
   });
 
   // Password strength meter
