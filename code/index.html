@@ -36,38 +36,54 @@
 </head>
 
 <body class="bg-white w-full text-black transition-colors duration-500 ease-in-out" id="page">
-  <!-- HEADER -->
-  <header
-    class="sticky top-0 w-full  z-50 bg-white dark:bg-navy border-b border-gray-200 dark:border-white/10 shadow-md backdrop-blur-md">
-    <nav class="h-28 md:h-20 px-4 max-w-7xl mx-auto flex justify-between items-center flex-col md:flex-row">
-      <h1 class="text-3xl mt-2 md:mt-0 md:text-4xl font-extrabold tracking-wide text-navy dark:text-white">
+  <!-- ✅ Responsive HEADER -->
+<!-- ✅ Responsive HEADER with Blur Overlay -->
+<header
+  class="sticky top-0 w-full z-50 bg-white dark:bg-navy border-b border-gray-200 dark:border-white/10 shadow-md backdrop-blur-md">
+  <nav class="px-4 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 relative">
+
+    <!-- Logo + Mobile Menu Button -->
+    <div class="flex justify-between items-center w-full md:w-auto">
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-navy dark:text-white">
         DsaViz
       </h1>
 
-      <!-- Desktop Links -->
-      <ul class="mb-2 flex  gap-6 text-lg font-medium text-gray-600 dark:text-gray-300">
-        <li>
-          <a href="index.html"
-            class="py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Home</a>
-        </li>
-        <li>
-          <a href="contact.html"
-            class="py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Contact</a>
-        </li>
-        <li>
-          <a href="help.html"
-            class="py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Help</a>
-        </li>
-        <li>
-            <i id="theme-toggle"
-              class="fa-solid fa-moon text-2xl cursor-pointer text-gray-800 dark:text-goldAccent hover:scale-110 transition-transform"></i>
-        </li>
-      </ul>
+      <!-- Mobile Menu Button -->
+      <button id="menu-toggle"
+        class="md:hidden text-2xl text-gray-700 dark:text-goldAccent focus:outline-none hover:scale-110 transition">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
 
+    <!-- Dim Background Overlay -->
+    <div id="menu-overlay"
+      class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden transition-opacity duration-500"></div>
 
+    <!-- Navigation Links -->
+    <ul id="nav-links"
+      class="hidden flex-col md:flex md:flex-row mt-4 md:mt-0 space-y-3 md:space-y-0 md:gap-6 text-lg font-medium text-gray-600 dark:text-gray-300 text-center md:text-left 
+      absolute md:static top-full left-0 w-full md:w-auto bg-white dark:bg-navy md:bg-transparent border-t border-gray-200 dark:border-white/10 md:border-none p-4 md:p-0 shadow-md md:shadow-none
+      transition-all duration-500 ease-in-out max-h-0 md:max-h-none overflow-hidden z-50">
+      <li>
+        <a href="index.html"
+          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Home</a>
+      </li>
+      <li>
+        <a href="contact.html"
+          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Contact</a>
+      </li>
+      <li>
+        <a href="help.html"
+          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Help</a>
+      </li>
+      <li>
+        <i id="theme-toggle"
+          class="fa-solid fa-moon text-2xl cursor-pointer text-gray-800 dark:text-goldAccent hover:scale-110 transition-transform"></i>
+      </li>
+    </ul>
+  </nav>
+</header>
 
-    </nav>
-  </header>
 
 
   <section class="relative w-full overflow-hidden h-96 md:h-[500px]">
@@ -151,8 +167,9 @@
     © 2025 DsaViz — Crafted for clarity and curiosity.
   </footer>
 
-
-  <script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+   
     const toggle = document.getElementById("theme-toggle");
     const body = document.body;
 
@@ -161,7 +178,61 @@
       toggle.classList.toggle("fa-moon");
       toggle.classList.toggle("fa-sun");
     });
-  </script>
+
+   //for bluring
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+    const overlay = document.getElementById("menu-overlay");
+    const menuIcon = menuToggle.querySelector("i");
+
+    if (menuToggle && navLinks && overlay) {
+      menuToggle.addEventListener("click", () => {
+        const isHidden = navLinks.classList.contains("hidden");
+
+        if (isHidden) {
+          // Open menu
+          navLinks.classList.remove("hidden");
+          overlay.classList.remove("hidden");
+          menuIcon.classList.remove("fa-bars");
+          menuIcon.classList.add("fa-xmark");
+
+          setTimeout(() => {
+            navLinks.classList.remove("max-h-0");
+            navLinks.classList.add("max-h-96");
+            overlay.classList.add("opacity-100");
+          }, 10);
+        } else {
+          // Close menu
+          navLinks.classList.remove("max-h-96");
+          navLinks.classList.add("max-h-0");
+          overlay.classList.remove("opacity-100");
+          menuIcon.classList.add("fa-bars");
+          menuIcon.classList.remove("fa-xmark");
+
+          setTimeout(() => {
+            navLinks.classList.add("hidden");
+            overlay.classList.add("hidden");
+          }, 500);
+        }
+      });
+
+      // Close menu 
+      overlay.addEventListener("click", () => {
+        navLinks.classList.remove("max-h-96");
+        navLinks.classList.add("max-h-0");
+        overlay.classList.remove("opacity-100");
+        menuIcon.classList.add("fa-bars");
+        menuIcon.classList.remove("fa-xmark");
+
+        setTimeout(() => {
+          navLinks.classList.add("hidden");
+          overlay.classList.add("hidden");
+        }, 500);
+      });
+    }
+  });
+</script>
+
 
 </body>
 
