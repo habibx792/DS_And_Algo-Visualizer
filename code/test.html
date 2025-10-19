@@ -89,15 +89,22 @@
           DsaViz
         </h1>
 
-        
         <ul class="hidden md:flex gap-8 text-lg text-gray-300 font-medium">
           <li><a href="index.html" class="hover:text-goldAccent">Home</a></li>
-          <li><a href="#" class="hover:text-goldAccent">Data Structures</a></li>
+          <li>
+            <a href="dataStructur.html" class="hover:text-goldAccent"
+              >Data Structures</a
+            >
+          </li>
           <li>
             <a href="algoViz.html" class="hover:text-goldAccent">Algorithms</a>
           </li>
-          <li><a href="#" class="hover:text-goldAccent">Exercises</a></li>
-          <li><a href="#" class="hover:text-goldAccent">Editor</a></li>
+          <li>
+            <a href="exercises.html" class="hover:text-goldAccent">Exercises</a>
+          </li>
+          <li>
+            <a href="editor.html" class="hover:text-goldAccent">Editor</a>
+          </li>
         </ul>
 
         <!-- Login Button -->
@@ -107,6 +114,24 @@
         >
           Login
         </button>
+        <div class="md:hidden">
+          <button id="mobNav" class="p-2 rounded-md hover:bg-gray-200">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-8 h-8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
       </nav>
     </header>
 
@@ -295,7 +320,6 @@
         addMessage(question, "user");
         questionInput.value = "";
 
-        
         const typingDiv = addMessage(
           '<span class="typing-animation">Thinking</span>',
           "bot",
@@ -313,7 +337,6 @@
 
           const data = await response.json();
 
-         
           typingDiv.remove();
           addMessage(data.answer, "bot");
         } catch (error) {
@@ -358,10 +381,8 @@
         return div;
       }
 
-      
       const loginBtn = document.getElementById("loginBtn");
 
-     
       const isLoggedIn = localStorage.getItem("dsaLoggedIn") === "true";
 
       if (isLoggedIn) {
@@ -370,7 +391,6 @@
         loginBtn.classList.remove("bg-goldAccent", "text-black");
         loginBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white");
 
-        
         loginBtn.addEventListener("click", () => {
           localStorage.removeItem("dsaLoggedIn");
           alert("You have been logged out.");
