@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password — DsaViz</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navyDeep: "#0b092d",
+            navySoft: "#20213b",
+            navyDark: "#0d1120",
+            goldAccent: "#fca311",
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" defer></script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white">
+
+ 
+  <div id="resetCard"
+       class="relative bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl
+              opacity-0 translate-y-8 transition-all duration-700 ease-out">
+
+    
+    <button id="closeBtn"
+            class="absolute top-4 right-4 text-gray-400 hover:text-goldAccent text-2xl font-bold transition-colors duration-300">
+      &times;
+    </button>
+
+    <h1 class="text-3xl font-bold text-center text-goldAccent mb-2">Reset Password</h1>
+    <p class="text-gray-400 text-center mb-8 text-sm">Enter a new password for your DsaViz account</p>
+
+   
+    <form id="resetForm" class="space-y-5">
+   
+      <div class="relative transition-all duration-300 hover:scale-[1.02]">
+        <label class="block text-sm text-gray-300 mb-1">New Password</label>
+        <input id="newPassword" type="password" required
+               class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white 
+                      focus:ring-2 focus:ring-goldAccent outline-none"
+               placeholder="••••••••">
+        <button type="button" id="toggleNewPassword"
+                class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+    
+      <div class="relative transition-all duration-300 hover:scale-[1.02]">
+        <label class="block text-sm text-gray-300 mb-1">Confirm Password</label>
+        <input id="confirmPassword" type="password" required
+               class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white 
+                      focus:ring-2 focus:ring-goldAccent outline-none"
+               placeholder="••••••••">
+        <button type="button" id="toggleConfirmPassword"
+                class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+        <p id="matchMessage" class="text-sm mt-1"></p>
+      </div>
+
+     
+      <button type="submit"
+              class="w-full bg-goldAccent text-navyDark font-semibold py-2 rounded-lg 
+                     hover:bg-white hover:text-navyDark transform hover:scale-105 transition-all duration-300">
+        Update Password
+      </button>
+
+      
+      <p class="text-center text-gray-400 text-sm mt-4">
+        Remembered your password? 
+        <a href="login.html" class="text-goldAccent hover:underline hover:scale-105 inline-block transition-transform duration-200">
+          Go Back to Login
+        </a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const resetCard = document.getElementById("resetCard");
+  const closeBtn = document.getElementById("closeBtn");
+  const newPassword = document.getElementById("newPassword");
+  const confirmPassword = document.getElementById("confirmPassword");
+  const toggleNewPassword = document.getElementById("toggleNewPassword");
+  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+  const resetForm = document.getElementById("resetForm");
+  const matchMessage = document.getElementById("matchMessage");
+
+  
+  setTimeout(() => {
+    resetCard.classList.remove("opacity-0", "translate-y-8");
+    resetCard.classList.add("opacity-100", "translate-y-0");
+  }, 100);
+
+ 
+  const setupToggle = (btn, input) => {
+    const icon = btn.querySelector("i");
+    btn.addEventListener("click", () => {
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      icon.classList.toggle("fa-eye");
+      icon.classList.toggle("fa-eye-slash");
+    });
+  };
+
+  setupToggle(toggleNewPassword, newPassword);
+  setupToggle(toggleConfirmPassword, confirmPassword);
+
+  let passwordsMatch = false;
+  confirmPassword.addEventListener("input", () => {
+    if (confirmPassword.value === "") {
+      matchMessage.textContent = "";
+      confirmPassword.classList.remove("border-green-400", "border-red-400");
+      passwordsMatch = false;
+      return;
+    }
+
+    if (confirmPassword.value === newPassword.value) {
+      matchMessage.textContent = " Passwords match";
+      matchMessage.className = "text-green-400 text-sm mt-1";
+      confirmPassword.classList.add("border-green-400");
+      confirmPassword.classList.remove("border-red-400");
+      passwordsMatch = true;
+    } else {
+      matchMessage.textContent = "Passwords do not match";
+      matchMessage.className = "text-red-400 text-sm mt-1";
+      confirmPassword.classList.add("border-red-400");
+      confirmPassword.classList.remove("border-green-400");
+      passwordsMatch = false;
+    }
+  });
+
+  
+  closeBtn.addEventListener("click", () => {
+    resetCard.style.transition = "all 0.5s ease";
+    resetCard.style.opacity = "0";
+    resetCard.style.transform = "translateY(-40px)";
+    setTimeout(() => (window.location.href = "login.html"), 500);
+  });
+
+  // Reset Password Logic
+  resetForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const newPass = newPassword.value.trim();
+    const confirmPass = confirmPassword.value.trim();
+    const email = localStorage.getItem("resetPending");
+    const user = JSON.parse(localStorage.getItem("dsaUser"));
+
+    // Check if passwords match
+    if (!passwordsMatch) {
+      alert("Passwords do not match. Please try again.");
+      return;
+    }
+
+    if (!email || !user || user.email.toLowerCase() !== email.toLowerCase()) {
+      alert("No reset request found. Please try again.");
+      return (window.location.href = "login.html");
+    }
+
+    if (newPass.length < 4) {
+      alert("Password must be at least 4 characters long.");
+      return;
+    }
+
+    // Save new password
+    user.password = newPass;
+    localStorage.setItem("dsaUser", JSON.stringify(user));
+    localStorage.removeItem("resetPending");
+
+    alert("Password reset successful! You can now log in.");
+    window.location.href = "login.html";
+  });
+});
+
+  </script>
+</body>
+</html>
