@@ -19,6 +19,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const isHidden = passwordInput.type === "password";
         passwordInput.type = isHidden ? "text" : "password";
 
+        signupPassword.addEventListener("input", () => {
+  const val = signupPassword.value;
+  let strength = 0;
+
+  if (val.length >= 6) strength++;
+  if (/[A-Z]/.test(val)) strength++;
+  if (/[0-9]/.test(val)) strength++;
+  if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+  switch (strength) {
+    case 0:
+      strengthBar.style.width = "0%";
+      strengthBar.style.backgroundColor = "transparent";
+      strengthText.textContent = "Password Strength: ";
+      break;
+    case 1:
+      strengthBar.style.width = "25%";
+      strengthBar.style.backgroundColor = "#ff4d4f";
+      strengthText.textContent = "Password Strength: Weak";
+      break;
+    case 2:
+      strengthBar.style.width = "50%";
+      strengthBar.style.backgroundColor = "#facc15";
+      strengthText.textContent = "Password Strength: Fair";
+      break;
+    case 3:
+      strengthBar.style.width = "75%";
+      strengthBar.style.backgroundColor = "#60a5fa";
+      strengthText.textContent = "Password Strength: Good";
+      break;
+    case 4:
+      strengthBar.style.width = "100%";
+      strengthBar.style.backgroundColor = "#4ade80";
+      strengthText.textContent = "Password Strength: Strong";
+      break;
+  }
+});
+
         togglePassword.innerHTML = isHidden
             ? `<i class="fa-solid fa-eye-slash"></i>`
             : `<i class="fa-solid fa-eye"></i>`;
