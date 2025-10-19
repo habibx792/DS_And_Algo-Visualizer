@@ -1,274 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DSA Visualizer — Smart Tutor</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSA Visualizer — Smart Tutor</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
+    <script src="footer.js" defer></script>
 
-  <script src="footer.js" defer></script>
-
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navyDeep: "#0b092d",   
-            navySoft: "#20213b",   
-            navyDark: "#0d1120",   
-            goldAccent: "#fca311", 
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navyDeep: "#0b092d",
+              navySoft: "#20213b",
+              navyDark: "#0d1120",
+              goldAccent: "#fca311",
+            },
           },
         },
-      },
-    };
-  </script>
+      };
+    </script>
 
-  <!-- Custom Styles -->
-  <style>
-    * {
-      font-family: 'Inter', system-ui, sans-serif;
-      transition: all 0.2s ease-in-out;
-    }
+    <!-- Custom Styles -->
+    <style>
+      * {
+        font-family: "Inter", system-ui, sans-serif;
+        transition: all 0.2s ease-in-out;
+      }
 
-    /* Smooth fade-in animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+      /* Smooth fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-    .fade-in {
-      animation: fadeIn 0.3s ease-out;
-    }
+      .fade-in {
+        animation: fadeIn 0.3s ease-out;
+      }
 
-    /* Scrollbar design */
-    #chat::-webkit-scrollbar {
-      width: 6px;
-    }
-    #chat::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 3px;
-    }
+      /* Scrollbar design */
+      #chat::-webkit-scrollbar {
+        width: 6px;
+      }
+      #chat::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 3px;
+      }
 
-    /* Modal zoom-in effect */
-    @keyframes zoomIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+      /* Modal zoom-in effect */
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
 
-    .animate-zoomIn {
-      animation: zoomIn 0.3s ease-out;
-    }
-  </style>
-</head>
+      .animate-zoomIn {
+        animation: zoomIn 0.3s ease-out;
+      }
+    </style>
+  </head>
 
-<body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark min-h-screen text-white">
+  <body
+    class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark min-h-screen text-white"
+  >
+    <!-- Navbar -->
+    <header
+      class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md"
+    >
+      <nav
+        class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4"
+      >
+        <h1 class="text-3xl font-bold text-goldAccent tracking-widest">
+          DsaViz
+        </h1>
 
-  <!-- Navbar -->
-  <header class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
-    <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-      <h1 class="text-3xl font-bold text-goldAccent tracking-widest">DsaViz</h1>
+        
+        <ul class="hidden md:flex gap-8 text-lg text-gray-300 font-medium">
+          <li><a href="index.html" class="hover:text-goldAccent">Home</a></li>
+          <li><a href="#" class="hover:text-goldAccent">Data Structures</a></li>
+          <li>
+            <a href="algoViz.html" class="hover:text-goldAccent">Algorithms</a>
+          </li>
+          <li><a href="#" class="hover:text-goldAccent">Exercises</a></li>
+          <li><a href="#" class="hover:text-goldAccent">Editor</a></li>
+        </ul>
 
-      <!-- Navigation Links -->
-      <ul class="hidden md:flex gap-8 text-lg text-gray-300 font-medium">
-        <li><a href="index.html" class="hover:text-goldAccent">Home</a></li>
-        <li><a href="#" class="hover:text-goldAccent">Data Structures</a></li>
-        <li><a href="algoViz.html" class="hover:text-goldAccent">Algorithms</a></li>
-        <li><a href="#" class="hover:text-goldAccent">Exercises</a></li>
-        <li><a href="#" class="hover:text-goldAccent">Editor</a></li>
-      </ul>
+        <!-- Login Button -->
+        <button
+          id="loginBtn"
+          class="hidden md:block bg-goldAccent text-black px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-navyDark shadow-lg transition"
+        >
+          Login
+        </button>
+      </nav>
+    </header>
 
-      <!-- Login Button -->
-      <button id="loginBtn"
-        class="hidden md:block bg-goldAccent text-black px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-navyDark shadow-lg transition">
-        Login
-      </button>
-    </nav>
-  </header>
-
-  <!-- Login Modal -->
-  <div id="loginModal"
-       class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-    <div class="bg-navySoft/90 border border-goldAccent/30 rounded-2xl shadow-2xl w-11/12 sm:w-96 p-8 relative animate-zoomIn">
-
-      <!-- Close Button -->
-      <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </button>
-
-      <h2 class="text-2xl font-bold text-goldAccent mb-1 text-center">Welcome Back</h2>
-      <p class="text-gray-400 mb-6 text-center text-sm">Sign in to continue your DSA journey</p>
-
-      <!-- Login Form -->
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block text-gray-300 text-sm mb-1">Email</label>
-          <input type="email" required placeholder="you@example.com"
-            class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none">
-        </div>
-
-        <div>
-          <label class="block text-gray-300 text-sm mb-1">Password</label>
-          <input type="password" required placeholder="••••••••"
-            class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none">
-        </div>
-
-        <div class="flex justify-between items-center text-sm text-gray-400">
-          <label class="flex items-center space-x-2">
-            <input type="checkbox" class="accent-goldAccent">
-            <span>Remember me</span>
-          </label>
-          <a href="#" class="hover:text-goldAccent">Forgot?</a>
-        </div>
-
-        <button type="submit"
-          class="w-full bg-goldAccent hover:bg-white text-navyDark font-semibold py-2 rounded-lg transition">
-          Sign In
+    <!-- Login Modal -->
+    <div
+      id="loginModal"
+      class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm z-50"
+    >
+      <div
+        class="bg-navySoft/90 border border-goldAccent/30 rounded-2xl shadow-2xl w-11/12 sm:w-96 p-8 relative animate-zoomIn"
+      >
+        <!-- Close Button -->
+        <button
+          id="closeModal"
+          class="absolute top-3 right-3 text-gray-400 hover:text-white"
+        >
+          <i class="fa-solid fa-xmark text-xl"></i>
         </button>
 
-        <p class="text-center text-gray-400 text-sm mt-3">
-          Don’t have an account?
-          <a href="#" class="text-goldAccent hover:underline">Sign up</a>
+        <h2 class="text-2xl font-bold text-goldAccent mb-1 text-center">
+          Welcome Back
+        </h2>
+        <p class="text-gray-400 mb-6 text-center text-sm">
+          Sign in to continue your DSA journey
         </p>
-      </form>
-    </div>
-  </div>
 
-  <!-- Hero Section -->
-  <section class="text-center py-10">
-    <h1 class="text-5xl font-extrabold text-goldAccent mb-3">AI-Powered DSA Tutor</h1>
-    <p class="text-gray-300 text-lg max-w-2xl mx-auto">
-      Ask anything about algorithms, data structures, or time complexity — learn visually and intuitively.
-    </p>
-  </section>
-
-  <!-- Chat Area -->
-  <div class="max-w-5xl mx-auto bg-white/10 rounded-2xl shadow-xl border border-white/10 overflow-hidden mb-16 backdrop-blur-lg">
-    <div id="chat" class="h-[500px] overflow-y-auto p-6 space-y-5 bg-navySoft/40">
-      <div class="flex justify-start fade-in">
-        <div class="bg-white/10 border border-white/20 rounded-lg px-4 py-3 max-w-3xl">
-          <div class="flex items-center space-x-2 mb-2">
-            <div class="w-6 h-6 bg-goldAccent rounded-full flex items-center justify-center">
-              <i class="fa-solid fa-bolt text-navyDeep text-xs"></i>
-            </div>
-            <span class="font-semibold text-goldAccent">DSA Tutor</span>
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block text-gray-300 text-sm mb-1">Email</label>
+            <input
+              type="email"
+              required
+              placeholder="you@example.com"
+              class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none"
+            />
           </div>
-          <p class="text-gray-200">
-            Hey 👋 I’m your algorithm solver! Ask me about sorting, searching, or how data structures really work.
+
+          <div>
+            <label class="block text-gray-300 text-sm mb-1">Password</label>
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none"
+            />
+          </div>
+
+          <div class="flex justify-between items-center text-sm text-gray-400">
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" class="accent-goldAccent" />
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="hover:text-goldAccent">Forgot?</a>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-goldAccent hover:bg-white text-navyDark font-semibold py-2 rounded-lg transition"
+          >
+            Sign In
+          </button>
+
+          <p class="text-center text-gray-400 text-sm mt-3">
+            Don’t have an account?
+            <a href="signup.html" class="text-goldAccent hover:underline"
+              >Sign up</a
+            >
           </p>
-        </div>
+        </form>
       </div>
     </div>
 
-    
-    <div class="p-5 border-t border-white/10 bg-navyDark/60 flex items-center space-x-3">
-      <input id="question" type="text"
-             placeholder="Ask about stacks, recursion, time complexity..."
-             class="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none"
-             onkeypress="if(event.key==='Enter') askQuestion()">
-      <button onclick="askQuestion()"
-              class="bg-goldAccent hover:bg-white text-navyDeep px-6 py-3 rounded-full font-semibold transition shadow-lg flex items-center space-x-2">
-        <i class="fa-solid fa-paper-plane text-sm"></i>
-        <span>Send</span>
+    <!-- Hero Section -->
+    <section class="text-center py-10">
+      <h1 class="text-5xl font-extrabold text-goldAccent mb-3">
+        AI-Powered DSA Tutor
+      </h1>
+      <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+        Ask anything about algorithms, data structures, or time complexity —
+        learn visually and intuitively.
+      </p>
+    </section>
+
+    <!-- Chat Area -->
+    <div
+      class="max-w-5xl mx-auto bg-white/10 rounded-2xl shadow-xl border border-white/10 overflow-hidden mb-16 backdrop-blur-lg"
+    >
+      <div
+        id="chat"
+        class="h-[500px] overflow-y-auto p-6 space-y-5 bg-navySoft/40"
+      >
+        <div class="flex justify-start fade-in">
+          <div
+            class="bg-white/10 border border-white/20 rounded-lg px-4 py-3 max-w-3xl"
+          >
+            <div class="flex items-center space-x-2 mb-2">
+              <div
+                class="w-6 h-6 bg-goldAccent rounded-full flex items-center justify-center"
+              >
+                <i class="fa-solid fa-bolt text-navyDeep text-xs"></i>
+              </div>
+              <span class="font-semibold text-goldAccent">DSA Tutor</span>
+            </div>
+            <p class="text-gray-200">
+              Hey 👋 I’m your algorithm solver! Ask me about sorting, searching,
+              or how data structures really work.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="p-5 border-t border-white/10 bg-navyDark/60 flex items-center space-x-3"
+      >
+        <input
+          id="question"
+          type="text"
+          placeholder="Ask about stacks, recursion, time complexity..."
+          class="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none"
+          onkeypress="if(event.key==='Enter') askQuestion()"
+        />
+        <button
+          onclick="askQuestion()"
+          class="bg-goldAccent hover:bg-white text-navyDeep px-6 py-3 rounded-full font-semibold transition shadow-lg flex items-center space-x-2"
+        >
+          <i class="fa-solid fa-paper-plane text-sm"></i>
+          <span>Send</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Question Buttons -->
+    <div
+      class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 mb-20"
+    >
+      <button
+        onclick="quickQuestion('Explain stack with code and time complexity')"
+        class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg"
+      >
+        <div class="font-semibold text-goldAccent mb-1">Stack</div>
+        <p class="text-gray-300 text-sm">LIFO operations</p>
+      </button>
+
+      <button
+        onclick="quickQuestion('How binary trees work with traversal example')"
+        class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg"
+      >
+        <div class="font-semibold text-goldAccent mb-1">Binary Tree</div>
+        <p class="text-gray-300 text-sm">Preorder, Inorder, Postorder</p>
+      </button>
+
+      <button
+        onclick="quickQuestion('Explain linked list with insertion example')"
+        class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg"
+      >
+        <div class="font-semibold text-goldAccent mb-1">Linked List</div>
+        <p class="text-gray-300 text-sm">Nodes & pointers</p>
+      </button>
+
+      <button
+        onclick="quickQuestion('Explain quicksort with dry run and complexity')"
+        class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg"
+      >
+        <div class="font-semibold text-goldAccent mb-1">Quick Sort</div>
+        <p class="text-gray-300 text-sm">Divide and conquer</p>
       </button>
     </div>
-  </div>
 
-  <!-- Quick Question Buttons -->
-  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 mb-20">
-    <button onclick="quickQuestion('Explain stack with code and time complexity')"
-      class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg">
-      <div class="font-semibold text-goldAccent mb-1">Stack</div>
-      <p class="text-gray-300 text-sm">LIFO operations</p>
-    </button>
+    <!-- Footer -->
+    <footer id="foot"></footer>
 
-    <button onclick="quickQuestion('How binary trees work with traversal example')"
-      class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg">
-      <div class="font-semibold text-goldAccent mb-1">Binary Tree</div>
-      <p class="text-gray-300 text-sm">Preorder, Inorder, Postorder</p>
-    </button>
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
 
-    <button onclick="quickQuestion('Explain linked list with insertion example')"
-      class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg">
-      <div class="font-semibold text-goldAccent mb-1">Linked List</div>
-      <p class="text-gray-300 text-sm">Nodes & pointers</p>
-    </button>
+    <!-- Main JS -->
+    <script>
+      // Chat logic
+      async function askQuestion() {
+        const questionInput = document.getElementById("question");
+        const question = questionInput.value.trim();
 
-    <button onclick="quickQuestion('Explain quicksort with dry run and complexity')"
-      class="bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg">
-      <div class="font-semibold text-goldAccent mb-1">Quick Sort</div>
-      <p class="text-gray-300 text-sm">Divide and conquer</p>
-    </button>
-  </div>
+        if (!question) return;
 
-  <!-- Footer -->
-  <footer id="foot"></footer>
+        // Add user question to chat
+        addMessage(question, "user");
+        questionInput.value = "";
 
-  <!-- Font Awesome Icons -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+        
+        const typingDiv = addMessage(
+          '<span class="typing-animation">Thinking</span>',
+          "bot",
+          true
+        );
 
- 
-  <script>
-    // Chat logic
-     async function askQuestion() {
-            const questionInput = document.getElementById('question');
-            const question = questionInput.value.trim();
+        try {
+          const response = await fetch("/ask", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ question }),
+          });
 
-            if (!question) return;
+          const data = await response.json();
 
-           
-            addMessage(question, 'user');
-            questionInput.value = '';
-
-           
-            const typingDiv = addMessage('<span class="typing-animation">Thinking</span>', 'bot', true);
-
-            try {
-                const response = await fetch('/ask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ question })
-                });
-
-                const data = await response.json();
-
-                // Remove typing indicator and add actual response
-                typingDiv.remove();
-                addMessage(data.answer, 'bot');
-
-            } catch (error) {
-                typingDiv.remove();
-                addMessage('Sorry, there was an error. Please try again.', 'bot');
-            }
+         
+          typingDiv.remove();
+          addMessage(data.answer, "bot");
+        } catch (error) {
+          typingDiv.remove();
+          addMessage("Sorry, there was an error. Please try again.", "bot");
         }
+      }
 
-   
-    function quickQuestion(q) {
-      document.getElementById("question").value = q;
-      askQuestion();
-    }
+      function quickQuestion(q) {
+        document.getElementById("question").value = q;
+        askQuestion();
+      }
 
-   
-    function addMessage(content, sender, isTyping = false) {
-      const chat = document.getElementById("chat");
-      const div = document.createElement("div");
-      div.classList.add("fade-in");
+      function addMessage(content, sender, isTyping = false) {
+        const chat = document.getElementById("chat");
+        const div = document.createElement("div");
+        div.classList.add("fade-in");
 
-      if (sender === "user") {
-        div.classList.add("flex", "justify-end");
-        div.innerHTML = `
+        if (sender === "user") {
+          div.classList.add("flex", "justify-end");
+          div.innerHTML = `
           <div class="bg-goldAccent text-navyDeep rounded-lg px-4 py-3 max-w-xl shadow-lg">
             <div class="font-semibold mb-1">You</div>
             <p>${content}</p>
           </div>`;
-      } else {
-        div.classList.add("flex", "justify-start");
-        div.innerHTML = `
+        } else {
+          div.classList.add("flex", "justify-start");
+          div.innerHTML = `
           <div class="bg-white/10 border border-white/20 rounded-lg px-4 py-3 max-w-3xl">
             <div class="flex items-center space-x-2 mb-1">
               <div class="w-5 h-5 bg-goldAccent rounded-full flex items-center justify-center">
@@ -278,43 +351,36 @@
             </div>
             <div>${content}</div>
           </div>`;
+        }
+
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+        return div;
       }
 
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-      return div;
-    }
+      
+      const loginBtn = document.getElementById("loginBtn");
 
-   
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("question").focus();
-    });
+     
+      const isLoggedIn = localStorage.getItem("dsaLoggedIn") === "true";
 
-    // Modal logic
-    const loginBtn = document.getElementById("loginBtn");
-    const loginModal = document.getElementById("loginModal");
-    const closeModal = document.getElementById("closeModal");
-    const loginForm = document.getElementById("loginForm");
+      if (isLoggedIn) {
+        // Change button to Logout here
+        loginBtn.textContent = "Logout";
+        loginBtn.classList.remove("bg-goldAccent", "text-black");
+        loginBtn.classList.add("bg-red-500", "hover:bg-red-600", "text-white");
 
-    loginBtn.addEventListener("click", () => {
-      loginModal.classList.remove("hidden");
-      loginModal.classList.add("flex");
-    });
-
-    closeModal.addEventListener("click", () => {
-      loginModal.classList.add("hidden");
-    });
-
-    loginModal.addEventListener("click", (e) => {
-      if (e.target === loginModal) loginModal.classList.add("hidden");
-    });
-
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = loginForm.querySelector('input[type="email"]').value;
-      alert(`Welcome back, ${email.split('@')[0]}!`);
-      loginModal.classList.add("hidden");
-    });
-  </script>
-</body>
+        
+        loginBtn.addEventListener("click", () => {
+          localStorage.removeItem("dsaLoggedIn");
+          alert("You have been logged out.");
+          window.location.href = "index.html";
+        });
+      } else {
+        loginBtn.addEventListener("click", () => {
+          window.location.href = "login.html";
+        });
+      }
+    </script>
+  </body>
 </html>
