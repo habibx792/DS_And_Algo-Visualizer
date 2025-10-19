@@ -24,133 +24,37 @@
 
   <!-- Font Awesome -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" defer></script>
+
+  <script src="login.js" defer></script>
 </head>
 
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white">
-
- 
-  <div id="loginCard" 
-       class="relative bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl 
-              transition-all duration-500 ease-in-out transform">
-
-  
-    <button id="closeBtn" 
-            class="absolute top-4 right-4 text-gray-400 hover:text-goldAccent text-2xl font-bold transition-colors duration-300">
-      &times;
-    </button>
-
+  <div id="loginCard" class="relative bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl transition-all duration-500 ease-in-out transform">
+    <button id="closeBtn" class="absolute top-4 right-4 text-gray-400 hover:text-goldAccent text-2xl font-bold transition-colors duration-300">&times;</button>
     <h1 class="text-3xl font-bold text-center text-goldAccent mb-2">Welcome Back</h1>
     <p class="text-gray-400 text-center mb-8 text-sm">Sign in to continue your DSA journey</p>
 
-    <!-- Login Form -->
     <form id="loginForm" class="space-y-5">
       <div class="transition-all duration-300 hover:scale-[1.02]">
         <label class="block text-sm text-gray-300 mb-1">Email</label>
-        <input id="loginEmail" type="email" required
-               class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white 
-                      focus:ring-2 focus:ring-goldAccent outline-none"
-               placeholder="you@example.com">
+        <input id="loginEmail" type="email" required class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none" placeholder="you@example.com">
       </div>
 
-     
       <div class="relative transition-all duration-300 hover:scale-[1.02]">
         <label class="block text-sm text-gray-300 mb-1">Password</label>
-        <input id="loginPassword" type="password" required
-               class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white 
-                      focus:ring-2 focus:ring-goldAccent outline-none"
-               placeholder="••••••••">
-        <button type="button" id="togglePassword"
-                class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
+        <input id="loginPassword" type="password" required class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none" placeholder="••••••••">
+        <button type="button" id="togglePassword" class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
           <i class="fa-solid fa-eye"></i>
         </button>
-
-        <!-- Forgot Password -->
         <div class="text-right mt-2">
-          <button type="button" id="forgotPassword" 
-                  class="text-goldAccent text-sm hover:underline hover:scale-105 transition-transform duration-200">
-            Forgot Password?
-          </button>
+          <button type="button" id="forgotPassword" class="text-goldAccent text-sm hover:underline hover:scale-105 transition-transform duration-200">Forgot Password?</button>
         </div>
       </div>
 
-      <!-- Sign In Button -->
-      <button type="submit"
-              class="w-full bg-goldAccent text-navyDark font-semibold py-2 rounded-lg hover:bg-white hover:text-navyDark 
-                     transition transform hover:scale-105 duration-300">
-        Sign In
-      </button>
+      <button type="submit" class="w-full bg-goldAccent text-navyDark font-semibold py-2 rounded-lg hover:bg-white hover:text-navyDark transition transform hover:scale-105 duration-300">Sign In</button>
 
-      <p class="text-center text-gray-400 text-sm mt-4">
-        Don’t have an account?
-        <a href="signup.html" class="text-goldAccent hover:underline font-medium">Sign Up</a>
-      </p>
+      <p class="text-center text-gray-400 text-sm mt-4">Don’t have an account? <a href="signup.html" class="text-goldAccent hover:underline font-medium">Sign Up</a></p>
     </form>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-     
-      if (localStorage.getItem("dsaLoggedIn") === "true") {
-        window.location.href = "test.html";
-      }
-
-      const loginForm = document.getElementById("loginForm");
-      const loginEmail = document.getElementById("loginEmail");
-      const loginPassword = document.getElementById("loginPassword");
-      const togglePasswordBtn = document.getElementById("togglePassword");
-      const toggleIcon = togglePasswordBtn.querySelector("i");
-      const closeBtn = document.getElementById("closeBtn");
-      const loginCard = document.getElementById("loginCard");
-      const forgotPasswordBtn = document.getElementById("forgotPassword");
-
-     
-      togglePasswordBtn.addEventListener("click", () => {
-        const isHidden = loginPassword.type === "password";
-        loginPassword.type = isHidden ? "text" : "password";
-        toggleIcon.classList.toggle("fa-eye");
-        toggleIcon.classList.toggle("fa-eye-slash");
-      });
-
-    
-      loginForm.addEventListener("submit", e => {
-        e.preventDefault();
-
-        const user = JSON.parse(localStorage.getItem("dsaUser"));
-        if (!user) {
-          alert("No account found. Please sign up first.");
-          window.location.href = "signup.html";
-          return;
-        }
-
-        const email = loginEmail.value.trim().toLowerCase();
-        const password = loginPassword.value.trim();
-
-        if (user.email.toLowerCase() === email && user.password === password) {
-          localStorage.setItem("dsaLoggedIn", "true");
-          alert(`Welcome back, ${user.name}!`);
-          window.location.href = "test.html";
-        } else {
-          alert("Invalid credentials. Try again.");
-        }
-      });
-
-     // Close button 
-      closeBtn.addEventListener("click", () => {
-        loginCard.style.transition = "all 0.5s ease";
-        loginCard.style.opacity = "0";
-        loginCard.style.transform = "translateX(100%)";
-        setTimeout(() => {
-          window.location.href = "signup.html";
-        }, 500);
-      });
-
-      // Redirect to reset page
-      forgotPasswordBtn.addEventListener("click", () => {
-        const email = loginEmail.value.trim().toLowerCase();
-        if (email) localStorage.setItem("resetPending", email);
-        window.location.href = "passforget.html";
-      });
-    });
-  </script>
 </body>
 </html>

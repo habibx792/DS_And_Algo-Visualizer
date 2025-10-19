@@ -1,38 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — DsaViz</title>
 
-    <link rel="stylesheet" href="./src/output.css" />
-    <title>Document</title>
-    <link rel="stylesheet" href="dataStructure.css" />
-  </head>
-<body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark min-h-screen text-white font-sans">
-    <header id="dsNav" class="sticky top-0 flex justify-between w-full">
-      <nav  class="text-3xl text-white flex justify-between py-4 w-full"
-        <h1>Dsa Viz</h1>
-        <ul>
-          <button href="index.html" class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600"><a href="test.html">Home</a> </button>
-          <button href="index.html" class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600"><a href="signIn.html">SignIn</a> </button>
-          <button href="" class="bg-gray-800 text-white px-6 py-2 rounded hover:text-gray-600">Theme</button>
-        </ul>
-      </nav>
-      <div></div>
-      <div></div>
-    </header>
-    <main class="h-[1000px]">
-      <section></section>
-      <section></section>
-      <section></section>
-      <section></section>
-      <section></section>
-    </main>
-    <footer></footer>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navyDeep: "#0b092d",
+            navySoft: "#20213b",
+            navyDark: "#0d1120",
+            goldAccent: "#fca311",
+          },
+        },
+      },
+    };
+  </script>
 
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" defer></script>
+  <script src="signup.js" defer></script>
+</head>
 
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white">
 
-  </body>
+  <div id="signupCard"
+       class="relative bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl opacity-0 translate-y-8 transition-all duration-700 ease-out">
+
+    <button id="closeBtn"
+            class="absolute top-4 right-4 text-gray-400 hover:text-goldAccent text-2xl font-bold transition-colors duration-300">
+      &times;
+    </button>
+
+    <h1 class="text-3xl font-bold text-center text-goldAccent mb-2">Create Account</h1>
+    <p class="text-gray-400 text-center mb-8 text-sm">Join DsaViz and start your learning journey</p>
+
+    <form id="signupForm" class="space-y-5">
+      <div class="transition-all duration-300 hover:scale-[1.02]">
+        <label class="block text-sm text-gray-300 mb-1">Full Name</label>
+        <input id="signupName" type="text" required
+               class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white
+                      focus:ring-2 focus:ring-goldAccent outline-none"
+               placeholder="John Doe">
+      </div>
+
+      <div class="transition-all duration-300 hover:scale-[1.02]">
+        <label class="block text-sm text-gray-300 mb-1">Email</label>
+        <input id="signupEmail" type="email" required
+               class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white
+                      focus:ring-2 focus:ring-goldAccent outline-none"
+               placeholder="you@example.com">
+      </div>
+
+      <div class="relative transition-all duration-300 hover:scale-[1.02]">
+        <label class="block text-sm text-gray-300 mb-1">Password</label>
+        <input id="signupPassword" type="password" required
+               class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white
+                      focus:ring-2 focus:ring-goldAccent outline-none"
+               placeholder="••••••••">
+        <button type="button" id="toggleSignupPassword"
+                class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <button type="submit"
+              class="w-full bg-goldAccent text-navyDark font-semibold py-2 rounded-lg hover:bg-white hover:text-navyDark
+                     transition transform hover:scale-105 duration-300">
+        Sign Up
+      </button>
+
+      <p class="text-center text-gray-400 text-sm mt-4">
+        Already have an account?
+        <a href="login.html" class="text-goldAccent hover:underline hover:scale-105 inline-block transition-transform duration-200">
+          Login here
+        </a>
+      </p>
+    </form>
+  </div>
+
+</body>
 </html>
-<!-- npx @tailwindcss/cli -i ./code/src/input.css -o ./code/src/output.css --watch
- -->
