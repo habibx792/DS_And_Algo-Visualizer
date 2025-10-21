@@ -938,9 +938,6 @@ video {
   align-items: flex-start;
 }
 
-.items-center {
-  align-items: center;
-}
 
 .justify-start {
   justify-content: flex-start;
