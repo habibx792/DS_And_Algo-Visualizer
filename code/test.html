@@ -9,6 +9,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script src="footer.js" defer></script>
+    <script src="showNav.js"></script>
+     <script src="server.js" defer></script>
 
     <script>
       tailwind.config = {
@@ -73,6 +75,7 @@
         animation: zoomIn 0.3s ease-out;
       }
     </style>
+
   </head>
 
   <body
@@ -115,7 +118,7 @@
           Login
         </button>
         <div class="md:hidden">
-          <button id="mobNav" class="p-2 rounded-md hover:bg-gray-200">
+          <button id="mobNav" class="p-2 rounded-md ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -133,6 +136,31 @@
           </button>
         </div>
       </nav>
+      <div class="md:hidden w-full bg-black flex justify-between items-center text-white">
+        <ul id="mobNavcontent" class="hidden text-center  md:flex gap-8 text-lg text-gray-300 font-medium justify-between items-center w-full">
+          <li><a href="index.html" class="hover:text-goldAccent">Home</a></li>
+          <li>
+            <a href="dataStructur.html" class="hover:text-goldAccent"
+              >Data Structures</a
+            >
+          </li>
+          <li>
+            <a href="algoViz.html" class="hover:text-goldAccent">Algorithms</a>
+          </li>
+          <li>
+            <a href="exercises.html" class="hover:text-goldAccent">Exercises</a>
+          </li>
+          <li>
+            <a href="editor.html" class="hover:text-goldAccent">Editor</a>
+          </li>
+           <button
+          id="loginBtn"
+          class="md:hidden md:block bg-goldAccent text-black px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-navyDark shadow-lg transition"
+        >
+          Login
+        </button>
+        </ul>
+      </div>
     </header>
 
     <!-- Login Modal -->

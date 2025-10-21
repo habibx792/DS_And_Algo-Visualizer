@@ -1,4 +1,3 @@
-
 (() => {
 
   const arrayInput = document.getElementById("arrayInput");
@@ -34,30 +33,18 @@
   // chages the  the of age
   const them = document.querySelector(".ghost");
   const aiHome = document.querySelector(".Ai-Home");
-  const hero=document.querySelector(".hero-Bar");
+  const hero = document.querySelector(".hero-Bar");
   const topbar = document.querySelector(".topbar");
   const tag = document.querySelector(".tag");
-  // them.addEventListener("click", () => {
-  //   alert("Hello");
-
-  //   topbar.style.backgroundColor = "white";
-  //   hero.style.color = "black";
-  //   them.style.color = "black";
-  //   topbar.style.color="black";
-  //   aiHome.style.color="black";
-  //   tag.style.color="black";
-
-  // });
 
   const themeToggle = document.getElementById("themeToggle");
   themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light-theme");
-    const light = document.body.classList.contains("light-theme");
-    themeToggle.textContent = light ? "Dark Mode" : "Light Mode";
+    // Toggle Tailwind-style dark mode on <html>
+    document.documentElement.classList.toggle("dark");
+    // Update button text to reflect the current mode
+    const isDark = document.documentElement.classList.contains("dark");
+    themeToggle.textContent = isDark ? "" : "";
   });
-
-
-
 
   let arr = [];
   let original = [];
@@ -65,14 +52,14 @@
   let running = false;
   let paused = false;
   let iterator = null;
-  let speed = Number(speedRange.value);
+  let speed = Number(speedRange ? speedRange.value : 180);
 
   const setStatus = (s) => {
-    statusText.textContent = s;
+    if (statusText) statusText.textContent = s;
   };
   const setCurrent = (s) => {
-    currentOp.textContent = s;
-    algoName.textContent = s;
+    if (currentOp) currentOp.textContent = s;
+    if (algoName) algoName.textContent = s;
   };
 
   function parseInput(text) {
@@ -100,11 +87,12 @@
   }
 
   function render(a) {
+    if (!canvas) return;
     canvas.innerHTML = "";
     bars = [];
     const max = Math.max(...a, 1);
     const min = Math.min(...a, 0);
-    elemCount.textContent = a.length;
+    if (elemCount) elemCount.textContent = a.length;
 
     a.forEach((v, i) => {
       const bar = document.createElement("div");
@@ -121,7 +109,6 @@
       bars.push(bar);
     });
   }
-
 
   function highlightCompare(i, j) {
     if (typeof i === "number") bars[i]?.classList.add("compare");
@@ -150,7 +137,6 @@
   function undimAll() {
     bars.forEach((b) => b.classList.remove("dim"));
   }
-
 
   function swapValues(i, j) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -289,7 +275,6 @@
     running = false;
   }
 
-
   async function mergeSortWrapper(ascending = true) {
     running = true;
     setStatus("Running");
@@ -360,7 +345,6 @@
     setStatus("Completed");
     running = false;
   }
-
 
   async function linearSearch(val) {
     running = true;
@@ -449,168 +433,190 @@
     }
   }
 
-
-  useBtn.addEventListener("click", () => {
-    const parsed = parseInput(arrayInput.value);
-    if (parsed.length === 0) {
-      setStatus("No valid numbers");
-      return;
-    }
-    arr = parsed.slice();
-    original = arr.slice();
-    render(arr);
-    setStatus("Array set");
-  });
-
-  randomBtn.addEventListener("click", () => {
-    const n = Number(sizeRange.value);
-    arr = randomArray(n);
-    original = arr.slice();
-    arrayInput.value = arr.join(",");
-    render(arr);
-    setStatus("Randomized");
-  });
-
-  shuffleBtn.addEventListener("click", () => {
-    arr = shuffle(arr.slice());
-    original = arr.slice();
-    arrayInput.value = arr.join(",");
-    render(arr);
-    setStatus("Shuffled");
-  });
-
-  clearBtn.addEventListener("click", () => {
-    arr = [];
-    original = [];
-    arrayInput.value = "";
-    render(arr);
-    setStatus("Cleared");
-  });
-
-
-  sizeRange.addEventListener("input", (e) => {
-    sizeVal.textContent = e.target.value;
-  });
-  speedRange.addEventListener("input", (e) => {
-    speed = Number(e.target.value);
-    speedVal.textContent = speed + "ms";
-  });
-
-  playBtn.addEventListener("click", async () => {
-    if (running) {
-      paused = false;
-      setStatus("Running");
-      return;
-    }
-    paused = false;
-    await runAlgorithm();
-  });
-
-  pauseBtn.addEventListener("click", () => {
-    paused = true;
-    setStatus("Paused");
-  });
-
-  resetBtn.addEventListener("click", () => {
-    paused = false;
-    running = false;
-    if (original && original.length) {
-      arr = original.slice();
+  if (useBtn) {
+    useBtn.addEventListener("click", () => {
+      const parsed = parseInput(arrayInput.value);
+      if (parsed.length === 0) {
+        setStatus("No valid numbers");
+        return;
+      }
+      arr = parsed.slice();
+      original = arr.slice();
       render(arr);
-      setStatus("Reset to original");
-      setCurrent("Idle");
-    } else {
+      setStatus("Array set");
+    });
+  }
+
+  if (randomBtn) {
+    randomBtn.addEventListener("click", () => {
+      const n = Number(sizeRange.value);
+      arr = randomArray(n);
+      original = arr.slice();
+      arrayInput.value = arr.join(",");
+      render(arr);
+      setStatus("Randomized");
+    });
+  }
+
+  if (shuffleBtn) {
+    shuffleBtn.addEventListener("click", () => {
+      arr = shuffle(arr.slice());
+      original = arr.slice();
+      arrayInput.value = arr.join(",");
+      render(arr);
+      setStatus("Shuffled");
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
       arr = [];
+      original = [];
+      arrayInput.value = "";
       render(arr);
-      setStatus("Reset");
-    }
-  });
+      setStatus("Cleared");
+    });
+  }
+
+  if (sizeRange && sizeVal) {
+    sizeRange.addEventListener("input", (e) => {
+      sizeVal.textContent = e.target.value;
+    });
+  }
+  if (speedRange && speedVal) {
+    speedRange.addEventListener("input", (e) => {
+      speed = Number(e.target.value);
+      speedVal.textContent = speed + "ms";
+    });
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener("click", async () => {
+      if (running) {
+        paused = false;
+        setStatus("Running");
+        return;
+      }
+      paused = false;
+      await runAlgorithm();
+    });
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", () => {
+      paused = true;
+      setStatus("Paused");
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      paused = false;
+      running = false;
+      if (original && original.length) {
+        arr = original.slice();
+        render(arr);
+        setStatus("Reset to original");
+        setCurrent("Idle");
+      } else {
+        arr = [];
+        render(arr);
+        setStatus("Reset");
+      }
+    });
+  }
+
+  if (stepBtn) {
+    stepBtn.addEventListener("click", async () => {
+      if (running) {
+        setStatus("Already running");
+        return;
+      }
+
+      paused = false;
+      running = true;
+      const algo = algoSelect.value;
+      setCurrent("Stepping: " + algo);
+      const stepMs = Math.max(60, speed);
+
+      const controller = { kill: false };
+      setTimeout(() => (controller.kill = true), stepMs);
 
 
-  stepBtn.addEventListener("click", async () => {
-    if (running) {
-      setStatus("Already running");
-      return;
-    }
+      if (algo === "bubble") {
+        await bubbleSort(getOrder() === "asc");
+      } else if (algo === "selection") {
+        await selectionSort(getOrder() === "asc");
+      } else if (algo === "quick") {
+        await quickSortWrapper(getOrder() === "asc");
+      } else if (algo === "merge") {
+        await mergeSortWrapper(getOrder() === "asc");
+      }
+      running = false;
+      paused = true;
+      setStatus("Stepped (approx.)");
+    });
+  }
 
-    paused = false;
-    running = true;
-    const algo = algoSelect.value;
-    setCurrent("Stepping: " + algo);
-    const stepMs = Math.max(60, speed);
+  if (linearBtn) {
+    linearBtn.addEventListener("click", async () => {
+      const v = Number(searchInput.value);
+      if (!Number.isFinite(v)) {
+        setStatus("Enter numeric search value");
+        return;
+      }
+      if (running) {
+        setStatus("Busy");
+        return;
+      }
+      await linearSearch(v);
+    });
+  }
 
-    const controller = { kill: false };
-    setTimeout(() => (controller.kill = true), stepMs);
+  if (binaryBtn) {
+    binaryBtn.addEventListener("click", async () => {
+      const v = Number(searchInput.value);
+      if (!Number.isFinite(v)) {
+        setStatus("Enter numeric search value");
+        return;
+      }
+      if (running) {
+        setStatus("Busy");
+        return;
+      }
+      await binarySearch(v);
+    });
+  }
 
+  if (snapshotBtn) {
+    snapshotBtn.addEventListener("click", () => {
+      const outer = canvas.cloneNode(true);
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
 
-    if (algo === "bubble") {
-      await bubbleSort(getOrder() === "asc");
-    } else if (algo === "selection") {
-      await selectionSort(getOrder() === "asc");
-    } else if (algo === "quick") {
-      await quickSortWrapper(getOrder() === "asc");
-    } else if (algo === "merge") {
-      await mergeSortWrapper(getOrder() === "asc");
-    }
-    running = false;
-    paused = true;
-    setStatus("Stepped (approx.)");
-  });
-
-  linearBtn.addEventListener("click", async () => {
-    const v = Number(searchInput.value);
-    if (!Number.isFinite(v)) {
-      setStatus("Enter numeric search value");
-      return;
-    }
-    if (running) {
-      setStatus("Busy");
-      return;
-    }
-    await linearSearch(v);
-  });
-
-  binaryBtn.addEventListener("click", async () => {
-    const v = Number(searchInput.value);
-    if (!Number.isFinite(v)) {
-      setStatus("Enter numeric search value");
-      return;
-    }
-    if (running) {
-      setStatus("Busy");
-      return;
-    }
-    await binarySearch(v);
-  });
-
-  snapshotBtn.addEventListener("click", () => {
-    const outer = canvas.cloneNode(true);
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
-
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>
-      <foreignObject width='100%' height='100%'>${new XMLSerializer().serializeToString(
-      outer
-    )}</foreignObject>
-    </svg>`;
-    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "visualizer.svg";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
-
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>
+        <foreignObject width='100%' height='100%'>${new XMLSerializer().serializeToString(
+        outer
+      )}</foreignObject>
+      </svg>`;
+      const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "visualizer.svg";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  }
 
   (function init() {
     arr = parseInput(arrayInput.value);
     original = arr.slice();
     render(arr);
-    sizeVal.textContent = sizeRange.value;
-    speedVal.textContent = speed + "ms";
+    if (sizeVal && sizeRange) sizeVal.textContent = sizeRange.value;
+    if (speedVal) speedVal.textContent = speed + "ms";
     setStatus("Ready");
     setCurrent("Idle");
   })();
@@ -625,5 +631,3 @@
   };
 
 })();
-
-
