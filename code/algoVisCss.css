@@ -446,7 +446,7 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
   .algos,
   .play-controls {
     flex-direction: column;
-    align-items: stretch;
+
   }
 
   .text-input {
