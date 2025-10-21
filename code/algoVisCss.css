@@ -64,7 +64,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+ 
 }
 
 .brand {
@@ -202,7 +202,7 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
 
 
 .controls {
-  display: flex;
+ 
   gap: 12px;
   align-items: center;
   margin-top: 16px;
@@ -373,15 +373,6 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
 }
 
 
-/* .footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 0;
-  color: var(--muted);
-  font-size: 13px;
-  border-top: 1px solid rgba(255, 255, 255, 0.02);
-} */
 @media (max-width: 980px) {
   .hero {
     grid-template-columns: 1fr;
@@ -416,6 +407,52 @@ background: linear-gradient(135deg, #3e4e8bd1, #4f658d6e);
 }
 #codeLang{
   border: 1px solid var(--glassBorder);
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-right {
+    order: 2;
+  }
+  .hero-left {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+ 
+  
+
+  .btn, .Ai-Home {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .search-block input {
+    width: 120px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .brand h1 {
+    font-size: 16px;
+  }
+
+  .btn-row,
+  .params,
+  .algos,
+  .play-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .text-input {
+    font-size: 14px;
+  }
+
 }
 
 
