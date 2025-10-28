@@ -12,7 +12,7 @@
         theme: {
           extend: {
             colors: {
-              navyDeep: "#14213d",
+              navyDeep: "#0d1120",
               navySoft: "#20213b",
               navyDark: "#0d1120",
               goldAccent: "#fca311",
@@ -142,7 +142,7 @@
         transform: translateY(0);
       }
 
-      /* Modal styles */
+    
       .modal {
         position: fixed;
         inset: 0;
@@ -214,7 +214,7 @@
         height: calc(100vh - 4rem);
       }
 
-      /* Button animations */
+      
       .btn-animate {
         transition: all 0.2s;
       }
@@ -223,7 +223,7 @@
         transform: scale(0.95);
       }
 
-      /* Split view layout */
+      
       .split-layout {
         display: grid;
         gap: 1rem;
@@ -235,10 +235,10 @@
         }
       }
 
-      /* Glowing effect on run */
+      
       @keyframes glowPulse {
         0%, 100% {
-          box-shadow: 0 0 5px rgba(216, 164, 10, 0.979);
+          box-shadow: 0 0 5px rgba(255, 227, 142, 0.979);
         }
         50% {
           box-shadow: 0 0 20px rgba(252, 163, 17, 0.8);
@@ -252,7 +252,7 @@
   </head>
 
   <body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white min-h-screen">
-    <!-- Navbar -->
+
     <header class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 backdrop-blur-md shadow-md">
       <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         <h1 class="text-3xl font-bold text-goldAccent tracking-widest">
@@ -284,7 +284,6 @@
         </div>
       </nav>
 
-      <!-- Mobile Menu -->
       <div id="mobileMenu" class="hidden md:hidden bg-navyDark border-t border-white/10 px-6 py-4">
         <ul class="flex flex-col gap-4 text-lg text-gray-300 font-medium">
           <li><a href="index.html" class="hover:text-goldAccent transition">Home</a></li>
@@ -296,7 +295,7 @@
       </div>
     </header>
 
-    <!-- Playground -->
+    
     <section class="max-w-7xl mx-auto mt-6 mb-16 px-4" id="playgroundSection">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl md:text-4xl font-bold text-goldAccent">
@@ -320,7 +319,6 @@
         </div>
       </div>
 
-      <!-- Editor Controls -->
       <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 mb-6">
         <div class="flex flex-wrap gap-3 items-center justify-between">
           <div class="flex flex-wrap gap-2">
@@ -369,9 +367,8 @@
         </div>
       </div>
 
-      <!-- Editors (responsive grid) -->
       <div id="editorsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 transition-all duration-300">
-        <!-- HTML Editor -->
+     
         <div
           id="htmlBox"
           class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
@@ -398,7 +395,6 @@
           <textarea id="htmlEditor"></textarea>
         </div>
 
-        <!-- CSS Editor -->
         <div
           id="cssBox"
           class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
@@ -425,7 +421,6 @@
           <textarea id="cssEditor"></textarea>
         </div>
 
-        <!-- JS Editor -->
         <div
           id="jsBox"
           class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
@@ -453,6 +448,7 @@
         </div>
       </div>
 
+  
       <div class="output-container">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-semibold text-gray-200 flex items-center gap-2">
@@ -479,7 +475,7 @@
       </div>
     </section>
 
-    <!-- Templates Modal -->
+  
     <div id="templatesModal" class="modal">
       <div class="modal-content">
         <div class="flex justify-between items-center mb-6">
@@ -523,7 +519,7 @@
       </div>
     </div>
 
-    <!-- Settings Modal -->
+   
     <div id="settingsModal" class="modal">
       <div class="modal-content">
         <div class="flex justify-between items-center mb-6">
@@ -546,6 +542,7 @@
               <option value="material">Material</option>
               <option value="solarized dark">Solarized Dark</option>
               <option value="solarized light">Solarized Light</option>
+          
             </select>
           </div>
 
@@ -595,11 +592,11 @@
     
     <footer class="bg-navyDark border-t border-white/10 py-8 mt-16">
       <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-gray-400">© 2025 DsaViz. Made with <span class="text-goldAccent">❤</span> for developers.</p>
+        <p class="text-gray-400"> © 2025 Ghulam Habib — Crafted with care. <span class="text-goldAccent">❤</span> for developers.</p>
       </div>
     </footer>
 
- 
+    <script src="editor.js"></script>
   </body>
 </html>
 
