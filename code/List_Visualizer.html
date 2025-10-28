@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Visualizer Pro - Interactive Educational Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --glass-bg: rgba(125, 99, 99, 0.05);
+            --glass-border: rgba(248, 86, 86, 0.1);
+            --theme-bg-start: #0f172a;
+            --theme-bg-end: #000000;
+            --text-color: rgba(255, 255, 255, 0.9);
+            --code-color: #473507;
+        }
+
+        .light-mode {
+            --glass-bg: rgba(255, 247, 247, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --theme-bg-start: #f9f1e8;
+            --theme-bg-end: #fbead6;
+            --text-color: rgba(0, 0, 0, 0.9);
+            --code-color: #f97316;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--theme-bg-start) 0%, var(--theme-bg-end) 50%, var(--theme-bg-start) 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            transition: all 0.5s;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .light-mode .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .glass-node {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 241, 214, 0.3);
+            box-shadow: 0 8px 24px rgba(255, 162, 0, 0.329);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-node:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgb(255, 166, 0);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .arrow-line {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.8) 0%, rgba(158, 68, 4, 0.8) 100%);
+            animation: flowRight 2s ease-in-out infinite;
+        }
+
+        @keyframes flowRight {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-bounce-custom {
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--code-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .light-mode .code-block {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        input {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-color);
+        }
+
+        button {
+            transition: all 0.3s ease;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .highlight-ring {
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+        }
+    </style>
+</head>
+<body>
+ 
+    <header class="glass-panel sticky top-0 z-50 backdrop-blur-xl">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gradient">Linked List Visualizer</h1>
+                    <p class="text-sm opacity-70 mt-1">Interactive data structure learning tool</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="themeToggle" class="glass-panel p-3 rounded-xl hover:scale-110 transition-all duration-300">
+                        <svg id="sunIcon" class="w-5 h-5 text-yellow-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <button id="resetBtn" class="glass-panel px-4 py-2 rounded-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Panel - Controls -->
+            <div class="space-y-4">
+                <!-- List Type Selection -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <label class="block text-sm font-semibold mb-3">List Type</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button class="list-type-btn active bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 px-3 rounded-lg text-sm font-medium" data-type="singly">Singly</button>
+                        <button class="list-type-btn glass-panel py-2 px-3 rounded-lg text-sm font-medium" data-type="doubly">Doubly</button>
+                        <button class="list-type-btn glass-panel py-2 px-3 rounded-lg text-sm font-medium" data-type="circular">Circular</button>
+                    </div>
+                </div>
+
+              
+                <div class="glass-panel p-6 rounded-2xl space-y-3">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Value</label>
+                        <input id="valueInput" type="number" placeholder="Enter value" class="w-full px-4 py-3 rounded-lg outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Position (optional)</label>
+                        <input id="positionInput" type="number" placeholder="Enter position" class="w-full px-4 py-3 rounded-lg outline-none">
+                    </div>
+                </div>
+
+              
+                <div class="glass-panel p-6 rounded-2xl space-y-3">
+                    <h3 class="text-sm font-semibold">Insert Operations</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="insertHead">+ Head</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="insertTail">+ Tail</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium col-span-2" data-op="insertAt">+ At Position</button>
+                    </div>
+
+                    <h3 class="text-sm font-semibold mt-4">Delete Operations</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="deleteHead">− Head</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="deleteTail">− Tail</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium col-span-2" data-op="deleteValue">− By Value</button>
+                    </div>
+
+                    <h3 class="text-sm font-semibold mt-4">Advanced Operations</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="search">Search</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="reverse">Reverse</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="sort">Sort</button>
+                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="split">Split</button>
+                    </div>
+                </div>
+
+             
+                <div class="glass-panel p-4 rounded-xl">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-sm font-semibold"></span> Animation Speed</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button class="speed-btn glass-panel py-2 px-3 rounded-lg text-xs font-medium" data-speed="1500">Slow</button>
+                        <button class="speed-btn active bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 px-3 rounded-lg text-xs font-medium" data-speed="800">Normal</button>
+                        <button class="speed-btn glass-panel py-2 px-3 rounded-lg text-xs font-medium" data-speed="400">Fast</button>
+                    </div>
+                </div>
+            </div>
+
+          
+            <div class="lg:col-span-2 space-y-4">
+               
+                <div class="glass-panel p-4 rounded-xl">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span id="statusMessage" class="text-sm font-medium">List initialized</span>
+                    </div>
+                </div>
+
+                <!-- List Visualization -->
+                <div class="glass-panel p-8 rounded-2xl min-h-[300px]">
+                    <div id="listContainer" class="flex flex-wrap items-center gap-4"></div>
+                </div>
+
+                <!-- Code Display -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div id="codeDisplay">
+                        <p class="opacity-60 text-center">Select an operation to view code and complexity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
