@@ -1,5 +1,6 @@
-# DS & Algo Visualizer
 
+# DS & Algo Visualizer
+## before commit please share your idea  on whatapp or email : ghulamhabib.x@gmail.com
 Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers visualize and understand **Data Structures and Algorithms** with ease. This project provides a clean and intuitive interface, making learning algorithms both fun and efficient.
 
 ---
