@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AlgoViz — Data Structure Visualizer</title>
   <script src="footer.js" defer></script>
 
@@ -29,75 +29,233 @@
   </script>
 
   <style>
+    
     * {
       transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* ===== LIGHT MODE STYLES ===== */
+    body.light {
+      background: linear-gradient(to bottom, #fafbfc, #f0f2f5) !important;
+      color: #1a1a2e !important;
+    }
+
+    body.light header {
+      background: rgba(255, 255, 255, 0.98) !important;
+      color: #1a1a2e !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04) !important;
+    }
+
+   
+    body.light h1.logo {
+      background: linear-gradient(135deg, #ff6b35, #fca311);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    body.dark h1.logo {
+      color: #ffffff !important;
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: unset !important;
+    }
+
+    /* Nav links container (light mode) */
+   
+    body.light .nav-content {
+      background: rgba(255, 255, 255, 0.98) !important;
+    }
+
+    /* Nav link buttons (light mode) */
+    body.light #nav-links a,
+    body.light .nav-links a {
+      background: #fca311;
+      color: #333333 !important;
+      border-color: transparent !important;
+    }
+
+    body.light #nav-links a:hover,
+    body.light .nav-links a:hover {
+      background: linear-gradient(135deg, #fca311, #ff6b35) !important;
+      color: #fff !important;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(252, 163, 17, 0.35);
+    }
+
+    /* Hero overlay background - lighter in light mode */
+    body.light .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)) !important;
+    }
+
+    /* Hero content and text color in light mode */
+    body.light .hero-title,
+    body.light .hero-subtitle,
+    body.light .hero-content,
+    body.light .hero-section .hero-content * {
+      color: #000000 !important;
+      text-shadow: none !important;
+    }
+
+    /* Hero title gradient in light mode */
+    body.light .hero-title {
+      background: linear-gradient(135deg, #ff6b35, #fca311) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      color: transparent !important;
+    }
+
+    /* Main area in light mode */
+    body.light main {
+      background: linear-gradient(to bottom, #ffffff, #f8f9fa) !important;
+      color: #000000 !important;
+    }
+
+    /* Glass panels in light mode */
+    body.light .bg-glassWhite,
+    body.light .backdrop-blur-md {
+      background: rgba(255, 255, 255, 0.85) !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06) !important;
+      border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    }
+
+    /* Cards */
+    body.light .feature-card {
+      background: #ffffff !important;
+      color: #000000 !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06) !important;
+      border: 1px solid #f1f3f5 !important;
+    }
+
+    body.light .feature-card::before {
+      background: linear-gradient(90deg, #fca311, #ff6b35) !important;
+    }
+
+    /* Icons & accents */
+    body.light .text-goldAccent,
+    body.light .feature-icon,
+    body.light .hero-title {
+      color: #fca311 !important;
+    }
+
+    /* CTA button in light mode */
+    body.light .cta-button {
+      background: linear-gradient(135deg, #fca311, #ff6b35) !important;
+      color: #fff !important;
+      box-shadow: 0 12px 35px rgba(252, 163, 17, 0.18) !important;
+    }
+
+    /* Footer in light mode */
+    body.light footer {
+      background: linear-gradient(to top, #ffffff, #f2f2f2) !important;
+      color: #444444 !important;
+      border-top: 1px solid #f1f1f1 !important;
+    }
+
+    /* Overlay for mobile menu */
+    body.light .menu-overlay {
+      background: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Suppress dark mode utility classes in light mode */
+    body.light .dark\:bg-navy,
+    body.light .dark\:text-white,
+    body.light .dark\:border-white\/10 {
+      background: unset !important;
+      color: unset !important;
+      border: unset !important;
+    }
+
+    /* Hero overlay - position & z-index */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      transition: background 0.4s ease;
+    }
+
+   
+    video {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.9) contrast(1.1);
+      transition: filter 0.4s ease;
     }
   </style>
 </head>
 
-<body class="bg-white w-full text-black transition-colors duration-500 ease-in-out" id="page">
-  <!-- ✅ Responsive HEADER -->
-<!-- ✅ Responsive HEADER with Blur Overlay -->
-<header
-  class="sticky top-0 w-full z-50 bg-white dark:bg-navy border-b border-gray-200 dark:border-white/10 shadow-md backdrop-blur-md">
-  <nav class="px-4 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 relative">
+<body class="w-full transition-colors duration-500 ease-in-out" id="page">
+  <!-- Responsive HEADER -->
+  <header
+    class="sticky top-0 w-full z-50 bg-white dark:bg-navy border-b border-gray-200 dark:border-white/10 shadow-md backdrop-blur-md">
+    <nav class="px-4 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 relative">
 
-    <!-- Logo + Mobile Menu Button -->
-    <div class="flex justify-between items-center w-full md:w-auto">
-      <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-navy dark:text-white">
-        DsaViz
-      </h1>
+      <!-- Logo + Mobile Menu Button -->
+      <div class="flex justify-between items-center w-full md:w-auto">
+        <h1 class="logo text-3xl md:text-4xl font-extrabold tracking-wide dark:text-orange " >
+          DsaViz
+        </h1>
 
-      <!-- Mobile Menu Button -->
-      <button id="menu-toggle"
-        class="md:hidden text-2xl text-gray-700 dark:text-goldAccent focus:outline-none hover:scale-110 transition">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
+    
+        
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle"
+          class="md:hidden text-2xl text-gray-700 dark:text-goldAccent focus:outline-none hover:scale-110 transition">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
 
-    <!-- Dim Background Overlay -->
-    <div id="menu-overlay"
-      class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden transition-opacity duration-500"></div>
+      <!-- Dim Background Overlay -->
+      <div id="menu-overlay"
+        class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden transition-opacity duration-500"></div>
 
-    <!-- Navigation Links -->
-    <ul id="nav-links"
-      class="hidden flex-col md:flex md:flex-row mt-4 md:mt-0 space-y-3 md:space-y-0 md:gap-6 text-lg font-medium text-gray-600 dark:text-gray-300 text-center md:text-left 
-      absolute md:static top-full left-0 w-full md:w-auto bg-white dark:bg-navy md:bg-transparent border-t border-gray-200 dark:border-white/10 md:border-none p-4 md:p-0 shadow-md md:shadow-none
-      transition-all duration-500 ease-in-out max-h-0 md:max-h-none overflow-hidden z-50">
-      <li>
-        <a href="index.html"
-          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Home</a>
-      </li>
-      <li>
-        <a href="contact.html"
-          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Contact</a>
-      </li>
-      <li>
-        <a href="help.html"
-          class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Help</a>
-      </li>
-      <li>
-        <i id="theme-toggle"
-          class="fa-solid fa-moon text-2xl cursor-pointer text-gray-800 dark:text-goldAccent hover:scale-110 transition-transform"></i>
-      </li>
-    </ul>
-  </nav>
-</header>
+      <!-- Navigation Links -->
+      <ul id="nav-links"
+        class="flex-col md:flex md:flex-row md:mt-0 space-y-3 md:space-y-0 md:gap-5 text-lg font-medium text-gray-600 dark:text-gray-300 text-center md:text-left absolute md:static top-full left-0 w-full md:w-auto bg-white dark:bg-navy md:bg-transparent border-t border-gray-200 dark:border-white/10 md:border-none p-1 md:p-0 shadow-md md:shadow-none transition-all duration-500 ease-in-out md:max-h-none overflow-hidden z-50 max-h-96">
+        <li>
+          <a href="index.html"
+            class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Home</a>
+        </li>
+        <li>
+          <a href="contact.html"
+            class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Contact</a>
+        </li>
+        <li>
+          <a href="help.html"
+            class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300">Help</a>
+        </li>
 
+        <li>
+          <a id="theme-toggle"
+            class="block py-2 px-5 rounded-full bg-gray-100 hover:bg-goldAccent hover:text-black dark:bg-white/10 dark:hover:bg-goldAccent dark:hover:text-black transition duration-300 cursor-pointer">Dark
+            Mode</a>
+        </li>
 
+      </ul>
+    </nav>
+  </header>
 
+  <!-- HERO Section with Video -->
   <section class="relative w-full overflow-hidden h-96 md:h-[500px]">
+    <!-- Video Background -->
     <video src="./video/algi.mp4" autoplay muted loop playsinline
       class="w-full h-full object-cover brightness-90 contrast-110"></video>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90"></div>
 
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6">
-      <h1 class="text-4xl md:text-6xl font-extrabold text-goldAccent drop-shadow-lg">
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90 hero-overlay"></div>
+
+    <!-- Hero Text Content -->
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6 hero-content select-none">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-goldAccent drop-shadow-lg hero-title">
         Welcome to AlgoViz
       </h1>
-      <p class="mt-3 text-gray-300 text-lg md:text-xl max-w-2xl">
-        Visualize. Learn. Master data structures and algorithms with clarity
-        and precision.
+      <p class="mt-3 text-gray-300 text-lg md:text-xl max-w-2xl hero-subtitle">
+        Visualize. Learn. Master data structures and algorithms with clarity and precision.
       </p>
     </div>
   </section>
@@ -107,58 +265,53 @@
       <h2 class="text-4xl md:text-5xl font-extrabold text-goldAccent mb-6 tracking-wide">
         Data Structure & Algorithm Visualizer
       </h2>
-      <p class="text-gray-300 text-lg md:text-xl mb-10 leading-relaxed">
+      <p class="text-black-300 text-lg md:text-xl mb-10 leading-relaxed">
         Experience the beauty of algorithms brought to life!
-        <span class="text-goldAccent font-semibold">DSA Viz</span> helps
-        learners and developers visualize complex logic through stunning,
+        <span class="text-goldAccent font-semibold">DSA Viz</span> helps learners and developers visualize complex
+        logic through stunning,
         step-by-step animations — making learning intuitive and engaging.
       </p>
 
-
       <div class="grid md:grid-cols-3 gap-8 text-left">
         <div
-          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2">
-          <i class="fa-solid fa-cubes text-4xl text-goldAccent mb-4"></i>
+          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2 feature-card">
+          <i class="fa-solid fa-cubes text-4xl text-goldAccent mb-4 feature-icon"></i>
           <h3 class="text-2xl font-semibold mb-2">
             Visual Data Structures
           </h3>
-          <p class="text-gray-300">
-            Explore linked lists, stacks, queues, trees, and graphs with
-            real-time animations.
+          <p class="text-black-300">
+            Explore linked lists, stacks, queues, trees, and graphs with real-time animations.
           </p>
         </div>
 
         <div
-          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2">
-          <i class="fa-solid fa-gears text-4xl text-goldAccent mb-4"></i>
+          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2 feature-card">
+          <i class="fa-solid fa-gears text-4xl text-goldAccent mb-4 feature-icon"></i>
           <h3 class="text-2xl font-semibold mb-2">Algorithm Simulation</h3>
-          <p class="text-gray-300">
-            Watch sorting, searching, and traversal algorithms in motion with
-            clear step breakdowns.
+          <p class="text-black-300">
+            Watch sorting, searching, and traversal algorithms in motion with clear step breakdowns.
           </p>
         </div>
 
         <div
-          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2">
-          <i class="fa-solid fa-code text-4xl text-goldAccent mb-4"></i>
+          class="bg-glassWhite backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-goldAccent/30 border border-white/10 transition hover:-translate-y-2 feature-card">
+          <i class="fa-solid fa-code text-4xl text-goldAccent mb-4 feature-icon"></i>
           <h3 class="text-2xl font-semibold mb-2">Interactive Learning</h3>
-          <p class="text-gray-300">
-            Experiment with inputs and visualize how algorithms evolve in
-            real-time.
+          <p class="text-black-300">
+            Experiment with inputs and visualize how algorithms evolve in real-time.
           </p>
         </div>
       </div>
 
-
       <div class="mt-12">
         <a href="test.html"
-          class="inline-block py-4 w-full px-10 bg-goldAccent text-black font-bold text-xl rounded-full hover:bg-white hover:text-navy transition duration-300 shadow-lg">
-          Explore Now
+          class="inline-block py-4 w-full px-10 bg-goldAccent text-black font-bold text-xl rounded-full hover:bg-white hover:text-navy transition duration-300 shadow-lg cta-button">
+          Explore
+          Now
         </a>
       </div>
     </div>
   </main>
-
 
   <footer
     class="bg-gradient-to-t from-black via-navySoft to-navy text-gray-400 text-center py-6 text-sm border-t border-white/10">
@@ -167,42 +320,47 @@
     © 2025 DsaViz — Crafted for clarity and curiosity.
   </footer>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-   
-    const toggle = document.getElementById("theme-toggle");
-    const body = document.body;
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.getElementById("theme-toggle");
+      const body = document.body;
 
-    toggle.addEventListener("click", () => {
-      body.classList.toggle("dark");
-      toggle.classList.toggle("fa-moon");
-      toggle.classList.toggle("fa-sun");
-    });
+      // Mobile menu components
+      const menuToggle = document.getElementById("menu-toggle");
+      const navLinks = document.getElementById("nav-links");
+      const overlay = document.getElementById("menu-overlay");
+      const menuIcon = menuToggle.querySelector("i");
 
-   //for bluring
-    const menuToggle = document.getElementById("menu-toggle");
-    const navLinks = document.getElementById("nav-links");
-    const overlay = document.getElementById("menu-overlay");
-    const menuIcon = menuToggle.querySelector("i");
+      if (menuToggle && navLinks && overlay) {
+        menuToggle.addEventListener("click", () => {
+          const isHidden = navLinks.classList.contains("hidden");
+          if (isHidden) {
+            navLinks.classList.remove("hidden");
+            overlay.classList.remove("hidden");
+            menuIcon.classList.remove("fa-bars");
+            menuIcon.classList.add("fa-xmark");
 
-    if (menuToggle && navLinks && overlay) {
-      menuToggle.addEventListener("click", () => {
-        const isHidden = navLinks.classList.contains("hidden");
+            setTimeout(() => {
+              navLinks.classList.remove("max-h-0");
+              navLinks.classList.add("max-h-96");
+              overlay.classList.add("opacity-100");
+            }, 10);
+          } else {
+            navLinks.classList.remove("max-h-96");
+            navLinks.classList.add("max-h-0");
+            overlay.classList.remove("opacity-100");
+            menuIcon.classList.add("fa-bars");
+            menuIcon.classList.remove("fa-xmark");
 
-        if (isHidden) {
-          // Open menu
-          navLinks.classList.remove("hidden");
-          overlay.classList.remove("hidden");
-          menuIcon.classList.remove("fa-bars");
-          menuIcon.classList.add("fa-xmark");
+            setTimeout(() => {
+              navLinks.classList.add("hidden");
+              overlay.classList.add("hidden");
+            }, 500);
+          }
+        });
 
-          setTimeout(() => {
-            navLinks.classList.remove("max-h-0");
-            navLinks.classList.add("max-h-96");
-            overlay.classList.add("opacity-100");
-          }, 10);
-        } else {
-          // Close menu
+        overlay.addEventListener("click", () => {
           navLinks.classList.remove("max-h-96");
           navLinks.classList.add("max-h-0");
           overlay.classList.remove("opacity-100");
@@ -213,29 +371,69 @@
             navLinks.classList.add("hidden");
             overlay.classList.add("hidden");
           }, 500);
+        });
+      }
+    });
+  </script>
+
+  <script>
+    (function () {
+      const THEME_KEY = 'dsaviz-theme';
+      const toggle = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      if (!toggle) return;
+
+    
+      function updateToggleUI(isLight) {
+        toggle.innerHTML = isLight
+          ? '<i class="fa-solid fa-sun"></i> Light Mode'
+          : '<i class="fa-solid fa-moon"></i> Dark Mode';
+        toggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+      }
+
+      // Apply light mode
+      function applyLight() {
+        body.classList.add('light');
+        body.classList.remove('dark');
+        localStorage.setItem(THEME_KEY, 'light');
+        updateToggleUI(true);
+      }
+
+      // Apply dark mode
+      function applyDark() {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        localStorage.setItem(THEME_KEY, 'dark');
+        updateToggleUI(false);
+      }
+
+     
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'dark') {
+        applyDark();
+      } else {
+        applyLight(); 
+      }
+
+     
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent navigation
+        if (body.classList.contains('light')) {
+          applyDark();
+        } else {
+          applyLight();
         }
       });
 
-      // Close menu 
-      overlay.addEventListener("click", () => {
-        navLinks.classList.remove("max-h-96");
-        navLinks.classList.add("max-h-0");
-        overlay.classList.remove("opacity-100");
-        menuIcon.classList.add("fa-bars");
-        menuIcon.classList.remove("fa-xmark");
-
-        setTimeout(() => {
-          navLinks.classList.add("hidden");
-          overlay.classList.add("hidden");
-        }, 500);
+     
+      const obs = new MutationObserver(() => {
+        const isLight = body.classList.contains('light');
+        updateToggleUI(isLight);
       });
-    }
-  });
-</script>
-
-
+      obs.observe(body, { attributes: true, attributeFilter: ['class'] });
+    })();
+  </script>
 </body>
 
 </html>
-<!-- npx tailwindcss -i ./code/src/input.css -o ./code/src/output.css --watch
- -->
