@@ -1,7 +1,19 @@
 {
   "name": "ds_and_algo-visualizer",
   "version": "1.0.0",
+  "description": "Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers visualize and understand **Data Structures and Algorithms** with ease. This project provides a clean and intuitive interface, making learning algorithms both fun and efficient.",
+  "homepage": "https://github.com/habibx792/DS_And_Algo-Visualizer#readme",
+  "bugs": {
+    "url": "https://github.com/habibx792/DS_And_Algo-Visualizer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/habibx792/DS_And_Algo-Visualizer.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "postcss.config.js",
   "scripts": {
     "dev": "nodemon ./code/server.js",
     "dev:css": "tailwindcss -i ./code/src/input.css -o ./code/src/output.css --watch",
