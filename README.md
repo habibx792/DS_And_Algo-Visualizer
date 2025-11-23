@@ -1,7 +1,7 @@
 ## before commit please share your idea  on whatapp or email : ghulamhabib.x@gmail.com
 
+## About
 
-## About 
 # DS & Algo Visualizer
 
 Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers visualize and understand **Data Structures and Algorithms** with ease. This project provides a clean and intuitive interface, making learning algorithms both fun and efficient.
@@ -39,7 +39,7 @@ git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 
 ## ⚠️ Failures
 
-- Deployment on **Azure** currently failing.
+- dirctory problems which cause failure in deployment
 
 ---
 
@@ -65,4 +65,3 @@ git clone https://github.com/your-username/DS_And_Algo-Visualizer.git
 - Thanks for joingin us
 
 ---
-
