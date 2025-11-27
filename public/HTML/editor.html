@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DsaViz — Advanced Code Playground</title>
+    <title>DsaViz — Multi-Language Code Editor</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +21,6 @@
         },
       };
     </script>
-    <script src="../JS/editor.js" defer></script>
 
     <!-- CodeMirror -->
     <link
@@ -48,6 +47,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/php/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/markdown/markdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/edit/closebrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/edit/matchbrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/selection/active-line.min.js"></script>
@@ -62,14 +66,6 @@
 
       body {
         overflow-x: hidden;
-      }
-
-      iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-        border-radius: 0.75rem;
-        background: white;
       }
 
       .editor-box {
@@ -87,7 +83,7 @@
       }
 
       .CodeMirror {
-        height: 300px;
+        height: 400px;
         border-radius: 0 0 0.75rem 0.75rem;
         font-size: 14px;
         line-height: 1.5;
@@ -111,19 +107,6 @@
         transform: rotate(-90deg);
       }
 
-      /* Resizable panels */
-      .resizer {
-        background: rgba(248, 177, 71, 0.831);
-        cursor: col-resize;
-        width: 4px;
-        transition: background 0.2s;
-      }
-
-      .resizer:hover {
-        background: #fca311;
-      }
-
-
       .toast {
         position: fixed;
         bottom: 2rem;
@@ -142,7 +125,6 @@
       .toast.show {
         transform: translateY(0);
       }
-
 
       .modal {
         position: fixed;
@@ -203,19 +185,6 @@
         background: rgba(252, 163, 17, 0.8);
       }
 
-      /* Fullscreen mode */
-      .fullscreen-mode {
-        position: fixed;
-        inset: 0;
-        z-index: 998;
-        background: #070345;
-      }
-
-      .fullscreen-mode .output-container {
-        height: calc(100vh - 4rem);
-      }
-
-
       .btn-animate {
         transition: all 0.2s;
       }
@@ -224,21 +193,9 @@
         transform: scale(0.95);
       }
 
-
-      .split-layout {
-        display: grid;
-        gap: 1rem;
-      }
-
-      @media (min-width: 768px) {
-        .split-horizontal {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-
       @keyframes glowPulse {
-        0%, 100% {
+        0%,
+        100% {
           box-shadow: 0 0 5px rgba(255, 227, 142, 0.979);
         }
         50% {
@@ -249,23 +206,62 @@
       .glow-animation {
         animation: glowPulse 2s infinite;
       }
+
+      .file-item {
+        transition: all 0.2s;
+      }
+
+      .file-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
     </style>
   </head>
 
-  <body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white min-h-screen">
-
-    <header class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 backdrop-blur-md shadow-md">
-      <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+  <body
+    class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white min-h-screen"
+  >
+    <header
+      class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 backdrop-blur-md shadow-md"
+    >
+      <nav
+        class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4"
+      >
         <h1 class="text-3xl font-bold text-goldAccent tracking-widest">
           DsaViz
         </h1>
 
         <ul class="hidden md:flex gap-8 text-lg text-gray-500 font-medium">
-          <li><a href="../HTML/mainPage.html" class="hover:text-goldAccent transition">Home</a></li>
-          <li><a href="#" class="hover:text-goldAccent transition">Data Structures</a></li>
-          <li><a href="../HTML/algoViz.html" class="hover:text-goldAccent transition">Algorithms</a></li>
-          <li><a href="../HTML/exercises.html" class="hover:text-goldAccent transition">Exercises</a></li>
-          <li><a href="../HTML/editor.html" class="text-goldAccent font-semibold">Editor</a></li>
+          <li>
+            <a
+              href="../HTML/mainPage.html"
+              class="hover:text-goldAccent transition"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-goldAccent transition"
+              >Data Structures</a
+            >
+          </li>
+          <li>
+            <a
+              href="../HTML/algoViz.html"
+              class="hover:text-goldAccent transition"
+              >Algorithms</a
+            >
+          </li>
+          <li>
+            <a
+              href="../HTML/exercises.html"
+              class="hover:text-goldAccent transition"
+              >Exercises</a
+            >
+          </li>
+          <li>
+            <a href="../HTML/editor.html" class="text-goldAccent font-semibold"
+              >Editor</a
+            >
+          </li>
         </ul>
 
         <div class="flex gap-3 items-center">
@@ -285,30 +281,50 @@
         </div>
       </nav>
 
-      <div id="mobileMenu" class="hidden md:hidden bg-navyDark border-t border-white/10 px-6 py-4">
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden bg-navyDark border-t border-white/10 px-6 py-4"
+      >
         <ul class="flex flex-col gap-4 text-lg text-gray-300 font-medium">
-          <li><a href="index.html" class="hover:text-goldAccent transition">Home</a></li>
-          <li><a href="#" class="hover:text-goldAccent transition">Data Structures</a></li>
-          <li><a href="algoViz.html" class="hover:text-goldAccent transition">Algorithms</a></li>
-          <li><a href="#" class="hover:text-goldAccent transition">Exercises</a></li>
-          <li><a href="editor.html" class="text-goldAccent font-semibold">Editor</a></li>
+          <li>
+            <a href="index.html" class="hover:text-goldAccent transition"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-goldAccent transition"
+              >Data Structures</a
+            >
+          </li>
+          <li>
+            <a href="algoViz.html" class="hover:text-goldAccent transition"
+              >Algorithms</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-goldAccent transition">Exercises</a>
+          </li>
+          <li>
+            <a href="editor.html" class="text-goldAccent font-semibold"
+              >Editor</a
+            >
+          </li>
         </ul>
       </div>
     </header>
 
-
-    <section class="max-w-7xl mx-auto mt-6 mb-16 px-4" id="playgroundSection">
+    <section class="max-w-7xl mx-auto mt-6 mb-16 px-4" id="editorSection">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl md:text-4xl font-bold text-goldAccent">
-          Advanced Code Playground
+          Multi-Language Code Editor
         </h2>
         <div class="flex gap-2">
           <button
-            onclick="openTemplatesModal()"
+            onclick="openFilesModal()"
             class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg font-semibold transition btn-animate text-sm md:text-base"
-            title="Code Templates"
+            title="My Files"
           >
-            <i class="fa-solid fa-code mr-1"></i> Templates
+            <i class="fa-solid fa-folder mr-1"></i> My Files
           </button>
           <button
             onclick="openSettingsModal()"
@@ -320,13 +336,15 @@
         </div>
       </div>
 
-      <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 mb-6">
+      <div
+        class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 mb-6"
+      >
         <div class="flex flex-wrap gap-3 items-center justify-between">
           <div class="flex flex-wrap gap-2">
             <button
               id="runBtn"
               class="bg-goldAccent text-navyDark px-6 py-2 rounded-lg font-semibold hover:bg-white transition btn-animate"
-              onclick="updatePreview()"
+              onclick="runCode()"
             >
               <i class="fa-solid fa-play mr-2"></i> Run
             </button>
@@ -350,189 +368,139 @@
             </button>
           </div>
           <div class="flex gap-2">
-            <button
-              onclick="toggleLayout()"
-              class="bg-purple-900/80 hover:bg-purple-900 text-white px-4 py-2 rounded-lg font-semibold transition btn-animate"
-              title="Toggle Layout"
+            <select
+              id="languageSelect"
+              onchange="changeLanguage()"
+              class="bg-white/10 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-goldAccent"
             >
-              <i class="fa-solid fa-table-columns"></i>
-            </button>
-            <button
-              onclick="toggleFullscreen()"
-              class="bg-indigo-700/80 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-semibold transition btn-animate"
-              title="Fullscreen Preview"
-            >
-              <i class="fa-solid fa-expand"></i>
-            </button>
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="c">C</option>
+              <option value="php">PHP</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="markdown">Markdown</option>
+            </select>
           </div>
         </div>
       </div>
 
-      <div id="editorsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 transition-all duration-300">
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <label class="text-gray-300 font-medium">File Name:</label>
+          <input
+            type="text"
+            id="fileNameInput"
+            placeholder="Enter file name"
+            class="bg-white/10 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-goldAccent w-64"
+          />
+        </div>
+      </div>
 
+      <div class="editor-container">
         <div
-          id="htmlBox"
+          id="codeBox"
           class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
         >
           <div
             class="flex justify-between items-center bg-black px-4 py-3 toggle-btn"
-            onclick="toggleEditor('htmlBox')"
+            onclick="toggleEditor('codeBox')"
           >
             <div class="flex items-center gap-2">
-              <i class="fa-brands fa-html5 text-goldAccent text-xl"></i>
-              <span class="font-semibold text-goldAccent">HTML</span>
+              <i class="fa-solid fa-code text-goldAccent text-xl"></i>
+              <span id="languageLabel" class="font-semibold text-goldAccent"
+                >JavaScript</span
+              >
             </div>
             <div class="flex items-center gap-3">
               <button
-                onclick="copyCode('html', event)"
+                onclick="copyCode(event)"
                 class="text-goldAccent hover:text-white transition"
-                title="Copy HTML"
+                title="Copy Code"
               >
                 <i class="fa-solid fa-copy"></i>
               </button>
               <i class="fa-solid fa-chevron-down text-goldAccent"></i>
             </div>
           </div>
-          <textarea id="htmlEditor"></textarea>
-        </div>
-
-        <div
-          id="cssBox"
-          class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
-        >
-          <div
-            class="flex justify-between items-center bg-black  px-4 py-3 toggle-btn"
-            onclick="toggleEditor('cssBox')"
-          >
-            <div class="flex items-center gap-2">
-              <i class="fa-brands fa-css3-alt text-goldAccent text-xl"></i>
-              <span class="font-semibold text-goldAccent">CSS</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <button
-                onclick="copyCode('css', event)"
-                class="text-goldAccent hover:text-white transition"
-                title="Copy CSS"
-              >
-                <i class="fa-solid fa-copy"></i>
-              </button>
-              <i class="fa-solid fa-chevron-down text-goldAccent"></i>
-            </div>
-          </div>
-          <textarea id="cssEditor"></textarea>
-        </div>
-
-        <div
-          id="jsBox"
-          class="editor-box bg-white/10 border border-white/10 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md"
-        >
-          <div
-            class="flex justify-between items-center bg-black  px-4 py-3 toggle-btn"
-            onclick="toggleEditor('jsBox')"
-          >
-            <div class="flex items-center gap-2">
-              <i class="fa-brands fa-js text-goldAccent text-xl"></i>
-              <span class="font-semibold text-goldAccent">JavaScript</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <button
-                onclick="copyCode('js', event)"
-                class="text-goldAccent hover:text-white transition"
-                title="Copy JS"
-              >
-                <i class="fa-solid fa-copy"></i>
-              </button>
-              <i class="fa-solid fa-chevron-down text-goldAccent"></i>
-            </div>
-          </div>
-          <textarea id="jsEditor"></textarea>
+          <textarea id="codeEditor"></textarea>
         </div>
       </div>
 
-
-      <div class="output-container">
+      <div class="output-container mt-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold text-gray-200 flex items-center gap-2">
-            <i class="fa-solid fa-display text-goldAccent"></i> Live Preview
+          <h3
+            class="text-xl font-semibold text-gray-200 flex items-center gap-2"
+          >
+            <i class="fa-solid fa-terminal text-goldAccent"></i> Output
           </h3>
           <div class="flex gap-2">
-            <label class="flex items-center gap-2 text-sm text-gray-300">
-              <input type="checkbox" id="autoRunToggle" checked class="w-4 h-4" />
-              Auto-run
-            </label>
             <button
-              onclick="refreshPreview()"
+              onclick="clearOutput()"
               class="text-goldAccent hover:text-white transition"
-              title="Refresh Preview"
+              title="Clear Output"
             >
-              <i class="fa-solid fa-rotate-right"></i>
+              <i class="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
 
-        <div class="bg-white/10 border border-white/10 rounded-2xl p-4 shadow-lg backdrop-blur-md h-[500px]">
-          <iframe id="outputFrame"></iframe>
+        <div
+          class="bg-white/10 border border-white/10 rounded-2xl p-4 shadow-lg backdrop-blur-md h-64 overflow-auto"
+        >
+          <pre id="outputArea" class="text-gray-200 whitespace-pre-wrap"></pre>
         </div>
       </div>
     </section>
 
-
-    <div id="templatesModal" class="modal">
+    <!-- Files Modal -->
+    <div id="filesModal" class="modal">
       <div class="modal-content">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-bold text-goldAccent">Code Templates</h3>
-          <button onclick="closeTemplatesModal()" class="text-goldAccent hover:text-white text-2xl">
+          <h3 class="text-2xl font-bold text-goldAccent">My Files</h3>
+          <button
+            onclick="closeFilesModal()"
+            class="text-goldAccent hover:text-white text-2xl"
+          >
             <i class="fa-solid fa-times"></i>
           </button>
         </div>
 
-        <div class="grid grid-cols-1 gap-4">
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('animated-button')">
-            <h4 class="font-semibold text-goldAccent mb-2">Animated Button</h4>
-            <p class="text-gray-400 text-sm">Interactive button with hover effects</p>
-          </div>
+        <div id="filesList" class="space-y-3 max-h-96 overflow-y-auto">
+          <!-- Files will be dynamically added here -->
+        </div>
 
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('card-layout')">
-            <h4 class="font-semibold text-goldAccent mb-2">Card Layout</h4>
-            <p class="text-gray-400 text-sm">Responsive card grid with CSS Grid</p>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('navbar')">
-            <h4 class="font-semibold text-goldAccent mb-2">Navigation Bar</h4>
-            <p class="text-gray-400 text-sm">Modern responsive navbar</p>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('form')">
-            <h4 class="font-semibold text-goldAccent mb-2">Contact Form</h4>
-            <p class="text-gray-400 text-sm">Styled form with validation</p>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('todo')">
-            <h4 class="font-semibold text-goldAccent mb-2">Todo App</h4>
-            <p class="text-gray-400 text-sm">Simple todo list with localStorage</p>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition cursor-pointer" onclick="loadTemplate('calculator')">
-            <h4 class="font-semibold text-goldAccent mb-2">Calculator</h4>
-            <p class="text-gray-400 text-sm">Basic calculator with operations</p>
-          </div>
+        <div class="mt-6 pt-4 border-t border-white/10">
+          <button
+            onclick="createNewFile()"
+            class="w-full bg-goldAccent hover:bg-white text-navyDark px-4 py-2 rounded-lg font-semibold transition btn-animate"
+          >
+            <i class="fa-solid fa-plus mr-2"></i> Create New File
+          </button>
         </div>
       </div>
     </div>
 
-
+    <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
       <div class="modal-content">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-2xl font-bold text-goldAccent">Editor Settings</h3>
-          <button onclick="closeSettingsModal()" class="text-goldAccent hover:text-white text-2xl">
+          <button
+            onclick="closeSettingsModal()"
+            class="text-goldAccent hover:text-white text-2xl"
+          >
             <i class="fa-solid fa-times"></i>
           </button>
         </div>
 
         <div class="space-y-6">
           <div>
-            <label class="block text-gray-300 mb-2 font-medium">Editor Theme</label>
+            <label class="block text-gray-300 mb-2 font-medium"
+              >Editor Theme</label
+            >
             <select
               id="themeSelect"
               onchange="changeTheme()"
@@ -542,13 +510,13 @@
               <option value="monokai">Monokai</option>
               <option value="material">Material</option>
               <option value="solarized dark">Solarized Dark</option>
-              <option value="solarized light">Solarized Light</option>
-
             </select>
           </div>
 
           <div>
-            <label class="block text-gray-300 mb-2 font-medium">Font Size</label>
+            <label class="block text-gray-300 mb-2 font-medium"
+              >Font Size</label
+            >
             <select
               id="fontSizeSelect"
               onchange="changeFontSize()"
@@ -562,16 +530,18 @@
           </div>
 
           <div>
-            <label class="block text-gray-300 mb-2 font-medium">Editor Height</label>
+            <label class="block text-gray-300 mb-2 font-medium"
+              >Editor Height</label
+            >
             <select
               id="editorHeightSelect"
               onchange="changeEditorHeight()"
               class="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-goldAccent"
             >
-              <option value="250px">Small (250px)</option>
-              <option value="300px" selected>Medium (300px)</option>
-              <option value="400px">Large (400px)</option>
-              <option value="500px">Extra Large (500px)</option>
+              <option value="300px">Small (300px)</option>
+              <option value="400px" selected>Medium (400px)</option>
+              <option value="500px">Large (500px)</option>
+              <option value="600px">Extra Large (600px)</option>
             </select>
           </div>
 
@@ -587,18 +557,461 @@
       </div>
     </div>
 
-
+    <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
-
 
     <footer class="bg-navyDark border-t border-white/10 py-8 mt-16">
       <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-gray-400"> © 2025 Ghulam Habib — Crafted with care. <span class="text-goldAccent">❤</span> for developers.</p>
+        <p class="text-gray-400">
+          © 2025 Ghulam Habib — Crafted with care.
+          <span class="text-goldAccent">❤</span> for developers.
+        </p>
       </div>
     </footer>
 
-    <script src="editor.js"></script>
+    <script>
+      // Global variables
+      let editor;
+      let currentLanguage = "javascript";
+      let files = JSON.parse(localStorage.getItem("codeFiles")) || [];
+
+      // Language configurations
+      const languageConfigs = {
+        javascript: {
+          mode: "javascript",
+          icon: "fa-brands fa-js",
+          starterCode:
+            '// Write your JavaScript code here\nconsole.log("Hello, World!");',
+        },
+        python: {
+          mode: "python",
+          icon: "fa-brands fa-python",
+          starterCode: '# Write your Python code here\nprint("Hello, World!")',
+        },
+        java: {
+          mode: "text/x-java",
+          icon: "fa-brands fa-java",
+          starterCode:
+            '// Write your Java code here\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
+        },
+        cpp: {
+          mode: "text/x-c++src",
+          icon: "fa-solid fa-c",
+          starterCode:
+            '// Write your C++ code here\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}',
+        },
+        c: {
+          mode: "text/x-csrc",
+          icon: "fa-solid fa-c",
+          starterCode:
+            '// Write your C code here\n#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
+        },
+        php: {
+          mode: "php",
+          icon: "fa-brands fa-php",
+          starterCode:
+            '<?php\n// Write your PHP code here\necho "Hello, World!";\n?>',
+        },
+        html: {
+          mode: "htmlmixed",
+          icon: "fa-brands fa-html5",
+          starterCode:
+            "<!DOCTYPE html>\n<html>\n<head>\n    <title>My Page</title>\n</head>\n<body>\n    <h1>Hello, World!</h1>\n</body>\n</html>",
+        },
+        css: {
+          mode: "css",
+          icon: "fa-brands fa-css3-alt",
+          starterCode:
+            "/* Write your CSS code here */\nbody {\n    font-family: Arial, sans-serif;\n    background-color: #f0f0f0;\n}",
+        },
+        markdown: {
+          mode: "markdown",
+          icon: "fa-brands fa-markdown",
+          starterCode:
+            "# My Document\n\nThis is a **markdown** document.\n\n- List item 1\n- List item 2\n\n[Visit DsaViz](https://dsaviz.com)",
+        },
+      };
+
+      // Initialize the editor
+      function initEditor() {
+        editor = CodeMirror.fromTextArea(
+          document.getElementById("codeEditor"),
+          {
+            mode: languageConfigs[currentLanguage].mode,
+            theme: localStorage.getItem("editorTheme") || "dracula",
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            styleActiveLine: true,
+            lineWrapping: true,
+            indentUnit: 4,
+            viewportMargin: Infinity,
+          }
+        );
+
+        // Set initial content
+        editor.setValue(languageConfigs[currentLanguage].starterCode);
+
+        // Apply saved settings
+        const savedFontSize = localStorage.getItem("editorFontSize") || "14px";
+        const savedEditorHeight =
+          localStorage.getItem("editorHeight") || "400px";
+
+        document.getElementById("fontSizeSelect").value = savedFontSize;
+        document.getElementById("editorHeightSelect").value = savedEditorHeight;
+        document.getElementById("themeSelect").value =
+          localStorage.getItem("editorTheme") || "dracula";
+
+        changeFontSize();
+        changeEditorHeight();
+        changeTheme();
+
+        // Load files list
+        loadFilesList();
+      }
+
+      // Change programming language
+      function changeLanguage() {
+        const select = document.getElementById("languageSelect");
+        currentLanguage = select.value;
+
+        // Update UI
+        document.getElementById("languageLabel").textContent =
+          select.options[select.selectedIndex].text;
+
+        // Change editor mode
+        editor.setOption("mode", languageConfigs[currentLanguage].mode);
+
+        // Set starter code for the language
+        editor.setValue(languageConfigs[currentLanguage].starterCode);
+
+        showToast(
+          `Language changed to ${select.options[select.selectedIndex].text}`
+        );
+      }
+
+      // Run code
+      function runCode() {
+        const code = editor.getValue();
+        const outputArea = document.getElementById("outputArea");
+
+        // Clear previous output
+        outputArea.textContent = "";
+
+        try {
+          // For JavaScript, we can use eval (with caution)
+          if (currentLanguage === "javascript") {
+            // Capture console.log output
+            const originalLog = console.log;
+            let output = "";
+
+            console.log = function (...args) {
+              output += args.join(" ") + "\n";
+              originalLog.apply(console, args);
+            };
+
+            eval(code);
+
+            console.log = originalLog;
+            outputArea.textContent =
+              output || "Code executed successfully (no output)";
+          }
+          // For other languages, we can't execute them directly in the browser
+          else {
+            outputArea.textContent = `Code execution for ${currentLanguage} is not supported in the browser.\n\nYour code:\n\n${code}`;
+          }
+        } catch (error) {
+          outputArea.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // Clear code editor
+      function clearCode() {
+        if (confirm("Are you sure you want to clear the editor?")) {
+          editor.setValue(languageConfigs[currentLanguage].starterCode);
+          showToast("Editor cleared");
+        }
+      }
+
+      // Clear output
+      function clearOutput() {
+        document.getElementById("outputArea").textContent = "";
+        showToast("Output cleared");
+      }
+
+      // Save code to localStorage
+      function saveCode() {
+        const fileName = document.getElementById("fileNameInput").value.trim();
+
+        if (!fileName) {
+          alert("Please enter a file name");
+          return;
+        }
+
+        const code = editor.getValue();
+        const fileId = Date.now().toString();
+
+        // Check if file already exists
+        const existingFileIndex = files.findIndex(
+          (file) => file.name === fileName
+        );
+
+        if (existingFileIndex !== -1) {
+          // Update existing file
+          files[existingFileIndex].code = code;
+          files[existingFileIndex].language = currentLanguage;
+          files[existingFileIndex].updatedAt = new Date().toISOString();
+        } else {
+          // Create new file
+          files.push({
+            id: fileId,
+            name: fileName,
+            code: code,
+            language: currentLanguage,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          });
+        }
+
+        // Save to localStorage
+        localStorage.setItem("codeFiles", JSON.stringify(files));
+
+        // Update files list
+        loadFilesList();
+
+        showToast(`File "${fileName}" saved successfully`);
+      }
+
+      // Download code as file
+      function downloadCode() {
+        const fileName =
+          document.getElementById("fileNameInput").value.trim() || "code";
+        const code = editor.getValue();
+
+        // Determine file extension based on language
+        const extensions = {
+          javascript: "js",
+          python: "py",
+          java: "java",
+          cpp: "cpp",
+          c: "c",
+          php: "php",
+          html: "html",
+          css: "css",
+          markdown: "md",
+        };
+
+        const extension = extensions[currentLanguage] || "txt";
+        const fullFileName = `${fileName}.${extension}`;
+
+        // Create download link
+        const blob = new Blob([code], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fullFileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast(`File "${fullFileName}" downloaded`);
+      }
+
+      // Load files list in modal
+      function loadFilesList() {
+        const filesList = document.getElementById("filesList");
+        filesList.innerHTML = "";
+
+        if (files.length === 0) {
+          filesList.innerHTML =
+            '<p class="text-gray-400 text-center py-4">No files saved yet</p>';
+          return;
+        }
+
+        // Sort files by updated date (newest first)
+        const sortedFiles = [...files].sort(
+          (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+        );
+
+        sortedFiles.forEach((file) => {
+          const fileItem = document.createElement("div");
+          fileItem.className =
+            "file-item bg-white/5 border border-white/10 rounded-lg p-4 cursor-pointer";
+          fileItem.innerHTML = `
+            <div class="flex justify-between items-center">
+              <div>
+                <h4 class="font-semibold text-goldAccent">${file.name}</h4>
+                <p class="text-gray-400 text-sm">${file.language} • ${new Date(
+            file.updatedAt
+          ).toLocaleDateString()}</p>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="loadFile('${
+                  file.id
+                }')" class="text-goldAccent hover:text-white" title="Load File">
+                  <i class="fa-solid fa-folder-open"></i>
+                </button>
+                <button onclick="deleteFile('${
+                  file.id
+                }')" class="text-red-500 hover:text-red-300" title="Delete File">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          filesList.appendChild(fileItem);
+        });
+      }
+
+      // Load a saved file
+      function loadFile(fileId) {
+        const file = files.find((f) => f.id === fileId);
+
+        if (file) {
+          editor.setValue(file.code);
+          document.getElementById("fileNameInput").value = file.name;
+
+          // Set language
+          currentLanguage = file.language;
+          document.getElementById("languageSelect").value = currentLanguage;
+          document.getElementById("languageLabel").textContent =
+            document.getElementById("languageSelect").options[
+              document.getElementById("languageSelect").selectedIndex
+            ].text;
+
+          editor.setOption("mode", languageConfigs[currentLanguage].mode);
+
+          closeFilesModal();
+          showToast(`File "${file.name}" loaded`);
+        }
+      }
+
+      // Delete a saved file
+      function deleteFile(fileId) {
+        const file = files.find((f) => f.id === fileId);
+
+        if (
+          file &&
+          confirm(`Are you sure you want to delete "${file.name}"?`)
+        ) {
+          files = files.filter((f) => f.id !== fileId);
+          localStorage.setItem("codeFiles", JSON.stringify(files));
+          loadFilesList();
+          showToast(`File "${file.name}" deleted`);
+        }
+      }
+
+      // Create a new file
+      function createNewFile() {
+        const fileName = prompt("Enter a name for the new file:");
+
+        if (fileName) {
+          document.getElementById("fileNameInput").value = fileName;
+          editor.setValue(languageConfigs[currentLanguage].starterCode);
+          closeFilesModal();
+          showToast(`New file "${fileName}" created`);
+        }
+      }
+
+      // Copy code to clipboard
+      function copyCode(event) {
+        event.stopPropagation();
+        const code = editor.getValue();
+
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            showToast("Code copied to clipboard");
+          })
+          .catch((err) => {
+            console.error("Failed to copy code: ", err);
+            showToast("Failed to copy code");
+          });
+      }
+
+      // Toggle editor collapse/expand
+      function toggleEditor(boxId) {
+        const box = document.getElementById(boxId);
+        box.classList.toggle("collapsed");
+      }
+
+      // Change editor theme
+      function changeTheme() {
+        const theme = document.getElementById("themeSelect").value;
+        editor.setOption("theme", theme);
+        localStorage.setItem("editorTheme", theme);
+      }
+
+      // Change editor font size
+      function changeFontSize() {
+        const fontSize = document.getElementById("fontSizeSelect").value;
+        document.querySelector(".CodeMirror").style.fontSize = fontSize;
+        localStorage.setItem("editorFontSize", fontSize);
+      }
+
+      // Change editor height
+      function changeEditorHeight() {
+        const height = document.getElementById("editorHeightSelect").value;
+        editor.setSize(null, height);
+        localStorage.setItem("editorHeight", height);
+      }
+
+      // Reset settings to defaults
+      function resetSettings() {
+        if (
+          confirm("Are you sure you want to reset all settings to defaults?")
+        ) {
+          localStorage.removeItem("editorTheme");
+          localStorage.removeItem("editorFontSize");
+          localStorage.removeItem("editorHeight");
+
+          document.getElementById("themeSelect").value = "dracula";
+          document.getElementById("fontSizeSelect").value = "14px";
+          document.getElementById("editorHeightSelect").value = "400px";
+
+          changeTheme();
+          changeFontSize();
+          changeEditorHeight();
+
+          showToast("Settings reset to defaults");
+        }
+      }
+
+      // Show toast notification
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // Modal functions
+      function openFilesModal() {
+        document.getElementById("filesModal").classList.add("active");
+      }
+
+      function closeFilesModal() {
+        document.getElementById("filesModal").classList.remove("active");
+      }
+
+      function openSettingsModal() {
+        document.getElementById("settingsModal").classList.add("active");
+      }
+
+      function closeSettingsModal() {
+        document.getElementById("settingsModal").classList.remove("active");
+      }
+
+      function toggleMobileMenu() {
+        document.getElementById("mobileMenu").classList.toggle("hidden");
+      }
+
+      // Initialize when page loads
+      document.addEventListener("DOMContentLoaded", initEditor);
+    </script>
   </body>
 </html>
-
-
