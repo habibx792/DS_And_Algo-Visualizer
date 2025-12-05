@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Visualizer - Interactive Data Structure Learning</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📊%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../CSS/queue.css">
+    
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="8" width="4" height="16" rx="2" fill="currentColor" opacity="0.4"/>
+                    <rect x="10" y="8" width="4" height="16" rx="2" fill="currentColor" opacity="0.6"/>
+                    <rect x="16" y="8" width="4" height="16" rx="2" fill="currentColor" opacity="0.8"/>
+                    <rect x="22" y="8" width="4" height="16" rx="2" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Queue Visualizer</span>
+            </div>
+            <button id="homeBtn" class="home-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
+            </button>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <!-- Home Section -->
+        <section id="homeSection" class="section active">
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    Master Queue Data Structures
+                    <span class="gradient-text">Visually</span>
+                </h1>
+                <p class="hero-subtitle">Interactive visualizations for understanding queue operations, algorithms, and real-world applications</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card glass" data-tab="simple">
+                        <div class="feature-icon"></div>
+                        <h3>Simple Queue</h3>
+                        <p>Learn basic FIFO operations: enqueue, dequeue, and peek</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                    
+                    <div class="feature-card glass" data-tab="circular">
+                        <div class="feature-icon"></div>
+                        <h3>Circular Queue</h3>
+                        <p>Visualize efficient memory usage with circular implementation</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                    
+                    <div class="feature-card glass" data-tab="priority">
+                        <div class="feature-icon"></div>
+                        <h3>Priority Queue</h3>
+                        <p>Understand priority-based element ordering and operations</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                    
+                    <div class="feature-card glass" data-tab="deque">
+                        <div class="feature-icon"></div>
+                        <h3>Double-Ended Queue</h3>
+                        <p>Insert and remove from both ends with deque operations</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                    
+                    <div class="feature-card glass" data-tab="applications">
+                        <div class="feature-icon"></div>
+                        <h3>Real-World Applications</h3>
+                        <p>See queues in action: task scheduling, BFS, and more</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                    
+                    <div class="feature-card glass" data-tab="comparison">
+                        <div class="feature-icon"></div>
+                        <h3>Algorithm Comparison</h3>
+                        <p>Compare time and space complexity of different queue types</p>
+                        <button class="feature-btn">Explore →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simple Queue Section -->
+        <section id="simpleSection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Simple Queue (FIFO)</h2>
+                <p class="section-description">First In, First Out - Elements are removed in the order they were added</p>
+            </div>
+            
+            <div class="visualizer-container glass">
+                <div class="queue-display" id="simpleQueue"></div>
+                <div class="queue-pointers">
+                    <span class="pointer front-pointer">← FRONT</span>
+                    <span class="pointer rear-pointer">REAR →</span>
+                </div>
+            </div>
+            
+            <div class="controls-container glass">
+                <div class="input-group">
+                    <input type="text" id="simpleInput" placeholder="Enter value" class="value-input">
+                    <button class="btn btn-enqueue" onclick="simpleEnqueue()">Enqueue</button>
+                    <button class="btn btn-dequeue" onclick="simpleDequeue()">Dequeue</button>
+                    <button class="btn btn-peek" onclick="simplePeek()">Peek</button>
+                    <button class="btn btn-clear" onclick="simpleClear()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="info-panel glass">
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value" id="simpleSize">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Front:</span>
+                    <span class="info-value" id="simpleFront">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Rear:</span>
+                    <span class="info-value" id="simpleRear">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Time Complexity:</span>
+                    <span class="info-value">Enqueue: O(1), Dequeue: O(1)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Circular Queue Section -->
+        <section id="circularSection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Circular Queue</h2>
+                <p class="section-description">Efficient memory usage by connecting rear to front in a circular manner</p>
+            </div>
+            
+            <div class="visualizer-container glass">
+                <div class="circular-queue-display" id="circularQueue"></div>
+            </div>
+            
+            <div class="controls-container glass">
+                <div class="input-group">
+                    <input type="text" id="circularInput" placeholder="Enter value" class="value-input">
+                    <button class="btn btn-enqueue" onclick="circularEnqueue()">Enqueue</button>
+                    <button class="btn btn-dequeue" onclick="circularDequeue()">Dequeue</button>
+                    <button class="btn btn-peek" onclick="circularPeek()">Peek</button>
+                    <button class="btn btn-clear" onclick="circularClear()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="info-panel glass">
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value" id="circularSize">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Capacity:</span>
+                    <span class="info-value" id="circularCapacity">8</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Front Index:</span>
+                    <span class="info-value" id="circularFrontIdx">-1</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Rear Index:</span>
+                    <span class="info-value" id="circularRearIdx">-1</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Priority Queue Section -->
+        <section id="prioritySection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Priority Queue</h2>
+                <p class="section-description">Elements are dequeued based on priority (higher priority = lower number)</p>
+            </div>
+            
+            <div class="visualizer-container glass">
+                <div class="queue-display" id="priorityQueue"></div>
+            </div>
+            
+            <div class="controls-container glass">
+                <div class="input-group">
+                    <input type="text" id="priorityValue" placeholder="Enter value" class="value-input">
+                    <input type="number" id="priorityLevel" placeholder="Priority" class="value-input" min="1" max="10">
+                    <button class="btn btn-enqueue" onclick="priorityEnqueue()">Enqueue</button>
+                    <button class="btn btn-dequeue" onclick="priorityDequeue()">Dequeue</button>
+                    <button class="btn btn-peek" onclick="priorityPeek()">Peek</button>
+                    <button class="btn btn-clear" onclick="priorityClear()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="info-panel glass">
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value" id="prioritySize">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Highest Priority:</span>
+                    <span class="info-value" id="priorityHighest">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Time Complexity:</span>
+                    <span class="info-value">Enqueue: O(n), Dequeue: O(1)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deque Section -->
+        <section id="dequeSection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Double-Ended Queue (Deque)</h2>
+                <p class="section-description">Insert and remove elements from both front and rear ends</p>
+            </div>
+            
+            <div class="visualizer-container glass">
+                <div class="queue-display" id="dequeQueue"></div>
+                <div class="queue-pointers">
+                    <span class="pointer front-pointer">← FRONT</span>
+                    <span class="pointer rear-pointer">REAR →</span>
+                </div>
+            </div>
+            
+            <div class="controls-container glass">
+                <div class="input-group">
+                    <input type="text" id="dequeInput" placeholder="Enter value" class="value-input">
+                    <button class="btn btn-enqueue" onclick="dequePushFront()">Push Front</button>
+                    <button class="btn btn-enqueue" onclick="dequePushRear()">Push Rear</button>
+                    <button class="btn btn-dequeue" onclick="dequePopFront()">Pop Front</button>
+                    <button class="btn btn-dequeue" onclick="dequePopRear()">Pop Rear</button>
+                    <button class="btn btn-clear" onclick="dequeClear()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="info-panel glass">
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value" id="dequeSize">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Front:</span>
+                    <span class="info-value" id="dequeFront">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Rear:</span>
+                    <span class="info-value" id="dequeRear">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="applicationsSection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Real-World Applications</h2>
+                <p class="section-description">See how queues are used in practical scenarios</p>
+            </div>
+            
+            <div class="applications-grid">
+                <div class="application-card glass">
+                    <h3>🖨️ Printer Queue</h3>
+                    <div class="app-demo" id="printerDemo">
+                        <div class="printer-queue"></div>
+                    </div>
+                    <button class="btn btn-enqueue" onclick="addPrintJob()">Add Print Job</button>
+                    <button class="btn btn-dequeue" onclick="processPrintJob()">Process Job</button>
+                    <p class="app-description">Documents are printed in the order they're submitted</p>
+                </div>
+                
+                <div class="application-card glass">
+                    <h3>📞 Call Center Queue</h3>
+                    <div class="app-demo" id="callDemo">
+                        <div class="call-queue"></div>
+                    </div>
+                    <button class="btn btn-enqueue" onclick="addCall()">Incoming Call</button>
+                    <button class="btn btn-dequeue" onclick="answerCall()">Answer Call</button>
+                    <p class="app-description">Callers are served in the order they called</p>
+                </div>
+                
+                <div class="application-card glass">
+                    <h3>🎮 Task Scheduling</h3>
+                    <div class="app-demo" id="taskDemo">
+                        <div class="task-queue"></div>
+                    </div>
+                    <button class="btn btn-enqueue" onclick="addTask()">Schedule Task</button>
+                    <button class="btn btn-dequeue" onclick="executeTask()">Execute Task</button>
+                    <p class="app-description">CPU schedules tasks using queue algorithms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparisonSection" class="section visualizer-section">
+            <div class="visualizer-header">
+                <h2>Algorithm Comparison</h2>
+                <p class="section-description">Compare time and space complexity of different queue types</p>
+            </div>
+            
+            <div class="comparison-container glass">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Queue Type</th>
+                            <th>Enqueue</th>
+                            <th>Dequeue</th>
+                            <th>Peek</th>
+                            <th>Space</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Simple Queue</strong></td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(n)</td>
+                            <td>Basic FIFO operations</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Circular Queue</strong></td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(n)</td>
+                            <td>Fixed-size buffer, memory efficient</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Priority Queue</strong></td>
+                            <td>O(n) / O(log n)*</td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(n)</td>
+                            <td>Task scheduling, Dijkstra's algorithm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deque</strong></td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>O(n)</td>
+                            <td>Palindrome check, sliding window</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="table-note">* O(log n) with heap implementation</p>
+            </div>
+            
+            <div class="features-comparison glass">
+                <h3>Key Characteristics</h3>
+                <div class="characteristics-grid">
+                    <div class="characteristic-item">
+                        <h4>Simple Queue</h4>
+                        <ul>
+                            <li>✅ Simple to implement</li>
+                            <li>✅ Fast operations</li>
+                            <li>⚠️ Memory wastage possible</li>
+                            <li>⚠️ Front pointer keeps moving</li>
+                        </ul>
+                    </div>
+                    <div class="characteristic-item">
+                        <h4>Circular Queue</h4>
+                        <ul>
+                            <li>✅ Better memory utilization</li>
+                            <li>✅ Fixed size advantage</li>
+                            <li>✅ No memory wastage</li>
+                            <li>⚠️ Size limitation</li>
+                        </ul>
+                    </div>
+                    <div class="characteristic-item">
+                        <h4>Priority Queue</h4>
+                        <ul>
+                            <li>✅ Priority-based processing</li>
+                            <li>✅ Flexible ordering</li>
+                            <li>⚠️ Slower insertion</li>
+                            <li>⚠️ More complex implementation</li>
+                        </ul>
+                    </div>
+                    <div class="characteristic-item">
+                        <h4>Deque</h4>
+                        <ul>
+                            <li>✅ Most flexible</li>
+                            <li>✅ Both-end operations</li>
+                            <li>✅ Can work as stack or queue</li>
+                            <li>⚠️ More complex to manage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>Queue Visualizer © 2024 | Learn Data Structures Interactively</p>
+    </footer>
+
+    <script src="../JS/queue.js"></script>
+</body>
+</html>
