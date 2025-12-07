@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const divTwoD = document.querySelector("#divTwoD");
   const noOfRow = document.querySelector("#noOfRow");
   const noOfCol = document.querySelector("#noOfCol");
+//   const themeToggle=document.getElementsByClassName("themeToggle");
+//   themeToggle.addEventListener("click",()=>
+// {
+//     alert("ok");
+//         document.body.classList.remove("bg-indigo-950");
+//     let body=document.querySelector("body");
+
+//     body.classList.add("text-black");
+    
+// })
   let mode = "oneD";
 
   oneBtn.addEventListener("click", () => {
