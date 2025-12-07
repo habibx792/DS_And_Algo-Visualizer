@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../src/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../CSS/array.css" />
+
+</head>
+
+<body class="bg-indigo-950 bg-no-repeat">
+
+    <header id="dsNav" class="sticky z-50 top-0 flex justify-between w-full">
+        <nav class="text-3xl text-white flex justify-between py-4 w-full">
+            <h1 class="ml-2">Array</h1>
+            <ul class="flex space-x-4">
+                <li>
+                    <button
+                        class="border-2 border-indigo-800 text-white px-2 py-2 rounded hover:border-violet-700 transition-all duration-300 ease-in">
+                        <a href="../HTML/mainPage.html">Home </a>
+                    </button>
+                </li>
+                <li>
+                    <button id="themeToggle"
+                        class="theme-toggle p-4 border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in"
+                        aria-label="Toggle theme">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <!-- <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg> -->
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header> 
+    <main class="text-3xl text-white">
+        <section class="flex flex-col">
+            <div class="flex gap-2 mt-4">
+                <div class="flex border-2 rounded-lg border-violet-700 flex-col p-2">
+                    <div class="flex justify-center gap-10 items-center mt-2">
+                       <button class="bg-yellow-600 w-48 text-center py-2 rounded-lg border-2 border-indigo-900  hover:border-violet-700 transition-all duration-300 ease-in">2D</button>
+                        <button class="bg-yellow-600 w-48 text-center py-2 rounded-lg border-2 border-indigo-900  hover:border-violet-700 transition-all duration-300 ease-in">2D</button>
+                    </div>
+                    <div class="flex mt-2">
+                        <div class="fle">
+                            <div class="flex-row flex hidden gap-2">
+                                <button>Row</button>
+                                <button>Col</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col my-2 gap-2 ">
+                            <div class="flex gap-2 ">
+                                <h2>Values</h2>
+                                <input type="text" class="text-black rounded-lg">
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button class="theme-toggle  border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in">Random</button>
+                                <button class="theme-toggle  border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in">Run</button>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                   
+                </div>
+                 <div class="bg-gradient-to-t rounded-lg border-2 border-violet-700 from-green-400 to-indigo-950 w-full h-96"></div>
+            </div>
+
+        </section>
+    </main>
+
+</body>
+
+</html>
