@@ -830,7 +830,17 @@ body {
 .text-center {
     text-align: center;
 }
+#ModfiYTag{
+    text-decoration: none;
+    color: inherit;
+}
 
+#ModfiYTag:visited {
+    color: inherit;
+}
+#ModfiYTag:hover, #ModfiYTag:active {
+    text-decoration: none;
+}
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
