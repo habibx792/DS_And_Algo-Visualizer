@@ -134,6 +134,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let paused = false;
     let speed = Number(speedRange.value);
     let currentLang = 'python';
+    
+    // Step mode variables
+    let stepMode = false;
+    let stepPromiseResolve = null;
+    let stepWaitStart = null;
 
     // Initialize
     function init() {
@@ -313,21 +318,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Wait function for animation
     function wait(ms) {
         return new Promise((resolve) => {
-            const start = performance.now();
-            (function loop() {
-                if (paused) {
+            if (stepMode) {
+                // In step mode, wait for step button click
+                paused = true;
+                stepPromiseResolve = resolve;
+                stepWaitStart = performance.now();
+                setStatus('Paused - Click Step to continue');
+                
+                // Start a loop to check if step button was pressed
+                (function checkStep() {
+                    if (paused) {
+                        requestAnimationFrame(checkStep);
+                        return;
+                    }
+                    // Step button was pressed, resume
+                    if (stepPromiseResolve === resolve) {
+                        stepPromiseResolve = null;
+                        resolve();
+                    }
+                })();
+            } else {
+                // Normal mode - use timer
+                const start = performance.now();
+                (function loop() {
+                    if (paused) {
+                        requestAnimationFrame(loop);
+                        return;
+                    }
+                    if (performance.now() - start >= ms) return resolve();
                     requestAnimationFrame(loop);
-                    return;
-                }
-                if (performance.now() - start >= ms) return resolve();
-                requestAnimationFrame(loop);
-            })();
+                })();
+            }
         });
     }
 
     // Algorithm implementations
     async function bubbleSort(ascending = true) {
         running = true;
+        stepMode = false; // Ensure not in step mode for normal play
         setStatus('Running');
         setCurrent('Bubble Sort');
         updateCodeAndComplexity();
@@ -358,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function selectionSort(ascending = true) {
         running = true;
+        stepMode = false;
         setStatus('Running');
         setCurrent('Selection Sort');
         updateCodeAndComplexity();
@@ -391,6 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function quickSortWrapper(ascending = true) {
         running = true;
+        stepMode = false;
         setStatus('Running');
         setCurrent('Quick Sort');
         updateCodeAndComplexity();
@@ -442,6 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function mergeSortWrapper(ascending = true) {
         running = true;
+        stepMode = false;
         setStatus('Running');
         setCurrent('Merge Sort');
         updateCodeAndComplexity();
@@ -593,6 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         paused = false;
+        stepMode = false; // Normal play mode
         const algo = algoSelect.value;
         const order = getOrder();
         
@@ -607,6 +639,42 @@ document.addEventListener('DOMContentLoaded', function() {
             await quickSortWrapper(order === 'asc');
         } else if (algo === 'merge') {
             await mergeSortWrapper(order === 'asc');
+        }
+    }
+
+    // Step button functionality
+    async function startStepMode() {
+        if (running) {
+            setStatus('Already running');
+            return;
+        }
+        
+        stepMode = true;
+        running = true;
+        paused = false; // Start unpaused
+        
+        const algo = algoSelect.value;
+        const order = getOrder();
+        
+        setCurrent(`${algo.charAt(0).toUpperCase() + algo.slice(1)} Sort ${order === 'asc' ? '↑' : '↓'} - Step Mode`);
+        setStatus('Step Mode - Click Step to begin');
+        updateCodeAndComplexity();
+        
+        if (algo === 'bubble') {
+            await bubbleSort(order === 'asc');
+        } else if (algo === 'selection') {
+            await selectionSort(order === 'asc');
+        } else if (algo === 'quick') {
+            await quickSortWrapper(order === 'asc');
+        } else if (algo === 'merge') {
+            await mergeSortWrapper(order === 'asc');
+        }
+        
+        // When algorithm completes in step mode
+        stepMode = false;
+        if (running) {
+            setStatus('Completed');
+            running = false;
         }
     }
 
@@ -663,11 +731,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     playBtn.addEventListener('click', async () => {
         if (running) {
+            // If already running and paused, resume
             paused = false;
             setStatus('Running');
             return;
         }
-        paused = false;
         await runAlgorithm();
     });
 
@@ -676,9 +744,27 @@ document.addEventListener('DOMContentLoaded', function() {
         setStatus('Paused');
     });
 
+    // STEP BUTTON - FIXED
+    stepBtn.addEventListener('click', async () => {
+        if (running && paused) {
+            // If paused, resume for one step
+            paused = false;
+            if (stepPromiseResolve) {
+                // Resolve the wait promise to continue execution
+                stepPromiseResolve();
+                stepPromiseResolve = null;
+            }
+            setStatus('Step executed - Click Step to continue');
+        } else if (!running) {
+            // Start algorithm in step mode
+            await startStepMode();
+        }
+    });
+
     resetBtn.addEventListener('click', () => {
         paused = false;
         running = false;
+        stepMode = false;
         if (original && original.length) {
             arr = original.slice();
             render(arr);
