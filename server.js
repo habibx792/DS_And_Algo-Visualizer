@@ -1,148 +1,461 @@
-import express from "express";
-import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Serve static files from current directory and src folder
-app.use(express.static(path.join(__dirname))); // Serves files from code folder
-app.use('/src', express.static(path.join(__dirname, 'src'))); // Serves CSS files
+const app = express();
+const PORT = 3000;
 
-// Your API Key
-const GEMINI_API_KEY = "AIzaSyCynQ0HeKgh4x50pgfC92pRT8stDeNjSTY";
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash"
-});
+// Serve ALL static files from all directories
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/JS', express.static(path.join(__dirname, 'public/JS')));
+app.use('/HTML', express.static(path.join(__dirname, 'public/HTML')));
+app.use('/CSS', express.static(path.join(__dirname, 'public/CSS')));
 
-// ✅ Serve all HTML files including algoViz.html
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-app.get("/test", (req, res) => {
-  res.sendFile(path.join(__dirname, "test.html"));
-});
-
-app.get("/algoViz", (req, res) => {
-  res.sendFile(path.join(__dirname, "algoViz.html"));
-});
-
-app.post("/ask", async (req, res) => {
-  try {
-    const { question } = req.body;
-
-    if (!question) {
-      return res.status(400).json({ answer: "Please provide a question" });
+// Password hashing function
+function hashPassword(password) {
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
     }
+    return Math.abs(hash).toString(36);
+}
 
-    const systemPrompt = `You are an AI assistant that only answers questions about Data Structures and Algorithms (DSA).
+// In-memory database
+const usersDB = [];
 
-IMPORTANT FORMATTING RULES - FOLLOW STRICTLY:
+// DSA Knowledge Base
+const dsaKnowledge = {
+    "stack": `## 📚 Stack Data Structure
+**LIFO (Last In First Out)** principle.
 
-1. Use numbered lists for step-by-step explanations
-2. Use bullet points for features and characteristics
-3. For code blocks, use triple backticks with language specification
-4. Use simple headings with ## and ### format
-5. Structure your answer with clear sections
-6. Always include time and space complexity
-7. Provide practical examples
-8. Use simple, clear language without excessive formatting
+### 🔧 Operations:
+1. **Push** - Add element to top (O(1))
+2. **Pop** - Remove element from top (O(1))
+3. **Peek** - View top element (O(1))
 
-Format your response with clean, readable structure.`;
+### 💻 Code Example:
+\`\`\`javascript
+class Stack {
+    constructor() { this.items = []; }
+    push(e) { this.items.push(e); }
+    pop() { return this.items.pop(); }
+    peek() { return this.items[this.items.length-1]; }
+}
+\`\`\``,
 
-    const result = await model.generateContent(`${systemPrompt}\n\nUser: ${question}`);
-    const response = await result.response;
-    let text = response.text();
+    "tree": `## 🌳 Binary Tree
+Hierarchical structure with max 2 children per node.
 
-    // Clean formatting function
-    text = formatCleanResponse(text);
+### 🔄 Traversal Methods:
+1. **Preorder**: Root → Left → Right
+2. **Inorder**: Left → Root → Right
+3. **Postorder**: Left → Right → Root
 
-    res.json({ answer: text });
+### ⚡ Time Complexity: O(n)`,
+    
+    "linked": `## 🔗 Linked List
+Linear data structure with nodes.
 
-  } catch (error) {
-    console.error("❌ API Error:", error.message);
-    res.status(500).json({
-      answer: '<div class="error-message">Error connecting to AI service. Please try again.</div>'
-    });
-  }
+### 📋 Types:
+- **Singly Linked** (one direction)
+- **Doubly Linked** (both directions)
+- **Circular** (last points to first)
+
+### 💻 Insert at head: O(1)
+### 🔍 Search: O(n)`
+};
+
+// ==================== API ENDPOINTS ====================
+
+// Register user
+app.post('/api/register', (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        
+        if (!name || !email || !password) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'All fields required' 
+            });
+        }
+        
+        if (password.length < 6) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Password must be 6+ characters' 
+            });
+        }
+        
+        // Check if user exists
+        if (usersDB.find(u => u.email === email)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Email already registered' 
+            });
+        }
+        
+        // Create user
+        const user = {
+            id: Date.now(),
+            name,
+            email,
+            passwordHash: hashPassword(password),
+            createdAt: new Date().toISOString()
+        };
+        
+        usersDB.push(user);
+        
+        res.json({ 
+            success: true, 
+            message: `Welcome ${name}!`,
+            user: { id: user.id, name, email }
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error' 
+        });
+    }
 });
 
-// Clean formatting function
-function formatCleanResponse(text) {
-  // Main headings
-  text = text.replace(/##\s+(.*?)(?=\n|$)/g,
-    '<h2 class="clean-heading font-semibold text-xl mt-6 mb-3 pb-2 border-b border-gray-300">$1</h2>');
+// Login user
+app.post('/api/login', (req, res) => {
+    try {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Email and password required' 
+            });
+        }
+        
+        const user = usersDB.find(u => u.email === email);
+        
+        if (!user || user.passwordHash !== hashPassword(password)) {
+            return res.status(401).json({ 
+                success: false, 
+                error: 'Invalid credentials' 
+            });
+        }
+        
+        res.json({ 
+            success: true, 
+            message: 'Login successful',
+            user: { id: user.id, name: user.name, email: user.email }
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error' 
+        });
+    }
+});
 
-  // Subheadings
-  text = text.replace(/###\s+(.*?)(?=\n|$)/g,
-    '<h3 class="clean-subheading font-medium text-lg mt-4 mb-2 text-gray-800">$1</h3>');
+// Reset password
+app.post('/api/reset-password', (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        
+        if (!email || !newPassword) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Email and new password required' 
+            });
+        }
+        
+        if (newPassword.length < 6) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Password must be 6+ characters' 
+            });
+        }
+        
+        const userIndex = usersDB.findIndex(u => u.email === email);
+        
+        if (userIndex === -1) {
+            return res.json({ 
+                success: true, 
+                message: 'If account exists, password updated' 
+            });
+        }
+        
+        usersDB[userIndex].passwordHash = hashPassword(newPassword);
+        
+        res.json({ 
+            success: true, 
+            message: 'Password updated successfully' 
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error' 
+        });
+    }
+});
 
-  // Code blocks
-  text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, language, code) {
-    const lang = language || 'text';
-    const formattedCode = escapeHtml(code.trim());
-    return `
-    <div class="clean-code-block my-4 rounded border border-gray-300 bg-gray-50 overflow-hidden">
-      <div class="code-header flex justify-between items-center bg-gray-200 px-4 py-2 border-b border-gray-300">
-        <span class="text-gray-700 text-sm font-mono">${lang}</span>
-        <button class="copy-btn text-gray-600 hover:text-gray-800" onclick="copyCode(this)">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-          </svg>
-        </button>
-      </div>
-      <pre class="p-4 overflow-x-auto"><code class="text-sm leading-relaxed font-mono">${formattedCode}</code></pre>
-    </div>`;
-  });
+// DSA Tutor endpoint
+app.post('/api/ask', (req, res) => {
+    try {
+        const { question } = req.body;
+        
+        if (!question) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Question required' 
+            });
+        }
+        
+        const q = question.toLowerCase();
+        let answer = dsaKnowledge.stack; // Default
+        
+        if (q.includes('tree') || q.includes('binary')) {
+            answer = dsaKnowledge.tree;
+        } else if (q.includes('linked')) {
+            answer = dsaKnowledge.linked;
+        } else if (q.includes('sort') || q.includes('quick')) {
+            answer = `## ⚡ Quick Sort
+Divide-and-conquer algorithm.
 
-  // Inline code
-  text = text.replace(/`([^`]+)`/g,
-    '<code class="inline-code bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-300">$1</code>');
+**Complexity:**
+- Best/Average: O(n log n)
+- Worst: O(n²)
 
-  // Numbered lists
-  text = text.replace(/^(\d+)\.\s+(.*)$/gm,
-    '<li class="numbered-item flex items-start mb-2"><span class="numbered-bullet text-gray-700 font-medium mr-2 mt-0.5">$1.</span><span class="numbered-text text-gray-700">$2</span></li>');
-  text = text.replace(/(<li class="numbered-item.*?<\/li>)/gs,
-    '<ol class="numbered-list my-3 space-y-1">$1</ol>');
+**Space:** O(log n)`;
+        } else if (q.includes('time') && q.includes('complex')) {
+            answer = `## ⏱️ Time Complexity
+**Big O Notation:**
+- O(1): Constant time
+- O(log n): Logarithmic
+- O(n): Linear
+- O(n log n): Linearithmic
+- O(n²): Quadratic`;
+        }
+        
+        res.json({ 
+            success: true, 
+            answer: answer 
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error' 
+        });
+    }
+});
 
-  // Bullet points
-  text = text.replace(/^\*\s+(.*)$/gm,
-    '<li class="bullet-item flex items-start mb-2"><span class="bullet-point w-1.5 h-1.5 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span class="bullet-text text-gray-700">$1</span></li>');
-  text = text.replace(/(<li class="bullet-item.*?<\/li>)/gs,
-    '<ul class="bullet-list my-3 space-y-1">$1</ul>');
+// Get all users (for debugging)
+app.get('/api/users', (req, res) => {
+    res.json({ 
+        success: true, 
+        count: usersDB.length,
+        users: usersDB.map(u => ({ id: u.id, name: u.name, email: u.email }))
+    });
+});
 
-  // Line breaks and paragraphs
-  text = text.replace(/\n\n/g, '</div><div class="paragraph mt-3">');
-  text = text.replace(/\n/g, '<br>');
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        users: usersDB.length,
+        time: new Date().toISOString()
+    });
+});
 
-  // Wrap the entire content
-  text = `<div class="clean-message-content space-y-3">${text}</div>`;
+// ==================== HTML ROUTES ====================
 
-  return text;
-}
+// Clean URL routes (recommended)
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/login.html'));
+});
 
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/signUp.html'));
+});
 
-app.listen(3000, () => {
-  console.log("🚀 DSA Chatbot Server running at http://localhost:3000");
-  console.log("📁 Available pages:");
-  console.log("   - http://localhost:3000/ (Home)");
-  console.log("   - http://localhost:3000/test (Test Page)");
-  console.log("   - http://localhost:3000/algoViz (Algorithm Visualizer)");
+app.get('/forgot-password', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/passforget.html'));
+});
+
+app.get('/main', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/mainPage.html'));
+});
+
+// Route for /passforget.html (FIXED ERROR)
+app.get('/passforget.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/passforget.html'));
+});
+
+// Additional pages
+app.get('/arrays', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/arrays.html'));
+});
+
+app.get('/datastructures', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/dataStructur.html'));
+});
+
+app.get('/queue', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/queue.html'));
+});
+
+app.get('/linkedlist', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/List_Visualizer.html'));
+});
+
+app.get('/algorithm-visualizer', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/algoViz.html'));
+});
+
+app.get('/editor', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/editor.html'));
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/contact.html'));
+});
+
+app.get('/help', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/help.html'));
+});
+
+// Legacy routes (your current URLs)
+app.get('/public/HTML/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/login.html'));
+});
+
+app.get('/public/HTML/signUp', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/signUp.html'));
+});
+
+app.get('/public/HTML/passforget', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/passforget.html'));
+});
+
+app.get('/public/HTML/mainPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/mainPage.html'));
+});
+
+// ==================== FALLBACK ROUTES ====================
+// For direct .html file access
+app.get('/public/HTML/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/login.html'));
+});
+
+app.get('/public/HTML/signUp.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/signUp.html'));
+});
+
+app.get('/public/HTML/mainPage.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/HTML/mainPage.html'));
+});
+
+// Main home route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve any other .html file from HTML directory
+app.get('*.html', (req, res) => {
+    const requestedFile = req.path;
+    const filePath = path.join(__dirname, 'public/HTML', requestedFile);
+    
+    if (fs.existsSync(filePath)) {
+        return res.sendFile(filePath);
+    }
+    
+    // Try root directory
+    const rootPath = path.join(__dirname, requestedFile);
+    if (fs.existsSync(rootPath)) {
+        return res.sendFile(rootPath);
+    }
+    
+    // Not found
+    res.status(404).send(`
+        <html>
+            <head><title>404 - Page Not Found</title></head>
+            <body style="font-family: Arial; padding: 40px; text-align: center;">
+                <h1>404 - Page Not Found</h1>
+                <p>The page you're looking for doesn't exist.</p>
+                <p>Try one of these pages:</p>
+                <ul style="list-style: none; padding: 20px;">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Sign Up</a></li>
+                    <li><a href="/forgot-password">Forgot Password</a></li>
+                    <li><a href="/main">Main Page</a></li>
+                </ul>
+            </body>
+        </html>
+    `);
+});
+
+// 404 handler for all other routes
+app.use((req, res) => {
+    res.status(404).send(`
+        <html>
+            <head><title>404 - Page Not Found</title></head>
+            <body style="font-family: Arial; padding: 40px; text-align: center;">
+                <h1>404 - Page Not Found</h1>
+                <p>Route: ${req.path}</p>
+                <p>Available routes:</p>
+                <ul style="list-style: none; padding: 20px;">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Sign Up</a></li>
+                    <li><a href="/forgot-password">Forgot Password</a></li>
+                    <li><a href="/main">Main Page</a></li>
+                </ul>
+            </body>
+        </html>
+    `);
+});
+
+// ==================== START SERVER ====================
+app.listen(PORT, () => {
+    console.log(`🚀 Server running: http://localhost:${PORT}`);
+    console.log(`📂 Root: ${__dirname}`);
+    console.log(`\n🌐 MAIN URLS:`);
+    console.log(`✅ http://localhost:${PORT}/ (Home)`);
+    console.log(`✅ http://localhost:${PORT}/login`);
+    console.log(`✅ http://localhost:${PORT}/signup`);
+    console.log(`✅ http://localhost:${PORT}/forgot-password`);
+    console.log(`✅ http://localhost:${PORT}/passforget.html (FIXED)`);
+    console.log(`✅ http://localhost:${PORT}/main`);
+    console.log(`✅ http://localhost:${PORT}/arrays`);
+    console.log(`✅ http://localhost:${PORT}/queue`);
+    console.log(`✅ http://localhost:${PORT}/linkedlist`);
+    console.log(`\n🔧 LEGACY URLS (also work):`);
+    console.log(`✅ http://localhost:${PORT}/public/HTML/login`);
+    console.log(`✅ http://localhost:${PORT}/public/HTML/signUp`);
+    console.log(`✅ http://localhost:${PORT}/public/HTML/passforget`);
+    console.log(`✅ http://localhost:${PORT}/public/HTML/mainPage`);
+    console.log(`\n📁 STATIC FILES:`);
+    console.log(`✅ http://localhost:${PORT}/JS/login.js`);
+    console.log(`✅ http://localhost:${PORT}/public/JS/login.js`);
+    console.log(`✅ http://localhost:${PORT}/CSS/ (CSS files)`);
+    console.log(`\n🔗 API ENDPOINTS:`);
+    console.log(`✅ POST http://localhost:${PORT}/api/register`);
+    console.log(`✅ POST http://localhost:${PORT}/api/login`);
+    console.log(`✅ POST http://localhost:${PORT}/api/reset-password`);
+    console.log(`✅ POST http://localhost:${PORT}/api/ask`);
+    console.log(`✅ GET  http://localhost:${PORT}/api/health`);
+    console.log(`✅ GET  http://localhost:${PORT}/api/users`);
 });

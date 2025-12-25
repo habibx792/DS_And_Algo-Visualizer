@@ -1,96 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up — DsaViz</title>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navyDeep: "#0b092d",
-            navySoft: "#20213b",
-            navyDark: "#0d1120",
-            goldAccent: "#fca311",
-          },
-        },
-      },
-    };
-  </script>
-
-  <!-- Font Awesome -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" defer></script>
-  <script src="../JS/signUp.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - DSA Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyDeep: "#0b092d",
+                        navySoft: "#20213b",
+                        navyDark: "#0d1120",
+                        goldAccent: "#fca311",
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+    </style>
 </head>
-
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-b from-navyDeep via-navySoft to-navyDark text-white">
-
-  <div id="signupCard"
-       class="relative bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl opacity-0 translate-y-8 transition-all duration-700 ease-out">
-
-    <button id="closeBtn"
-            class="absolute top-4 right-4 text-gray-400 hover:text-goldAccent text-2xl font-bold transition-colors duration-300">
-      &times;
-    </button>
-
-    <h1 class="text-3xl font-bold text-center text-goldAccent mb-2">Create Account</h1>
-    <p class="text-gray-400 text-center mb-8 text-sm">Join DsaViz and start your learning journey</p>
-
-    <form id="signupForm" class="space-y-5">
-      <div class="transition-all duration-300 hover:scale-[1.02]">
-        <label class="block text-sm text-gray-300 mb-1">Full Name</label>
-        <input id="signupName" type="text" required
-               class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white
-                      focus:ring-2 focus:ring-goldAccent outline-none"
-               placeholder="John Doe">
-      </div>
-
-      <div class="transition-all duration-300 hover:scale-[1.02]">
-        <label class="block text-sm text-gray-300 mb-1">Email</label>
-        <input id="signupEmail" type="email" required
-               class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white
-                      focus:ring-2 focus:ring-goldAccent outline-none"
-               placeholder="you@example.com">
-      </div>
-
-      <div class="relative transition-all duration-300 hover:scale-[1.02]">
-        <label class="block text-sm text-gray-300 mb-1">Password</label>
-        <input id="signupPassword" type="password" required
-               class="w-full px-4 py-2 pr-10 rounded-lg bg-white/10 border border-white/20 text-white
-                      focus:ring-2 focus:ring-goldAccent outline-none"
-               placeholder="••••••••">
-        <button type="button" id="toggleSignupPassword"
-                class="absolute right-3 top-8 text-gray-400 hover:text-goldAccent transition-colors duration-200">
-          <i class="fa-solid fa-eye"></i>
-        </button>
-        <div class="h-2 w-full bg-white/20 rounded mt-2">
-            <div id="strengthBar" class="h-2 w-0 rounded transition-all"></div>
-          </div>
-          <p id="strengthText" class="text-xs mt-1 text-grayLight">
-            Password Strength:
-          </p>
-        </div>
-     
-
-      <button type="submit"
-              class="w-full bg-goldAccent text-navyDark font-semibold py-2 rounded-lg hover:bg-white hover:text-navyDark
-                     transition transform hover:scale-105 duration-300">
-        Sign Up
-      </button>
-
-      <p class="text-center text-gray-400 text-sm mt-4">
-        Already have an account?
-        <a href="login.html" class="text-goldAccent hover:underline hover:scale-105 inline-block transition-transform duration-200">
-          Login here
-        </a>
-      </p>
-       </div>
-    </form>
-  </div>
-
+    
+    <script>
+        // Redirect if already logged in
+        if (localStorage.getItem('dsaLoggedIn') === 'true') {
+            window.location.href = 'main';
+        }
+    </script>
+    
+    <div class="animate-fade-in bg-navySoft/80 border border-goldAccent/30 backdrop-blur-xl p-8 rounded-2xl w-11/12 max-w-md shadow-2xl">
+        <h1 class="text-3xl font-bold text-center text-goldAccent mb-2">Create Account</h1>
+        <p class="text-gray-400 text-center mb-6">Join DSA Visualizer</p>
+        
+        <div id="message" class="mb-4 hidden p-3 rounded"></div>
+        
+        <form id="signupForm" class="space-y-5">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Full Name</label>
+                <input id="name" type="text" required 
+                       class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none"
+                       placeholder="John Doe">
+            </div>
+            
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Email</label>
+                <input id="email" type="email" required 
+                       class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none"
+                       placeholder="you@example.com">
+            </div>
+            
+            <div class="relative">
+                <label class="block text-sm text-gray-300 mb-1">Password</label>
+                <input id="password" type="password" required 
+                       class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none"
+                       placeholder="••••••••">
+                <button type="button" id="togglePassword" class="absolute right-3 top-8 text-gray-400">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <p class="text-sm text-gray-400 mt-1">Password must be at least 6 characters</p>
+            </div>
+            
+            <div class="relative">
+                <label class="block text-sm text-gray-300 mb-1">Confirm Password</label>
+                <input id="confirmPassword" type="password" required 
+                       class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-goldAccent outline-none"
+                       placeholder="••••••••">
+                <button type="button" id="toggleConfirm" class="absolute right-3 top-8 text-gray-400">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            
+            <button type="submit" id="submitBtn" 
+                    class="w-full bg-goldAccent hover:bg-white text-navyDark font-semibold py-2 rounded-lg transition duration-300">
+                Create Account
+            </button>
+            
+            <p class="text-center text-gray-400 text-sm">
+                Already have an account? 
+                <a href="login" class="text-goldAccent hover:underline font-medium">
+                    Login here
+                </a>
+            </p>
+        </form>
+    </div>
+    
+    <script src="/public/JS/signUp.js"></script>
 </body>
 </html>

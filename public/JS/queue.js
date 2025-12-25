@@ -1,610 +1,357 @@
-// Queue Data Structures
-let simpleQueue = [];
-let circularQueue = {
-    data: new Array(8).fill(null),
-    front: -1,
-    rear: -1,
-    capacity: 8
-};
-let priorityQueue = [];
-let dequeData = [];
-let printerQueue = [];
-let callQueue = [];
-let taskQueue = [];
+// Queue implementation
+class Queue {
+    constructor(capacity = 10) {
+        this.items = [];
+        this.capacity = capacity;
+    }
 
-// Theme Management
-function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    enqueue(element) {
+        if (this.isFull()) {
+            return false;
+        }
+        this.items.push(element);
+        return true;
+    }
+
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items.shift();
+    }
+
+    front() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items[0];
+    }
+
+    rear() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items[this.items.length - 1];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    isFull() {
+        return this.items.length >= this.capacity;
+    }
+
+    size() {
+        return this.items.length;
+    }
+
+    clear() {
+        this.items = [];
+    }
+
+    getItems() {
+        return [...this.items];
+    }
 }
 
-document.getElementById('themeToggle').addEventListener('click', function() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-});
+// Initialize queue
+const queue = new Queue(10);
 
-// Navigation
-document.getElementById('homeBtn').addEventListener('click', function() {
-    showSection('homeSection');
-});
+// DOM elements
+const queueValueInput = document.getElementById('queueValue');
+const enqueueBtn = document.getElementById('enqueueBtn');
+const dequeueBtn = document.getElementById('dequeueBtn');
+const frontBtn = document.getElementById('frontBtn');
+const rearBtn = document.getElementById('rearBtn');
+const sizeBtn = document.getElementById('sizeBtn');
+const isEmptyBtn = document.getElementById('isEmptyBtn');
+const clearBtn = document.getElementById('clearBtn');
+const queueContainer = document.getElementById('queueContainer');
+const output = document.getElementById('output');
+const queueSize = document.getElementById('queueSize');
+const queueFront = document.getElementById('queueFront');
+const queueRear = document.getElementById('queueRear');
+const queueCapacity = document.getElementById('queueCapacity');
 
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('click', function() {
-        const tab = this.getAttribute('data-tab');
-        showSection(tab + 'Section');
-    });
-});
+// Colors for queue elements
+const elementColors = [
+    'from-purple-500 to-pink-500 border-purple-400',
+    'from-blue-500 to-cyan-500 border-blue-400',
+    'from-green-500 to-emerald-500 border-green-400',
+    'from-yellow-500 to-amber-500 border-yellow-400',
+    'from-red-500 to-pink-500 border-red-400',
+    'from-indigo-500 to-purple-500 border-indigo-400',
+    'from-teal-500 to-green-500 border-teal-400',
+    'from-orange-500 to-red-500 border-orange-400',
+    'from-cyan-500 to-blue-500 border-cyan-400',
+    'from-pink-500 to-rose-500 border-pink-400'
+];
 
-function showSection(sectionId) {
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-    });
-    document.getElementById(sectionId).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// Update queue visualization
+function updateQueueVisualization() {
+    queueContainer.innerHTML = '';
+    const items = queue.getItems();
+    
+    if (items.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'text-gray-400 text-lg';
+        emptyMessage.textContent = 'Queue is empty. Add elements using Enqueue.';
+        queueContainer.appendChild(emptyMessage);
+    } else {
+        items.forEach((item, index) => {
+            const element = document.createElement('div');
+            element.className = `queue-element bg-gradient-to-br ${elementColors[index % elementColors.length]} text-white border-2 shadow-lg`;
+            
+            // Add index indicator for first element
+            if (index === 0) {
+                element.innerHTML = `
+                    <div class="text-xs bg-white/20 px-2 py-1 rounded-full mb-1">Front</div>
+                    <div class="text-2xl font-bold">${item}</div>
+                    <div class="text-xs mt-1">Index: ${index}</div>
+                `;
+            } else if (index === items.length - 1) {
+                element.innerHTML = `
+                    <div class="text-xs bg-white/20 px-2 py-1 rounded-full mb-1">Rear</div>
+                    <div class="text-2xl font-bold">${item}</div>
+                    <div class="text-xs mt-1">Index: ${index}</div>
+                `;
+            } else {
+                element.innerHTML = `
+                    <div class="text-2xl font-bold">${item}</div>
+                    <div class="text-xs mt-1">Index: ${index}</div>
+                `;
+            }
+            
+            // Add animation for recently added element
+            if (index === items.length - 1 && items.length > 1) {
+                element.classList.add('enqueue-animation');
+            }
+            
+            queueContainer.appendChild(element);
+        });
+    }
+    
+    // Update info panel
+    updateQueueInfo();
 }
 
-// Helper Functions
-function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        background: ${type === 'error' ? 'rgba(248, 113, 113, 0.9)' : 'rgba(252, 163, 17, 0.9)'};
-        color: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        animation: slideInRight 0.3s ease;
-        backdrop-filter: blur(10px);
-        font-weight: 500;
-    `;
+// Update queue information panel
+function updateQueueInfo() {
+    queueSize.textContent = queue.size();
+    queueCapacity.textContent = queue.capacity;
     
-    document.body.appendChild(notification);
+    const frontElement = queue.front();
+    const rearElement = queue.rear();
     
+    queueFront.textContent = frontElement !== null ? frontElement : 'None';
+    queueRear.textContent = rearElement !== null ? rearElement : 'None';
+}
+
+// Show output message with animation
+function showOutput(message, isError = false) {
+    output.textContent = message;
+    output.className = 'text-lg font-mono bg-gray-900/50 p-2 rounded-lg min-h-[40px] flex items-center justify-center message-animation';
+    
+    if (isError) {
+        output.classList.add('text-red-400');
+    } else {
+        output.classList.add('text-green-400');
+    }
+    
+    // Remove animation class after animation completes
     setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+        output.classList.remove('message-animation');
+    }, 300);
 }
 
-// Simple Queue Functions
-function simpleEnqueue() {
-    const input = document.getElementById('simpleInput');
-    const value = input.value.trim();
+// Enqueue operation
+function enqueueElement() {
+    const value = queueValueInput.value.trim();
     
     if (!value) {
-        showNotification('Please enter a value', 'error');
+        showOutput('Please enter a value to enqueue', true);
         return;
     }
     
-    simpleQueue.push(value);
-    input.value = '';
-    renderSimpleQueue();
-    updateSimpleInfo();
-    showNotification(`Enqueued: ${value}`);
-}
-
-function simpleDequeue() {
-    if (simpleQueue.length === 0) {
-        showNotification('Queue is empty!', 'error');
+    if (queue.isFull()) {
+        showOutput('Queue is full! Cannot enqueue more elements.', true);
         return;
     }
     
-    const element = document.querySelector('#simpleQueue .queue-element');
-    if (element) {
-        element.classList.add('dequeue-animation');
-        setTimeout(() => {
-            const value = simpleQueue.shift();
-            renderSimpleQueue();
-            updateSimpleInfo();
-            showNotification(`Dequeued: ${value}`);
-        }, 500);
-    }
-}
-
-function simplePeek() {
-    if (simpleQueue.length === 0) {
-        showNotification('Queue is empty!', 'error');
-        return;
-    }
-    showNotification(`Front element: ${simpleQueue[0]}`);
-}
-
-function simpleClear() {
-    simpleQueue = [];
-    renderSimpleQueue();
-    updateSimpleInfo();
-    showNotification('Queue cleared');
-}
-
-function renderSimpleQueue() {
-    const container = document.getElementById('simpleQueue');
-    container.innerHTML = '';
+    const success = queue.enqueue(value);
     
-    if (simpleQueue.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary); font-size: 1rem;\">Queue is empty</div>';
-        return;
-    }
-    
-    simpleQueue.forEach(value => {
-        const element = document.createElement('div');
-        element.className = 'queue-element';
-        element.textContent = value;
-        container.appendChild(element);
-    });
-}
-
-function updateSimpleInfo() {
-    document.getElementById('simpleSize').textContent = simpleQueue.length;
-    document.getElementById('simpleFront').textContent = simpleQueue.length > 0 ? simpleQueue[0] : '-';
-    document.getElementById('simpleRear').textContent = simpleQueue.length > 0 ? simpleQueue[simpleQueue.length - 1] : '-';
-}
-
-// Circular Queue Functions
-function circularEnqueue() {
-    const input = document.getElementById('circularInput');
-    const value = input.value.trim();
-    
-    if (!value) {
-        showNotification('Please enter a value', 'error');
-        return;
-    }
-    
-    // Check if queue is full
-    if ((circularQueue.rear + 1) % circularQueue.capacity === circularQueue.front && circularQueue.front !== -1) {
-        showNotification('Queue is full!', 'error');
-        return;
-    }
-    
-    if (circularQueue.front === -1) {
-        circularQueue.front = 0;
-        circularQueue.rear = 0;
+    if (success) {
+        showOutput(`Enqueued: "${value}" to the queue`);
+        updateQueueVisualization();
+        queueValueInput.value = '';
+        queueValueInput.focus();
+        
+        // Add animation to the last element
+        const elements = queueContainer.querySelectorAll('.queue-element');
+        if (elements.length > 0) {
+            elements[elements.length - 1].classList.add('enqueue-animation');
+        }
     } else {
-        circularQueue.rear = (circularQueue.rear + 1) % circularQueue.capacity;
+        showOutput('Failed to enqueue element', true);
     }
-    
-    circularQueue.data[circularQueue.rear] = value;
-    input.value = '';
-    renderCircularQueue();
-    updateCircularInfo();
-    showNotification(`Enqueued: ${value}`);
 }
 
-function circularDequeue() {
-    if (circularQueue.front === -1) {
-        showNotification('Queue is empty!', 'error');
+// Dequeue operation
+function dequeueElement() {
+    if (queue.isEmpty()) {
+        showOutput('Queue is empty! Cannot dequeue.', true);
         return;
     }
     
-    const value = circularQueue.data[circularQueue.front];
-    circularQueue.data[circularQueue.front] = null;
+    const dequeuedValue = queue.dequeue();
+    showOutput(`Dequeued: "${dequeuedValue}" from the queue`);
     
-    if (circularQueue.front === circularQueue.rear) {
-        circularQueue.front = -1;
-        circularQueue.rear = -1;
-    } else {
-        circularQueue.front = (circularQueue.front + 1) % circularQueue.capacity;
-    }
-    
-    renderCircularQueue();
-    updateCircularInfo();
-    showNotification(`Dequeued: ${value}`);
-}
-
-function circularPeek() {
-    if (circularQueue.front === -1) {
-        showNotification('Queue is empty!', 'error');
-        return;
-    }
-    showNotification(`Front element: ${circularQueue.data[circularQueue.front]}`);
-}
-
-function circularClear() {
-    circularQueue.data = new Array(8).fill(null);
-    circularQueue.front = -1;
-    circularQueue.rear = -1;
-    renderCircularQueue();
-    updateCircularInfo();
-    showNotification('Queue cleared');
-}
-
-function renderCircularQueue() {
-    const container = document.getElementById('circularQueue');
-    container.innerHTML = '';
-    
-    for (let i = 0; i < circularQueue.capacity; i++) {
-        const element = document.createElement('div');
-        element.className = 'circular-element';
-        
-        const index = document.createElement('div');
-        index.className = 'index';
-        index.textContent = i;
-        element.appendChild(index);
-        
-        if (circularQueue.data[i] !== null) {
-            element.classList.add('filled');
-            const value = document.createElement('div');
-            value.className = 'value';
-            value.textContent = circularQueue.data[i];
-            element.appendChild(value);
-        }
-        
-        if (i === circularQueue.front && circularQueue.front !== -1) {
-            element.classList.add('front');
-        }
-        if (i === circularQueue.rear && circularQueue.rear !== -1) {
-            element.classList.add('rear');
-        }
-        
-        container.appendChild(element);
-    }
-}
-
-function updateCircularInfo() {
-    const size = circularQueue.front === -1 ? 0 : 
-                 circularQueue.rear >= circularQueue.front ? 
-                 circularQueue.rear - circularQueue.front + 1 : 
-                 circularQueue.capacity - circularQueue.front + circularQueue.rear + 1;
-    
-    document.getElementById('circularSize').textContent = size;
-    document.getElementById('circularFrontIdx').textContent = circularQueue.front;
-    document.getElementById('circularRearIdx').textContent = circularQueue.rear;
-}
-
-// Priority Queue Functions
-function priorityEnqueue() {
-    const valueInput = document.getElementById('priorityValue');
-    const priorityInput = document.getElementById('priorityLevel');
-    const value = valueInput.value.trim();
-    const priority = parseInt(priorityInput.value);
-    
-    if (!value || !priority) {
-        showNotification('Please enter both value and priority', 'error');
-        return;
-    }
-    
-    const item = { value, priority };
-    
-    // Insert based on priority (lower number = higher priority)
-    let inserted = false;
-    for (let i = 0; i < priorityQueue.length; i++) {
-        if (priority < priorityQueue[i].priority) {
-            priorityQueue.splice(i, 0, item);
-            inserted = true;
-            break;
-        }
-    }
-    
-    if (!inserted) {
-        priorityQueue.push(item);
-    }
-    
-    valueInput.value = '';
-    priorityInput.value = '';
-    renderPriorityQueue();
-    updatePriorityInfo();
-    showNotification(`Enqueued: ${value} (Priority: ${priority})`);
-}
-
-function priorityDequeue() {
-    if (priorityQueue.length === 0) {
-        showNotification('Queue is empty!', 'error');
-        return;
-    }
-    
-    const element = document.querySelector('#priorityQueue .queue-element');
-    if (element) {
-        element.classList.add('dequeue-animation');
+    // Animate the dequeued element if it exists
+    const firstElement = queueContainer.querySelector('.queue-element');
+    if (firstElement) {
+        firstElement.classList.add('dequeue-animation');
         setTimeout(() => {
-            const item = priorityQueue.shift();
-            renderPriorityQueue();
-            updatePriorityInfo();
-            showNotification(`Dequeued: ${item.value} (Priority: ${item.priority})`);
+            updateQueueVisualization();
         }, 500);
+    } else {
+        updateQueueVisualization();
     }
 }
 
-function priorityPeek() {
-    if (priorityQueue.length === 0) {
-        showNotification('Queue is empty!', 'error');
-        return;
+// Front operation
+function showFront() {
+    const frontElement = queue.front();
+    
+    if (frontElement !== null) {
+        showOutput(`Front element: "${frontElement}"`);
+        
+        // Highlight front element
+        const elements = queueContainer.querySelectorAll('.queue-element');
+        if (elements.length > 0) {
+            elements[0].classList.add('border-4', 'border-yellow-400');
+            setTimeout(() => {
+                elements[0].classList.remove('border-4', 'border-yellow-400');
+            }, 1000);
+        }
+    } else {
+        showOutput('Queue is empty! No front element.', true);
     }
-    showNotification(`Highest priority: ${priorityQueue[0].value} (Priority: ${priorityQueue[0].priority})`);
 }
 
-function priorityClear() {
-    priorityQueue = [];
-    renderPriorityQueue();
-    updatePriorityInfo();
-    showNotification('Queue cleared');
-}
-
-function renderPriorityQueue() {
-    const container = document.getElementById('priorityQueue');
-    container.innerHTML = '';
+// Rear operation
+function showRear() {
+    const rearElement = queue.rear();
     
-    if (priorityQueue.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary); font-size: 1rem;\">Queue is empty</div>';
-        return;
+    if (rearElement !== null) {
+        showOutput(`Rear element: "${rearElement}"`);
+        
+        // Highlight rear element
+        const elements = queueContainer.querySelectorAll('.queue-element');
+        if (elements.length > 0) {
+            elements[elements.length - 1].classList.add('border-4', 'border-blue-400');
+            setTimeout(() => {
+                elements[elements.length - 1].classList.remove('border-4', 'border-blue-400');
+            }, 1000);
+        }
+    } else {
+        showOutput('Queue is empty! No rear element.', true);
     }
-    
-    priorityQueue.forEach(item => {
-        const element = document.createElement('div');
-        element.className = 'queue-element priority-label';
-        element.textContent = item.value;
-        element.setAttribute('data-priority', item.priority);
-        container.appendChild(element);
-    });
 }
 
-function updatePriorityInfo() {
-    document.getElementById('prioritySize').textContent = priorityQueue.length;
-    document.getElementById('priorityHighest').textContent = 
-        priorityQueue.length > 0 ? `${priorityQueue[0].value} (P:${priorityQueue[0].priority})` : '-';
+// Size operation
+function showSize() {
+    const size = queue.size();
+    showOutput(`Queue size: ${size} element${size !== 1 ? 's' : ''}`);
+    
+    // Pulse animation on size display
+    queueSize.classList.add('scale-125');
+    setTimeout(() => {
+        queueSize.classList.remove('scale-125');
+    }, 300);
 }
 
-// Deque Functions
-function dequePushFront() {
-    const input = document.getElementById('dequeInput');
-    const value = input.value.trim();
+// Is Empty operation
+function checkIsEmpty() {
+    const isEmpty = queue.isEmpty();
     
-    if (!value) {
-        showNotification('Please enter a value', 'error');
-        return;
-    }
-    
-    dequeData.unshift(value);
-    input.value = '';
-    renderDeque();
-    updateDequeInfo();
-    showNotification(`Pushed to front: ${value}`);
-}
-
-function dequePushRear() {
-    const input = document.getElementById('dequeInput');
-    const value = input.value.trim();
-    
-    if (!value) {
-        showNotification('Please enter a value', 'error');
-        return;
+    if (isEmpty) {
+        showOutput('Queue is empty', true);
+    } else {
+        showOutput('Queue is not empty');
     }
     
-    dequeData.push(value);
-    input.value = '';
-    renderDeque();
-    updateDequeInfo();
-    showNotification(`Pushed to rear: ${value}`);
+    // Visual feedback
+    queueContainer.classList.add('border-2', isEmpty ? 'border-red-500' : 'border-green-500');
+    setTimeout(() => {
+        queueContainer.classList.remove('border-2', 'border-red-500', 'border-green-500');
+    }, 1000);
 }
 
-function dequePopFront() {
-    if (dequeData.length === 0) {
-        showNotification('Deque is empty!', 'error');
-        return;
-    }
-    
-    const value = dequeData.shift();
-    renderDeque();
-    updateDequeInfo();
-    showNotification(`Popped from front: ${value}`);
-}
-
-function dequePopRear() {
-    if (dequeData.length === 0) {
-        showNotification('Deque is empty!', 'error');
+// Clear queue operation
+function clearQueue() {
+    if (queue.isEmpty()) {
+        showOutput('Queue is already empty', true);
         return;
     }
     
-    const value = dequeData.pop();
-    renderDeque();
-    updateDequeInfo();
-    showNotification(`Popped from rear: ${value}`);
+    queue.clear();
+    showOutput('Queue cleared successfully');
+    updateQueueVisualization();
 }
 
-function dequeClear() {
-    dequeData = [];
-    renderDeque();
-    updateDequeInfo();
-    showNotification('Deque cleared');
-}
+// Event Listeners
+enqueueBtn.addEventListener('click', enqueueElement);
 
-function renderDeque() {
-    const container = document.getElementById('dequeQueue');
-    container.innerHTML = '';
-    
-    if (dequeData.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary); font-size: 1rem;\">Deque is empty</div>';
-        return;
-    }
-    
-    dequeData.forEach(value => {
-        const element = document.createElement('div');
-        element.className = 'queue-element';
-        element.textContent = value;
-        container.appendChild(element);
-    });
-}
+dequeueBtn.addEventListener('click', dequeueElement);
 
-function updateDequeInfo() {
-    document.getElementById('dequeSize').textContent = dequeData.length;
-    document.getElementById('dequeFront').textContent = dequeData.length > 0 ? dequeData[0] : '-';
-    document.getElementById('dequeRear').textContent = dequeData.length > 0 ? dequeData[dequeData.length - 1] : '-';
-}
+frontBtn.addEventListener('click', showFront);
 
-// Application Functions - Printer Queue
-let jobCounter = 0;
-function addPrintJob() {
-    jobCounter++;
-    const job = `Job-${jobCounter}`;
-    printerQueue.push(job);
-    renderPrinterQueue();
-    showNotification(`Added print job: ${job}`);
-}
+rearBtn.addEventListener('click', showRear);
 
-function processPrintJob() {
-    if (printerQueue.length === 0) {
-        showNotification('No print jobs in queue!', 'error');
-        return;
-    }
-    
-    const job = printerQueue.shift();
-    renderPrinterQueue();
-    showNotification(`Processing: ${job}`);
-}
+sizeBtn.addEventListener('click', showSize);
 
-function renderPrinterQueue() {
-    const container = document.querySelector('#printerDemo .printer-queue');
-    container.innerHTML = '';
-    
-    if (printerQueue.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary);\">No jobs</div>';
-        return;
-    }
-    
-    printerQueue.forEach(job => {
-        const element = document.createElement('div');
-        element.className = 'app-item';
-        element.textContent = job;
-        container.appendChild(element);
-    });
-}
+isEmptyBtn.addEventListener('click', checkIsEmpty);
 
-// Application Functions - Call Center
-let callCounter = 0;
-function addCall() {
-    callCounter++;
-    const call = `Call-${callCounter}`;
-    callQueue.push(call);
-    renderCallQueue();
-    showNotification(`Incoming call: ${call}`);
-}
+clearBtn.addEventListener('click', clearQueue);
 
-function answerCall() {
-    if (callQueue.length === 0) {
-        showNotification('No calls waiting!', 'error');
-        return;
-    }
-    
-    const call = callQueue.shift();
-    renderCallQueue();
-    showNotification(`Answered: ${call}`);
-}
-
-function renderCallQueue() {
-    const container = document.querySelector('#callDemo .call-queue');
-    container.innerHTML = '';
-    
-    if (callQueue.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary);\">No calls</div>';
-        return;
-    }
-    
-    callQueue.forEach(call => {
-        const element = document.createElement('div');
-        element.className = 'app-item';
-        element.textContent = call;
-        container.appendChild(element);
-    });
-}
-
-// Application Functions - Task Scheduling
-let taskCounter = 0;
-const tasks = ['Update DB', 'Send Email', 'Generate Report', 'Backup Data', 'Clear Cache'];
-
-function addTask() {
-    const task = tasks[Math.floor(Math.random() * tasks.length)];
-    taskCounter++;
-    const taskName = `${task}-${taskCounter}`;
-    taskQueue.push(taskName);
-    renderTaskQueue();
-    showNotification(`Scheduled: ${taskName}`);
-}
-
-function executeTask() {
-    if (taskQueue.length === 0) {
-        showNotification('No tasks in queue!', 'error');
-        return;
-    }
-    
-    const task = taskQueue.shift();
-    renderTaskQueue();
-    showNotification(`Executing: ${task}`);
-}
-
-function renderTaskQueue() {
-    const container = document.querySelector('#taskDemo .task-queue');
-    container.innerHTML = '';
-    
-    if (taskQueue.length === 0) {
-        container.innerHTML = '<div style=\"color: var(--text-secondary);\">No tasks</div>';
-        return;
-    }
-    
-    taskQueue.forEach(task => {
-        const element = document.createElement('div');
-        element.className = 'app-item';
-        element.textContent = task;
-        container.appendChild(element);
-    });
-}
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    const activeSection = document.querySelector('.section.active');
-    
+// Enter key support for input
+queueValueInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        if (activeSection.id === 'simpleSection') {
-            simpleEnqueue();
-        } else if (activeSection.id === 'circularSection') {
-            circularEnqueue();
-        } else if (activeSection.id === 'prioritySection') {
-            priorityEnqueue();
-        } else if (activeSection.id === 'dequeSection') {
-            dequePushRear();
-        }
+        enqueueElement();
     }
 });
 
-// Add animation styles
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+// Initialize visualization
+updateQueueVisualization();
 
-// Initialize on page load
-initTheme();
-renderSimpleQueue();
-renderCircularQueue();
-renderPriorityQueue();
-renderDeque();
-updateSimpleInfo();
-updateCircularInfo();
-updatePriorityInfo();
-updateDequeInfo();
+// Additional feature: Auto-generate random elements button
+function addRandomElementButton() {
+    const randomBtn = document.createElement('button');
+    randomBtn.id = 'randomBtn';
+    randomBtn.className = 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-indigo-700 hover:border-indigo-600 transition-all duration-300 w-full mt-3';
+    randomBtn.innerHTML = '<i class="fas fa-random mr-2"></i> Add Random Element';
+    
+    // Insert after enqueue button
+    const inputContainer = queueValueInput.parentElement;
+    inputContainer.parentElement.insertBefore(randomBtn, inputContainer.nextSibling);
+    
+    randomBtn.addEventListener('click', () => {
+        const randomValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const randomValue = randomValues[Math.floor(Math.random() * randomValues.length)];
+        queueValueInput.value = randomValue;
+        enqueueElement();
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    updateQueueVisualization();
+    addRandomElementButton();
+    queueValueInput.focus();
+});
+
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { Queue };
+}

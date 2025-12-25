@@ -4,133 +4,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Array Visualizer</title>
     <link rel="stylesheet" href="../../src/output.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../CSS/array.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="../JS/array.js" defer></script>
-
+    <style>
+        .array-element {
+            min-width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .array-container {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            overflow-x: auto;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+        
+        .array-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .array-container::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+        
+        .array-container::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 4px;
+        }
+        
+        .grid-container {
+            display: grid;
+            gap: 0.75rem;
+            padding: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .array-element.insert-animation {
+            animation: insertEffect 0.5s ease-out;
+        }
+        
+        .array-element.delete-animation {
+            animation: deleteEffect 0.5s ease-out;
+        }
+        
+        .array-element.search-animation {
+            animation: searchEffect 1s ease-in-out;
+        }
+        
+        .array-element.update-animation {
+            animation: updateEffect 0.5s ease-out;
+        }
+        
+        @keyframes insertEffect {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+                background-color: rgba(34, 197, 94, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes deleteEffect {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                background-color: rgba(239, 68, 68, 0.3);
+            }
+            100% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes searchEffect {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+                background-color: rgba(245, 158, 11, 0.3);
+            }
+        }
+        
+        @keyframes updateEffect {
+            0% {
+                transform: scale(1);
+                background-color: rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                transform: scale(1.1);
+                background-color: rgba(59, 130, 246, 0.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .message-animation {
+            animation: messagePop 0.3s ease-out;
+        }
+        
+        @keyframes messagePop {
+            0% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .row-label, .col-label {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            position: absolute;
+        }
+        
+        .row-label {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .col-label {
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
 </head>
 
-<body class="bg-indigo-950 bg-no-repeat  themeToggle">
-
-    <header id="dsNav" class="sticky z-50 top-0 flex justify-between w-full">
-        <nav class="text-3xl text-white flex justify-between py-4 w-full">
-            <h1 class="">Array</h1>
+<body class="bg-indigo-950 min-h-screen">
+    <header class="w-full">
+        <nav class="text-3xl text-white flex justify-between py-4 w-full px-4">
+            <h1>Array Visualizer</h1>
             <ul class="flex space-x-4">
                 <li>
-                    <button
-                        class="border-2 border-indigo-800 text-white px-2 py-2 rounded hover:border-violet-700 transition-all duration-300 ease-in">
-                        <a href="../HTML/mainPage.html">Home </a>
-                    </button>
-                </li>
-                <li>
-                    <button id="themeToggle"
-                        class="theme-toggle p-4 border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in"
-                        aria-label="Toggle theme">
-                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
-                        <!-- <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg> -->
+                    <button class="border-2 border-indigo-800 text-white px-4 py-2 rounded hover:border-violet-700 transition-all duration-300">
+                        <a href="mainPage.html">Home</a>
                     </button>
                 </li>
             </ul>
         </nav>
     </header>
-    <main class="text-3xl w-full text-white">
-        <h1
-            class="backdrop-blur-xl w-full  bg-white/10 border border-violet-700 rounded-2xl shadow-lg p-6 text-center mt-4  mx-2">
-            Learn Arrays </h1>
-        <section class="flex flex-col mx-2 mt-14 py-10">
-            <div class="flex gap-2 mt-10 md:flex-row flex-col ">
-                <div class="flex border-2 rounded-lg border-violet-700 flex-col p-2 ">
-                    <div class="flex justify-center gap-10 items-center mt-2">
-                        <button id="oneBtn"
-                            class="bg-yellow-600 w-48 text-center py-2 rounded-lg border-2 border-indigo-900  hover:border-violet-700 transition-all duration-300 ease-in">1D</button>
-                        <button id="twoBtn"
-                            class="bg-yellow-600 w-48 text-center py-2 rounded-lg border-2 border-indigo-900  hover:border-violet-700 transition-all duration-300 ease-in">2D</button>
-                    </div>
-                    <div class="flex mt-2 md:flex-row flex-col">
-                        <div class="flex  flex-col mt-10  ">
-                            <div id="divTwoD" class=" flex hidden justify-center items-center gap-10 w-full ">
-                                <div class="flex gap-2 w-1/2 ">
-                                    <h1>Row</h1>
-                                    <input id="noOfRow" type="text"
-                                        class="theme-toggle w-1/2 border-2 text-black  border-indigo-900 rounded-lg hover:border-violet-700 transition-all duration-300 ease-in"></input>
-                                </div>
-                                <div class="flex gap-2 w-1/2 ">
-                                    <h1>Col</h1>
-                                    <input id="noOfCol" type="text"
-                                        class="theme-toggle w-1/2 border-2 text-black  border-indigo-900 rounded-lg hover:border-violet-700 transition-all duration-300 ease-in"></input>
-                                </div>
-                            </div>
-                            <div class="flex flex-col my-2 gap-2 ">
-                                <div class="flex gap-2 hidden">
-                                    <h2>Values</h2>
-                                    <input type="text" id="arrayValues"
-                                        class="text-black rounded-lg w-full outline-none px-2 py-1 border-2 border-violet-700">
-                                </div>
-                                <div class="flex justify-end gap-2">
-                                    <button id="randomBtn"
-                                        class="theme-toggle  border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in">Random</button>
-                                    <button id="runBtn"
-                                        class="theme-toggle  hidden border-2  border-indigo-900 rounded-lg px-6 hover:border-violet-700 transition-all duration-300 ease-in">Run</button>
-                                </div>
-                            </div>
 
+    <main class="text-white px-4">
+        <h1 class="bg-white/10 border border-violet-700 rounded-2xl shadow-lg p-6 text-center mt-4 text-2xl font-bold">
+            Learn Array Data Structure
+        </h1>
+
+        <section class="flex flex-col mt-10">
+            <div class="flex gap-4 md:flex-row flex-col">
+                <!-- Left Panel - Controls -->
+                <div class="flex border-2 rounded-lg border-violet-700 flex-col p-4 w-full md:w-1/3">
+                    <h2 class="text-2xl mb-6 text-center border-b border-violet-600 pb-2">Array Controls</h2>
+                    
+                    <!-- Array Type Selection -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-3">Array Type:</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="oneDBtn" class="array-type-btn active bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg border-2 border-emerald-700">
+                                1D Array
+                            </button>
+                            <button id="twoDBtn" class="array-type-btn bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-lg border-2 border-blue-700">
+                                2D Array
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Size Controls -->
+                    <div id="sizeControls1D" class="mb-6">
+                        <label class="block text-xl mb-2">Array Size (1D):</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="arraySize" min="1" max="20" value="8" placeholder="Size"
+                                class="flex-1 bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                            <button id="updateSizeBtn"
+                                class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold px-4 py-3 rounded-lg border-2 border-blue-700 hover:border-blue-600 transition-all duration-300">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="sizeControls2D" class="mb-6 hidden">
+                        <label class="block text-xl mb-2">Array Dimensions (2D):</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm mb-1">Rows</label>
+                                <input type="number" id="rowsInput" min="1" max="6" value="3"
+                                    class="w-full bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1">Columns</label>
+                                <input type="number" id="colsInput" min="1" max="8" value="3"
+                                    class="w-full bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Value Input -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-2">Enter Value:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="arrayValue" placeholder="Enter a value"
+                                class="flex-1 bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                            <button id="insertAtBtn"
+                                class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold px-4 py-3 rounded-lg border-2 border-emerald-700 hover:border-emerald-600 transition-all duration-300">
+                                Insert At
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Position Input -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-2">Position:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="positionInput" placeholder="Index for 1D or row,col for 2D"
+                                class="flex-1 bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Array Operations -->
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-3">Array Operations</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="searchBtn"
+                                class="bg-gradient-to-r from-yellow-600 to-amber-600 text-white font-bold py-3 rounded-lg border-2 border-yellow-700 hover:border-yellow-600 transition-all duration-300">
+                                Search
+                            </button>
+                            <button id="updateBtn"
+                                class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-lg border-2 border-blue-700 hover:border-blue-600 transition-all duration-300">
+                                Update
+                            </button>
+                            <button id="deleteBtn"
+                                class="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-red-700 hover:border-red-600 transition-all duration-300">
+                                Delete
+                            </button>
+                            <button id="traverseBtn"
+                                class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-purple-700 hover:border-purple-600 transition-all duration-300">
+                                Traverse
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Additional Operations -->
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-3">Advanced Operations</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="sortBtn"
+                                class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold py-3 rounded-lg border-2 border-teal-700 hover:border-teal-600 transition-all duration-300">
+                                Sort
+                            </button>
+                            <button id="reverseBtn"
+                                class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-purple-700 hover:border-purple-600 transition-all duration-300">
+                                Reverse
+                            </button>
+                            <button id="randomBtn"
+                                class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 rounded-lg border-2 border-indigo-700 hover:border-indigo-600 transition-all duration-300">
+                                Randomize
+                            </button>
+                            <button id="clearBtn"
+                                class="bg-gradient-to-r from-gray-600 to-gray-700 text-white font-bold py-3 rounded-lg border-2 border-gray-700 hover:border-gray-600 transition-all duration-300">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Array Info -->
+                    <div class="bg-gray-900/50 border border-violet-800 rounded-xl p-4 mt-4">
+                        <h3 class="text-xl font-semibold mb-3">📊 Array Information</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Array Type:</span>
+                                <span id="arrayType" class="text-lg font-bold text-violet-400">1D</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Size/Dimensions:</span>
+                                <span id="arrayDimensions" class="text-lg font-bold text-green-400">8</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Memory Cells:</span>
+                                <span id="arrayCells" class="text-lg font-bold text-blue-400">8</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Index Range:</span>
+                                <span id="arrayRange" class="text-lg font-bold text-yellow-400">0-7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Visualization -->
+                <div class="rounded-lg flex flex-col border-2 border-violet-700 w-full md:w-2/3 min-h-[500px] p-4">
+                    <!-- Title -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-2xl font-bold">🚀 Array Visualization</h2>
+                        <p class="text-lg text-gray-300">Contiguous memory allocation with fixed size</p>
+                    </div>
+
+                    <!-- Array Visualization Area -->
+                    <div class="flex-1 flex flex-col justify-center border-2 border-dashed border-violet-600 rounded-xl p-4 bg-white/5 backdrop-blur-sm">
+                        <!-- Index Indicator -->
+                        <div class="text-center mb-4">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-700 to-purple-700 rounded-lg shadow-lg">
+                                <i class="fas fa-hashtag text-yellow-400"></i>
+                                <span class="font-bold text-lg">Index Indicators →</span>
+                                <span class="text-sm text-gray-300">(0-based indexing)</span>
+                            </div>
                         </div>
 
-                    </div>
-                </div>
+                        <!-- Array Elements Container -->
+                        <div class="flex flex-col items-center justify-center" id="arrayContainer">
+                            <!-- 1D Array Container -->
+                            <div class="array-container hidden" id="oneDContainer">
+                                <!-- 1D array elements will be inserted here -->
+                            </div>
 
-                <div class=" rounded-lg flex justify-center items-center border-2 border-violet-700  w-full h-96 p-2">
-                    <div class="flex w-full md:w-auto gap-2 flex-wrap border-2 border-black rounded-lg backdrop-blur-xl bg-white/10 shadow-lg p-4"
-                        id="arrayDataStructure">
+                            <!-- 2D Array Container -->
+                            <div class="grid-container hidden" id="twoDContainer">
+                                <!-- 2D array elements will be inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Memory Layout -->
+                        <div class="text-center mt-4">
+                            <div class="inline-flex items-center gap-4 text-sm text-gray-400">
+                                <i class="fas fa-memory text-cyan-400"></i>
+                                <span>Contiguous Memory Blocks</span>
+                                <i class="fas fa-arrows-alt-h text-violet-400"></i>
+                                <span>Fixed Size: O(1) Access</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Display -->
+                    <div class="mt-4 p-3 bg-gradient-to-r from-violet-900/30 to-purple-900/30 border border-violet-700 rounded-xl">
+                        <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
+                            <i class="fas fa-info-circle"></i> Status Message
+                        </h3>
+                        <div id="output" class="text-lg font-mono bg-gray-900/50 p-2 rounded-lg min-h-[40px] flex items-center justify-center">
+                            1D Array initialized with 8 elements. Click on elements to edit values.
+                        </div>
                     </div>
                 </div>
             </div>
-
         </section>
-        <section class="text-gray-200 leading-relaxed mt-20 w-full">
-            <div class="text-center leading-relaxed p-2 border-violet-700 border-2 rounded-lg mt-32 mx-2">
-                Arrays form one of the most fundamental structures in computer science.
-                You can think of them as a row of neatly arranged storage boxes, each holding a value and each reachable
-                by its position number, known as the index.
-                Because all the elements sit right next to each other in memory, accessing any item is incredibly
-                fast—almost instant.
 
-                Creating an array is straightforward: decide how many items you want to store, choose their type, and
-                place them side by side.
-                Once created, arrays shine when you need quick lookups, predictable order, and efficient iteration.
+        <!-- Educational Content -->
+        <section class="mt-10 mb-8">
+            <div class="bg-gradient-to-br from-violet-900/30 to-purple-900/30 border-2 border-violet-700 rounded-2xl p-6">
+                <h2 class="text-3xl font-bold mb-6 text-center">📚 Understanding Arrays</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-green-500">
+                        <h3 class="text-xl font-bold text-green-300 mb-2">Time Complexities</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex justify-between">
+                                <span>Access</span>
+                                <span class="font-mono text-green-400">O(1)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Search</span>
+                                <span class="font-mono text-yellow-400">O(n)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Insertion</span>
+                                <span class="font-mono text-red-400">O(n)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Deletion</span>
+                                <span class="font-mono text-red-400">O(n)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-blue-500">
+                        <h3 class="text-xl font-bold text-blue-300 mb-2">Key Properties</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-memory text-blue-400"></i>
+                                <span>Contiguous memory allocation</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-hashtag text-blue-400"></i>
+                                <span>0-based indexing</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-ruler-combined text-blue-400"></i>
+                                <span>Fixed size (static arrays)</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-bolt text-blue-400"></i>
+                                <span>Fast random access</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-red-500">
+                        <h3 class="text-xl font-bold text-red-300 mb-2">Array Types</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center gap-2">
+                                <span class="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></span>
+                                <span>1D Array: Linear collection</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></span>
+                                <span>2D Array: Matrix/Grid</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></span>
+                                <span>Multi-dimensional Arrays</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-                To implement arrays well, treat them with intention.
-                Use clear indexing, avoid going out of bounds, and choose sizes that reflect how the data will grow.
-                When flexibility is needed, dynamic structures like lists or vectors can step in, but arrays remain the
-                ideal choice whenever speed and structure matter most.
-
+                <!-- Real-world Applications -->
+                <div class="mt-6 bg-gradient-to-r from-emerald-900/20 to-green-900/20 border border-emerald-700/50 rounded-xl p-5">
+                    <h3 class="text-2xl font-bold mb-3 text-emerald-300">🌍 Real-world Applications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Image Processing</h4>
+                            <p class="text-sm text-gray-300">Pixels stored in 2D arrays for image manipulation</p>
+                        </div>
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Game Boards</h4>
+                            <p class="text-sm text-gray-300">Chess, Tic-Tac-Toe, Sudoku use 2D arrays</p>
+                        </div>
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Database Tables</h4>
+                            <p class="text-sm text-gray-300">Rows and columns represented as 2D arrays</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </section>
-
     </main>
-    <footer>
-        <h1 class="bg-white/10 border-2 mb-2 border-violet-700 shadow-lg backdrop-blur-xl py-3 rounded-lg mx-2 mt-2 text-center">Developed and Design by Ghulam Habib</h1>
+
+    <!-- Footer -->
+    <footer class="mt-8 px-4 pb-6">
+        <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
+             
+            <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
+        </div>
     </footer>
-
 </body>
-
 </html>

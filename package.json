@@ -1,33 +1,17 @@
 {
-  "name": "ds_and_algo-visualizer",
+  "name": "dsa-visualizer",
   "version": "1.0.0",
-  "description": "Welcome to **DS & Algo Visualizer** – an interactive web application designed to help students and developers visualize and understand **Data Structures and Algorithms** with ease. This project provides a clean and intuitive interface, making learning algorithms both fun and efficient.",
-  "homepage": "https://github.com/habibx792/DS_And_Algo-Visualizer#readme",
-  "bugs": {
-    "url": "https://github.com/habibx792/DS_And_Algo-Visualizer/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/habibx792/DS_And_Algo-Visualizer.git"
-  },
-  "license": "ISC",
-  "author": "",
   "type": "module",
-  "main": "postcss.config.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon ./code/server.js",
-    "dev:css": "tailwindcss -i ./code/src/input.css -o ./code/src/output.css --watch",
-    "build:css": "tailwindcss -i ./code/src/input.css -o ./code/src/output.css --minify"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
   },
-  "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "nodemon": "^3.1.10",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.18"
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

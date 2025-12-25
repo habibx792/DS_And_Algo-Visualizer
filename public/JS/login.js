@@ -1,58 +1,104 @@
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("dsaLoggedIn") === "true") {
-    window.location.href = "test.html";
-  }
-
-  const loginForm = document.getElementById("loginForm");
-  const loginEmail = document.getElementById("loginEmail");
-  const loginPassword = document.getElementById("loginPassword");
-  const togglePasswordBtn = document.getElementById("togglePassword");
-  const toggleIcon = togglePasswordBtn.querySelector("i");
-  const closeBtn = document.getElementById("closeBtn");
-  const loginCard = document.getElementById("loginCard");
-  const forgotPasswordBtn = document.getElementById("forgotPassword");
-
-  togglePasswordBtn.addEventListener("click", () => {
-    const isHidden = loginPassword.type === "password";
-    loginPassword.type = isHidden ? "text" : "password";
-    toggleIcon.classList.toggle("fa-eye");
-    toggleIcon.classList.toggle("fa-eye-slash");
-  });
-
-  loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const user = JSON.parse(localStorage.getItem("dsaUser"));
-    if (!user) {
-      alert("No account found. Please sign up first.");
-      window.location.href = "signup.html";
-      return;
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if already logged in
+    if (localStorage.getItem('dsaLoggedIn') === 'true') {
+        window.location.href = 'main';
+        return;
     }
-
-    const email = loginEmail.value.trim().toLowerCase();
-    const password = loginPassword.value.trim();
-
-    if (user.email.toLowerCase() === email && user.password === password) {
-      localStorage.setItem("dsaLoggedIn", "true");
-      alert(`Welcome back, ${user.name}!`);
-      window.location.href = "test.html";
-    } else {
-      alert("Invalid credentials. Try again.");
+    
+    // Elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePassword');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageDiv = document.getElementById('message');
+    
+    // Toggle password visibility
+    toggleBtn.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        toggleBtn.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+    });
+    
+    // Form submission
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        // Basic validation
+        if (!email || !password) {
+            showMessage('Please fill in all fields', 'error');
+            return;
+        }
+        
+        if (!validateEmail(email)) {
+            showMessage('Please enter a valid email', 'error');
+            return;
+        }
+        
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in...';
+        
+        try {
+            // Send login request
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Save user data
+                localStorage.setItem('dsaLoggedIn', 'true');
+                localStorage.setItem('currentUserId', data.user.id);
+                localStorage.setItem('currentUserName', data.user.name);
+                localStorage.setItem('currentUserEmail', data.user.email);
+                
+                showMessage('Login successful! Redirecting...', 'success');
+                
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'main';
+                }, 1500);
+                
+            } else {
+                showMessage(data.error || 'Login failed', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
+            
+        } catch (error) {
+            console.error('Login error:', error);
+            showMessage('Connection error. Please try again.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In';
+        }
+    });
+    
+    // Helper functions
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
-  });
-
-  closeBtn.addEventListener("click", () => {
-    loginCard.style.transition = "all 0.5s ease";
-    loginCard.style.opacity = "0";
-    loginCard.style.transform = "translateX(100%)";
+    
+    function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = `p-3 rounded ${type === 'error' ? 'bg-red-500/20 border border-red-500/30 text-red-300' : 'bg-green-500/20 border border-green-500/30 text-green-300'}`;
+        messageDiv.classList.remove('hidden');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            messageDiv.classList.add('hidden');
+        }, 5000);
+    }
+    
+    // Auto-focus email field
     setTimeout(() => {
-      window.location.href = "signup.html";
-    }, 500);
-  });
-
-  forgotPasswordBtn.addEventListener("click", () => {
-    const email = loginEmail.value.trim().toLowerCase();
-    if (email) localStorage.setItem("resetPending", email);
-    window.location.href = "passforget.html";
-  });
+        emailInput.focus();
+    }, 100);
 });

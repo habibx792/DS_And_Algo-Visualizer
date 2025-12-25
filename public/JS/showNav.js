@@ -1,12 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const mobNav = document.querySelector("#mobNav");
-    const mobNavcontent=document.querySelector("#mobNavcontent");
-    mobNav.addEventListener("click", () => {
-       if(mobNavcontent.classList.contains("hidden"))
-       {
-        mobNavcontent.classList.remove("hidden");
-       }else{
-           mobNavcontent.classList.add("hidden");
-       }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile navigation toggle
+    const mobNav = document.querySelector('#mobNav');
+    const mobNavcontent = document.querySelector('#mobNavcontent');
+    
+    if (mobNav && mobNavcontent) {
+        mobNav.addEventListener('click', function(e) {
+            e.preventDefault();
+            mobNavcontent.classList.toggle('hidden');
+        });
+    }
 });

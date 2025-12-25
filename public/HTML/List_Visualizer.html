@@ -1,247 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linked List Visualizer Pro - Interactive Educational Tool</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Linked List Visualizer</title>
+    <link rel="stylesheet" href="../../src/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../JS/linkedlist.js" defer></script>
     <style>
-        :root {
-            --glass-bg: rgba(31, 26, 101, 0.05);
-            --glass-border: rgba(248, 86, 86, 0.1);
-            --theme-bg-start: #0b092d;
-            --theme-bg-end: #0b092d;
-            --text-color: rgba(255, 255, 255, 0.9);
-            --code-color: #473507;
-        }
-
-        .light-mode {
-            --glass-bg: rgba(255, 247, 247, 0.7);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --theme-bg-start: #f9f1e8;
-            --theme-bg-end: #fbead6;
-            --text-color: rgba(0, 0, 0, 0.9);
-            --code-color: #f97316;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--theme-bg-start) 0%, var(--theme-bg-end) 50%, var(--theme-bg-start) 100%);
-            min-height: 100vh;
-            color: var(--text-color);
-            transition: all 0.5s;
-        }
-
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        .node-element {
+            min-width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid;
+            border-radius: 0.75rem;
             transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
         }
-
-        .glass-panel:hover {
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        
+        .arrow {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.8) 0%, rgba(124, 58, 237, 0.8) 100%);
+            position: relative;
         }
-
-        .light-mode .glass-panel:hover {
-            background: rgba(255, 255, 255, 0.85);
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid rgba(139, 92, 246, 1);
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
         }
-
-        .glass-node {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            border: 2px solid rgba(255, 241, 214, 0.3);
-            box-shadow: 0 8px 24px rgba(255, 162, 0, 0.329);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass-node:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgb(255, 166, 0);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .arrow-line {
+        
+        .double-arrow {
             width: 40px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(251, 191, 36, 0.8) 0%, rgba(158, 68, 4, 0.8) 100%);
-            animation: flowRight 2s ease-in-out infinite;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.8) 0%, rgba(124, 58, 237, 0.8) 100%);
+            position: relative;
         }
-
-        @keyframes flowRight {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+        
+        .double-arrow::before,
+        .double-arrow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 7px solid transparent;
         }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        
+        .double-arrow::before {
+            left: -10px;
+            border-right: 10px solid rgba(139, 92, 246, 1);
         }
-
-        .animate-bounce-custom {
-            animation: bounce 0.6s ease-in-out;
+        
+        .double-arrow::after {
+            right: -10px;
+            border-left: 10px solid rgba(139, 92, 246, 1);
         }
-
-        .code-block {
-            background: rgba(0, 0, 0, 0.3);
-            color: var(--code-color);
-            font-family: 'Courier New', monospace;
+        
+        .circular-arrow {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(139, 92, 246, 0.5);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .light-mode .code-block {
-            background: rgba(0, 0, 0, 0.05);
+        
+        .circular-arrow::after {
+            content: '↻';
+            color: rgba(139, 92, 246, 1);
+            font-size: 20px;
+            font-weight: bold;
         }
-
-        input {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-color);
+        
+        .node-element.insert-animation {
+            animation: insertEffect 0.5s ease-out;
         }
-
-        button {
-            transition: all 0.3s ease;
+        
+        .node-element.delete-animation {
+            animation: deleteEffect 0.5s ease-out;
         }
-
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
+        
+        @keyframes insertEffect {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+                background-color: rgba(34, 197, 94, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
-
-        .highlight-ring {
-            animation: pulse 1s ease-in-out;
+        
+        @keyframes deleteEffect {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                background-color: rgba(239, 68, 68, 0.3);
+            }
+            100% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
         }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+        
+        .message-animation {
+            animation: messagePop 0.3s ease-out;
+        }
+        
+        @keyframes messagePop {
+            0% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .list-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        
+        .list-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .list-container::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+        
+        .list-container::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
- 
-    <header class="glass-panel sticky top-0 z-50 backdrop-blur-xl">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-gradient">Linked List Visualizer</h1>
-                    <p class="text-sm opacity-70 mt-1">Interactive data structure learning tool</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button id="themeToggle" class="glass-panel p-3 rounded-xl hover:scale-110 transition-all duration-300">
-                        <svg id="sunIcon" class="w-5 h-5 text-yellow-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <svg id="moonIcon" class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
+
+<body class="bg-indigo-950 min-h-screen">
+    <header class="w-full">
+        <nav class="text-3xl text-white flex justify-between py-4 w-full px-4">
+            <h1>Linked List Visualizer</h1>
+            <ul class="flex space-x-4">
+                <li>
+                    <button class="border-2 border-indigo-800 text-white px-4 py-2 rounded hover:border-violet-700 transition-all duration-300">
+                        <a href="mainPage.html">Home</a>
                     </button>
-                    <button id="resetBtn" class="glass-panel px-4 py-2 rounded-xl hover:scale-105 transition-all flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
-                        Reset
-                    </button>
-                </div>
-            </div>
-        </div>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Left Panel - Controls -->
-            <div class="space-y-4">
-                <!-- List Type Selection -->
-                <div class="glass-panel p-6 rounded-2xl">
-                    <label class="block text-sm font-semibold mb-3">List Type</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button class="list-type-btn active bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 px-3 rounded-lg text-sm font-medium" data-type="singly">Singly</button>
-                        <button class="list-type-btn glass-panel py-2 px-3 rounded-lg text-sm font-medium" data-type="doubly">Doubly</button>
-                        <button class="list-type-btn glass-panel py-2 px-3 rounded-lg text-sm font-medium" data-type="circular">Circular</button>
+    <main class="text-white px-4">
+        <h1 class="bg-white/10 border border-violet-700 rounded-2xl shadow-lg p-6 text-center mt-4 text-2xl font-bold">
+            Learn Linked List Data Structure
+        </h1>
+
+        <section class="flex flex-col mt-10">
+            <div class="flex gap-4 md:flex-row flex-col">
+                <!-- Left Panel - Controls -->
+                <div class="flex border-2 rounded-lg border-violet-700 flex-col p-4 w-full md:w-1/3">
+                    <h2 class="text-2xl mb-6 text-center border-b border-violet-600 pb-2">Linked List Controls</h2>
+                    
+                    <!-- List Type Selection -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-3">List Type:</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button id="singlyBtn" class="list-type-btn active bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg border-2 border-emerald-700">
+                                Singly
+                            </button>
+                            <button id="doublyBtn" class="list-type-btn bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-lg border-2 border-blue-700">
+                                Doubly
+                            </button>
+                            <button id="circularBtn" class="list-type-btn bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-purple-700">
+                                Circular
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Value Input -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-2">Enter Value:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="nodeValue" placeholder="Enter a value"
+                                class="flex-1 bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                            <button id="insertHeadBtn"
+                                class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold px-4 py-3 rounded-lg border-2 border-emerald-700 hover:border-emerald-600 transition-all duration-300">
+                                + Head
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Position Input -->
+                    <div class="mb-6">
+                        <label class="block text-xl mb-2">Position (optional):</label>
+                        <input type="number" id="positionInput" placeholder="Position index"
+                            class="w-full bg-gray-800/70 text-black border-2 border-violet-600 rounded-lg px-4 py-3 focus:border-cyan-500 outline-none transition-all">
+                    </div>
+
+                    <!-- Insert Operations -->
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-3">Insert Operations</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="insertTailBtn"
+                                class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg border-2 border-emerald-700 hover:border-emerald-600 transition-all duration-300">
+                                + Tail
+                            </button>
+                            <button id="insertAtBtn"
+                                class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-lg border-2 border-blue-700 hover:border-blue-600 transition-all duration-300">
+                                + At Position
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Operations -->
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-3">Delete Operations</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="deleteHeadBtn"
+                                class="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-red-700 hover:border-red-600 transition-all duration-300">
+                                − Head
+                            </button>
+                            <button id="deleteTailBtn"
+                                class="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-red-700 hover:border-red-600 transition-all duration-300">
+                                − Tail
+                            </button>
+                            <button id="deleteAtBtn"
+                                class="col-span-2 bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-red-700 hover:border-red-600 transition-all duration-300">
+                                − At Position
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Operations -->
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-3">Advanced Operations</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="searchBtn"
+                                class="bg-gradient-to-r from-yellow-600 to-amber-600 text-white font-bold py-3 rounded-lg border-2 border-yellow-700 hover:border-yellow-600 transition-all duration-300">
+                                Search
+                            </button>
+                            <button id="reverseBtn"
+                                class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-lg border-2 border-purple-700 hover:border-purple-600 transition-all duration-300">
+                                Reverse
+                            </button>
+                            <button id="sortBtn"
+                                class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold py-3 rounded-lg border-2 border-teal-700 hover:border-teal-600 transition-all duration-300">
+                                Sort
+                            </button>
+                            <button id="clearBtn"
+                                class="bg-gradient-to-r from-gray-600 to-gray-700 text-white font-bold py-3 rounded-lg border-2 border-gray-700 hover:border-gray-600 transition-all duration-300">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Linked List Info -->
+                    <div class="bg-gray-900/50 border border-violet-800 rounded-xl p-4 mt-4">
+                        <h3 class="text-xl font-semibold mb-3">📊 Linked List Information</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Current Size:</span>
+                                <span id="listSize" class="text-2xl font-bold text-green-400">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Head Node:</span>
+                                <span id="listHead" class="text-lg font-bold text-yellow-400">None</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Tail Node:</span>
+                                <span id="listTail" class="text-lg font-bold text-blue-400">None</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">List Type:</span>
+                                <span id="listType" class="text-lg font-bold text-violet-400">Singly</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-              
-                <div class="glass-panel p-6 rounded-2xl space-y-3">
-                    <div>
-                        <label class="block text-sm font-semibold mb-2">Value</label>
-                        <input id="valueInput" type="number" placeholder="Enter value" class="w-full px-4 py-3 rounded-lg outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2">Position (optional)</label>
-                        <input id="positionInput" type="number" placeholder="Enter position" class="w-full px-4 py-3 rounded-lg outline-none">
-                    </div>
-                </div>
-
-              
-                <div class="glass-panel p-6 rounded-2xl space-y-3">
-                    <h3 class="text-sm font-semibold">Insert Operations</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="insertHead">+ Head</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="insertTail">+ Tail</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium col-span-2" data-op="insertAt">+ At Position</button>
+                <!-- Right Panel - Visualization -->
+                <div class="rounded-lg flex flex-col border-2 border-violet-700 w-full md:w-2/3 min-h-[500px] p-4">
+                    <!-- Title -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-2xl font-bold">🚀 Linked List Visualization</h2>
+                        <p class="text-lg text-gray-300">Linear collection of data elements (nodes)</p>
                     </div>
 
-                    <h3 class="text-sm font-semibold mt-4">Delete Operations</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="deleteHead">− Head</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="deleteTail">− Tail</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium col-span-2" data-op="deleteValue">− By Value</button>
+                    <!-- Linked List Visualization Area -->
+                    <div class="flex-1 flex flex-col justify-center border-2 border-dashed border-violet-600 rounded-xl p-4 bg-white/5 backdrop-blur-sm">
+                        <!-- Head Indicator -->
+                        <div class="text-center mb-4">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-700 to-purple-700 rounded-lg shadow-lg">
+                                <span class="font-bold text-lg">Head →</span>
+                                <span class="text-sm text-gray-300">(First node)</span>
+                            </div>
+                        </div>
+
+                        <!-- Linked List Elements Container -->
+                        <div class="list-container" id="listContainer">
+                            <!-- Linked list nodes will be inserted here -->
+                            <div class="text-gray-400 text-lg">Linked list is empty. Add nodes using Insert Head/Tail.</div>
+                        </div>
+
+                        <!-- Tail Indicator -->
+                        <div class="text-center mt-4">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-700 to-purple-700 rounded-lg shadow-lg">
+                                <span class="text-sm text-gray-300">(Last node)</span>
+                                <span class="font-bold text-lg">← Tail</span>
+                            </div>
+                        </div>
+
+                        <!-- Linked List Direction -->
+                        <div class="text-center mt-4">
+                            <div class="inline-flex items-center gap-4 text-sm text-gray-400">
+                                <span>Data Flow →</span>
+                                <i class="fas fa-arrow-right text-violet-400"></i>
+                                <span>Next Pointers</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <h3 class="text-sm font-semibold mt-4">Advanced Operations</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="search">Search</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="reverse">Reverse</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="sort">Sort</button>
-                        <button class="operation-btn glass-panel py-3 px-4 rounded-lg text-sm font-medium" data-op="split">Split</button>
-                    </div>
-                </div>
-
-             
-                <div class="glass-panel p-4 rounded-xl">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-sm font-semibold"></span> Animation Speed</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button class="speed-btn glass-panel py-2 px-3 rounded-lg text-xs font-medium" data-speed="1500">Slow</button>
-                        <button class="speed-btn active bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 px-3 rounded-lg text-xs font-medium" data-speed="800">Normal</button>
-                        <button class="speed-btn glass-panel py-2 px-3 rounded-lg text-xs font-medium" data-speed="400">Fast</button>
+                    <!-- Output Display -->
+                    <div class="mt-4 p-3 bg-gradient-to-r from-violet-900/30 to-purple-900/30 border border-violet-700 rounded-xl">
+                        <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
+                            <i class="fas fa-info-circle"></i> Status Message
+                        </h3>
+                        <div id="output" class="text-lg font-mono bg-gray-900/50 p-2 rounded-lg min-h-[40px] flex items-center justify-center">
+                            Linked list is empty. Add nodes using Insert operations.
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
+        <!-- Educational Content -->
+        <section class="mt-10 mb-8">
+            <div class="bg-gradient-to-br from-violet-900/30 to-purple-900/30 border-2 border-violet-700 rounded-2xl p-6">
+                <h2 class="text-3xl font-bold mb-6 text-center">📚 Understanding Linked List</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-green-500">
+                        <h3 class="text-xl font-bold text-green-300 mb-2">Node Structure</h3>
+                        <p class="text-gray-300">
+                            Each node contains data and a pointer to the next node. Doubly linked lists have additional prev pointer.
+                        </p>
+                        <ul class="text-sm text-gray-400 mt-2 space-y-1">
+                            <li>• Singly: Data + Next pointer</li>
+                            <li>• Doubly: Data + Next + Prev pointers</li>
+                            <li>• Circular: Last node points to first</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-red-500">
+                        <h3 class="text-xl font-bold text-red-300 mb-2">Time Complexities</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex justify-between">
+                                <span>Access</span>
+                                <span class="font-mono text-red-400">O(n)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Search</span>
+                                <span class="font-mono text-red-400">O(n)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Insert Head/Tail</span>
+                                <span class="font-mono text-green-400">O(1)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Delete Head/Tail</span>
+                                <span class="font-mono text-green-400">O(1)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-blue-500">
+                        <h3 class="text-xl font-bold text-blue-300 mb-2">Linked List Properties</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-project-diagram text-blue-400"></i>
+                                <span>Dynamic size</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-memory text-blue-400"></i>
+                                <span>Non-contiguous memory</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-exchange-alt text-blue-400"></i>
+                                <span>Easy insertions/deletions</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Real-world Applications -->
+                <div class="mt-6 bg-gradient-to-r from-emerald-900/20 to-green-900/20 border border-emerald-700/50 rounded-xl p-5">
+                    <h3 class="text-2xl font-bold mb-3 text-emerald-300">🌍 Real-world Applications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Music Playlist</h4>
+                            <p class="text-sm text-gray-300">Songs linked sequentially, easy to skip or reorder</p>
+                        </div>
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Browser History</h4>
+                            <p class="text-sm text-gray-300">Back/forward navigation using doubly linked list</p>
+                        </div>
+                        <div class="bg-gray-900/30 p-3 rounded-lg">
+                            <h4 class="font-bold text-lg mb-1">Undo Functionality</h4>
+                            <p class="text-sm text-gray-300">Applications use linked lists for undo/redo operations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-8 px-4 pb-6">
+        <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
           
-            <div class="lg:col-span-2 space-y-4">
-               
-                <div class="glass-panel p-4 rounded-xl">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span id="statusMessage" class="text-sm font-medium">List initialized</span>
-                    </div>
-                </div>
-
-                <!-- List Visualization -->
-                <div class="glass-panel p-8 rounded-2xl min-h-[300px]">
-                    <div id="listContainer" class="flex flex-wrap items-center gap-4"></div>
-                </div>
-
-                <!-- Code Display -->
-                <div class="glass-panel p-6 rounded-2xl">
-                    <div id="codeDisplay">
-                        <p class="opacity-60 text-center">Select an operation to view code and complexity</p>
-                    </div>
-                </div>
-            </div>
+            <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
         </div>
-    </div>
-    <script src="../JS/LinkedList.js"></script>
+    </footer>
 </body>
 </html>

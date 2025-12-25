@@ -1,196 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Algorithm Visualizer</title>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Visualizer - DSA Visualizer</title>
+    
     <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyDeep: "#0b092d",
+                        navySoft: "#20213b",
+                        navyDark: "#0d1120",
+                        goldAccent: "#fca311",
+                    }
+                }
+            }
+        }
+    </script>
+    
     <!-- External CSS -->
-    <link rel="stylesheet" href="../CSS/algoVisCss.css" />
-    <link rel="stylesheet" href="../../src/output.css" />
-
-    <!-- JavaScript -->
-    <script src="../JS/algoVisJs.js" defer></script>
-  </head>
-
-  <body>
+    <link rel="stylesheet" href="../CSS/algoVisCss.css">
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+    
+    <style>
+        .code-block {
+            background: #1e1e2e;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .keyword { color: #569cd6; }
+        .function { color: #dcdcaa; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; }
+        .operator { color: #d4d4d4; }
+        
+        .complexity-card {
+            background: rgba(32, 33, 59, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #fca311;
+        }
+        
+        .complexity-card h4 {
+            color: #fca311;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark min-h-screen text-white">
     <!-- HEADER -->
-    <header class="topbar flex flex-col md:flex-row justify-between py-5">
-      <div class="container topbar-inner flex justify-between items-center w-full">
-        <!-- Brand -->
-        <div class="brand flex items-center gap-3 ml-4">
-          <div class="logo">AL</div>
-          <div class="hero-Bar">
-            <h1 class="text-xl font-bold">Algorithm Visualizer</h1>
-            <div class="tag text-sm text-gray-400">
-              Sorting · Searching · Step-by-step
+    <header class="topbar sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
+        <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-goldAccent tracking-widest">
+                Algorithm Visualizer
+            </h1>
+            
+            <!-- Navigation -->
+            <div class="flex items-center gap-4">
+                <a href="mainPage.html" class="text-goldAccent hover:text-white font-semibold transition duration-300">
+                    <i class="fas fa-home mr-2"></i>Home
+                </a>
             </div>
-          </div>
-        </div>
-
-        <!-- Navigation -->
-        <nav
-          class="top-actions flex md:flex-row flex-col md:justify-between md:mt-0 mt-3 gap-4 md:mr-5"
-        >
-          <a href="../HTML/mainPage.html" class="Ai-Home text-center">Home</a>
-          <!-- <button class="btn ghost" id="themeToggle" title="Toggle theme">
-            Theme
-          </button> -->
         </nav>
-      </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="container">
+    <main class="container mx-auto px-4 py-8">
+        <!-- HERO SECTION -->
+        <div class="hero card flex md:flex-row flex-col gap-6 p-6">
+            <!-- Left Side (Main Controls) -->
+            <div class="hero-left flex flex-col gap-5 w-full md:w-2/3">
+                <h2 class="text-2xl font-semibold">See Algorithms Working</h2>
+                <p class="text-gray-400">
+                    Enter numbers, choose an algorithm, and visualize. Adjust speed and
+                    size for better control.
+                </p>
 
-      <!-- HERO SECTION -->
-      <div class="hero card flex md:flex-row flex-col gap-6 p-6">
-        <!-- Left Side (Main Controls) -->
-        <div class="hero-left flex flex-col gap-5 w-full md:w-2/3">
-          <h2 class="text-2xl font-semibold">See Algorithms Working</h2>
-          <p class="muted text-gray-400">
-            Enter numbers, choose an algorithm, and visualize. Adjust speed and
-            size for better control.
-          </p>
+                <!-- Array Input Controls -->
+                <div class="row controls space-y-3">
+                    <input id="arrayInput" class="text-input w-full"
+                           placeholder="e.g. 5,3,8,1,9"
+                           value="12,45,3,20,7,25,9,50,32,10">
+                    <div class="btn-row flex flex-wrap gap-2">
+                        <button class="btn" id="useBtn">Use</button>
+                        <button class="btn" id="randomBtn">Random</button>
+                        <button class="btn" id="shuffleBtn">Shuffle</button>
+                        <button class="btn danger" id="clearBtn">Clear</button>
+                    </div>
+                </div>
 
-          <!-- Array Input Controls -->
-          <div class="row controls space-y-3">
-            <input
-              id="arrayInput"
-              class="text-input w-full"
-              placeholder="e.g. 5,3,8,1,9"
-              value="12,45,3,20,7,25,9,50,32,10"
-              aria-label="Array input"
-            />
-            <div class="btn-row flex flex-wrap gap-2">
-              <button class="btn" id="useBtn">Use</button>
-              <button class="btn" id="randomBtn">Random</button>
-              <button class="btn" id="shuffleBtn">Shuffle</button>
-              <button class="btn danger" id="clearBtn">Clear</button>
+                <!-- Parameters -->
+                <div class="row params flex flex-wrap gap-6">
+                    <div class="param">
+                        <label class="block text-sm text-gray-300 mb-1">Array size</label>
+                        <input type="range" id="sizeRange" min="5" max="60" value="10"
+                               class="w-32">
+                        <span id="sizeVal" class="text-goldAccent font-semibold ml-2">10</span>
+                    </div>
+
+                    <div class="param">
+                        <label class="block text-sm text-gray-300 mb-1">Speed</label>
+                        <input type="range" id="speedRange" min="20" max="900" value="180"
+                               class="w-32">
+                        <span id="speedVal" class="text-goldAccent font-semibold ml-2">180ms</span>
+                    </div>
+                </div>
+
+                <!-- Algorithm Selection -->
+                <div class="row algos flex flex-wrap gap-4 items-center">
+                    <select id="algoSelect" class="select bg-navySoft border border-white/20 rounded-lg px-4 py-2 text-white">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="quick">Quick Sort</option>
+                        <option value="merge">Merge Sort</option>
+                    </select>
+
+                    <div class="sort-order flex gap-3">
+                        <label class="flex items-center gap-1">
+                            <input type="radio" name="order" value="asc" checked>
+                            <span class="text-sm">Asc</span>
+                        </label>
+                        <label class="flex items-center gap-1">
+                            <input type="radio" name="order" value="desc">
+                            <span class="text-sm">Desc</span>
+                        </label>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="search-block flex gap-2 flex-wrap">
+                        <input id="searchInput" class="text-input small w-32"
+                               placeholder="search value">
+                        <button class="btn" id="linearBtn">Linear</button>
+                        <button class="btn" id="binaryBtn">Binary</button>
+                    </div>
+                </div>
+
+                <!-- Playback Controls -->
+                <div class="row play-controls flex flex-wrap gap-2 items-center">
+                    <button class="btn primary" id="playBtn">Play</button>
+                    <button class="btn" id="pauseBtn">Pause</button>
+                    <button class="btn" id="stepBtn">Step</button>
+                    <button class="btn" id="resetBtn">Reset</button>
+
+                    <div class="status ml-auto text-right">
+                        <div id="currentOp" class="font-semibold">Idle</div>
+                        <div id="statusText" class="text-gray-400 text-sm">Ready</div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- Parameters -->
-          <div class="row params flex flex-wrap gap-6">
-            <div class="param">
-              <label>Array size</label>
-              <input type="range" id="sizeRange" min="5" max="60" value="10" />
-              <span id="sizeVal">10</span>
-            </div>
+            <!-- Right Side (Snapshot / Info) -->
+            <aside class="hero-right card bg-navySoft/50 border border-white/10 md:w-1/3 p-4">
+                <div class="text-gray-400 text-sm">Snapshot & Quick Info</div>
+                <div class="stat-row flex justify-between items-center mt-4">
+                    <div>
+                        <div id="elemCount" class="text-3xl font-bold text-goldAccent">10</div>
+                        <div class="text-gray-400 text-sm">Elements</div>
+                    </div>
+                    <div>
+                        <div id="algoName" class="text-3xl font-bold text-goldAccent">—</div>
+                        <div class="text-gray-400 text-sm">Algorithm</div>
+                    </div>
+                </div>
 
-            <div class="param">
-              <label>Speed</label>
-              <input type="range" id="speedRange" min="20" max="900" value="180" />
-              <span id="speedVal">180ms</span>
-            </div>
-          </div>
-
-          <!-- Algorithm Selection -->
-          <div class="row algos flex flex-wrap gap-4 items-center">
-            <select id="algoSelect" class="select">
-              <option value="bubble">Bubble Sort</option>
-              <option value="selection">Selection Sort</option>
-              <option value="quick">Quick Sort</option>
-              <option value="merge">Merge Sort</option>
-            </select>
-
-            <div class="sort-order flex gap-3">
-              <label><input type="radio" name="order" value="asc" checked /> Asc</label>
-              <label><input type="radio" name="order" value="desc" /> Desc</label>
-            </div>
-
-            <!-- Search -->
-            <div class="search-block flex gap-2 flex-wrap">
-              <input
-                id="searchInput"
-                class="text-input small"
-                placeholder="search value"
-                aria-label="Search value"
-              />
-              <button class="btn" id="linearBtn">Linear</button>
-              <button class="btn" id="binaryBtn">Binary</button>
-            </div>
-          </div>
-
-          <!-- Playback Controls -->
-          <div class="row play-controls flex flex-wrap gap-2 items-center">
-            <button class="btn primary" id="playBtn">Play</button>
-            <button class="btn" id="pauseBtn">Pause</button>
-            <button class="btn" id="stepBtn">Step</button>
-            <button class="btn" id="resetBtn">Reset</button>
-
-            <div class="status ml-auto text-right">
-              <div id="currentOp" class="font-semibold">Idle</div>
-              <div id="statusText" class="muted text-gray-400">Ready</div>
-            </div>
-          </div>
+                <div class="tips mt-6 text-sm text-gray-300">
+                    <strong>Tip:</strong> Binary search requires an ascending-sorted
+                    array. Use <em>Quick / Merge</em> then Binary to demonstrate
+                    log-time search.
+                </div>
+            </aside>
         </div>
 
-        <!-- Right Side (Snapshot / Info) -->
-        <aside class="hero-right card inset md:w-1/3 p-4">
-          <div class="small text-gray-400">Snapshot & Quick Info</div>
-          <div class="stat-row flex justify-between items-center mt-4">
-            <div>
-              <div id="elemCount" class="big text-3xl font-bold">10</div>
-              <div class="muted text-gray-400">Elements</div>
+        <!-- VISUALIZATION SECTION -->
+        <section class="visual card my-10">
+            <div id="canvas" class="canvas rounded-xl border border-white/10 min-h-[300px] flex items-center justify-center">
+                <span class="text-gray-500 italic">[ Visualization appears here ]</span>
             </div>
-            <div>
-              <div id="algoName" class="big text-3xl font-bold">—</div>
-              <div class="muted text-gray-400">Algorithm</div>
+        </section>
+
+        <!-- CODE + COMPLEXITY SECTION -->
+        <section class="w-full mb-16">
+            <div class="flex md:flex-row justify-between w-full gap-4 flex-col">
+                <!-- Code Block -->
+                <div id="code" class="border-black md:w-1/2 h-[500px] w-full card bg-navySoft/50 border border-white/10">
+                    <h2 class="font-semibold text-2xl text-center p-3 text-goldAccent">Algorithm Code</h2>
+                    <div id="codeLang" class="flex justify-center gap-4 flex-wrap p-4">
+                        <button class="lang-btn active bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition"
+                                data-lang="python">Python</button>
+                        <button class="lang-btn bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition"
+                                data-lang="javascript">JavaScript</button>
+                        <button class="lang-btn bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition"
+                                data-lang="java">Java</button>
+                        <button class="lang-btn bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition"
+                                data-lang="cpp">C++</button>
+                    </div>
+                    <div id="codeContent" class="p-4">
+                        <div id="pythonCode" class="code-block">
+                            <span class="comment"># Select an algorithm to see code</span><br>
+                            <span class="comment"># Current: </span><span id="currentAlgoCode">None</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complexity -->
+                <div id="codeComp" class="border-black md:w-1/2 w-full h-[500px] card bg-navySoft/50 border border-white/10">
+                    <h2 class="font-semibold text-2xl text-center p-3 text-goldAccent">Complexity Analysis</h2>
+                    <div id="complexityContent" class="p-4">
+                        <div class="complexity-card">
+                            <h4 id="algoComplexityName">Algorithm</h4>
+                            <p><strong>Time Complexity:</strong> <span id="timeComplexity">O(n²)</span></p>
+                            <p><strong>Space Complexity:</strong> <span id="spaceComplexity">O(1)</span></p>
+                            <p><strong>Best Case:</strong> <span id="bestCase">O(n)</span></p>
+                            <p><strong>Worst Case:</strong> <span id="worstCase">O(n²)</span></p>
+                            <p><strong>Stable:</strong> <span id="stable">Yes</span></p>
+                            <p><strong>In-Place:</strong> <span id="inPlace">Yes</span></p>
+                        </div>
+                        
+                        <div class="complexity-card">
+                            <h4>Complexity Legend</h4>
+                            <p><strong>O(1):</strong> Constant Time</p>
+                            <p><strong>O(log n):</strong> Logarithmic Time</p>
+                            <p><strong>O(n):</strong> Linear Time</p>
+                            <p><strong>O(n log n):</strong> Linearithmic Time</p>
+                            <p><strong>O(n²):</strong> Quadratic Time</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div class="tips mt-6 text-sm text-gray-300">
-            <strong>Tip:</strong> Binary search requires an ascending-sorted
-            array. Use <em>Quick / Merge</em> then Binary to demonstrate
-            log-time search.
-          </div>
-        </aside>
-      </div>
-
-      <!-- VISUALIZATION SECTION -->
-      <section class="visual card my-10">
-        <div
-          id="canvas"
-          class="canvas rounded-xl border border-gray-700 min-h-[300px] flex items-center justify-center"
-          aria-label="Array visualizer"
-        >
-          <span class="text-gray-500 italic">[ Visualization appears here ]</span>
-        </div>
-      </section>
-
-      <!-- CODE + COMPLEXITY SECTION -->
-      <section class="w-full mb-16">
-        <div class="flex md:flex-row justify-between w-full gap-4 flex-col">
-          <!-- Code Block -->
-          <div id="code" class="border-black md:w-1/2 h-[500px] w-full card">
-            <h2 class="font-semibold text-2xl text-center p-3">Code</h2>
-            <div id="codeLang" class="flex justify-center gap-4 flex-wrap p-4">
-              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition">Python</button>
-              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition">C++</button>
-              <button class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-goldAccent hover:text-black transition">Java</button>
-            </div>
-          </div>
-
-          <!-- Complexity -->
-          <div id="codeComp" class="border-black md:w-1/2 w-full h-[500px] card">
-            <h2 class="font-semibold text-2xl text-center p-3">Complexity</h2>
-            <div class="p-4 text-gray-300">
-              <p><span class="font-semibold text-goldAccent">Time:</span> O(n log n)</p>
-              <p><span class="font-semibold text-goldAccent">Space:</span> O(n)</p>
-              <p class="mt-2 text-sm text-gray-400 italic">Will update dynamically with algorithm selection.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
+        </section>
     </main>
-  </body>
+
+    <script src="../JS/algoVisJs.js"></script>
+</body>
 </html>

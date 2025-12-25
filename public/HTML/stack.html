@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Visualizer</title>
+    <link rel="stylesheet" href="../../src/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../JS/stack.js" defer></script>
+</head>
+
+<body class="bg-indigo-950 bg-no-repeat min-h-screen">
+
+    <header id="dsNav" class="sticky z-50 top-0 flex justify-between w-full">
+        <nav class="text-3xl text-white flex justify-between py-4 w-full">
+            <h1 class="">Stack</h1>
+            <ul class="flex space-x-4">
+                <li>
+                    <button
+                        class="border-2 border-indigo-800 text-white px-2 py-2 rounded hover:border-violet-700 transition-all duration-300 ease-in">
+                        <a href="../HTML/mainPage.html">Home </a>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="text-3xl w-full text-white px-4">
+        <h1 class="backdrop-blur-xl w-full bg-white/10 border border-violet-700 rounded-2xl shadow-lg p-6 text-center mt-4">
+            Learn Stack Data Structure
+        </h1>
+
+        <!-- Controls Section -->
+        <section class="flex flex-col mt-10">
+            <div class="flex gap-2 md:flex-row flex-col">
+                <!-- Left Panel - Controls -->
+                <div class="flex border-2 rounded-lg border-violet-700 flex-col p-4 w-full md:w-1/3">
+                    <h2 class="text-2xl mb-6 text-center">Stack Operations</h2>
+                    
+                    <!-- Value Input -->
+                    <div class="flex flex-col gap-4 mb-6">
+                        <div class="flex gap-2">
+                            <h2 class="text-xl">Value</h2>
+                            <input type="text" id="stackValue" placeholder="Enter a number"
+                                class="text-black rounded-lg w-full outline-none px-2 py-1 border-2 border-violet-700">
+                        </div>
+                    </div>
+
+                    <!-- Operation Buttons -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button id="pushBtn"
+                            class="bg-green-600 text-center py-3 rounded-lg border-2 border-indigo-900 hover:border-violet-700 transition-all duration-300 ease-in">
+                            PUSH
+                        </button>
+                        <button id="popBtn"
+                            class="bg-red-600 text-center py-3 rounded-lg border-2 border-indigo-900 hover:border-violet-700 transition-all duration-300 ease-in">
+                            POP
+                        </button>
+                        <button id="peekBtn"
+                            class="bg-yellow-600 text-center py-3 rounded-lg border-2 border-indigo-900 hover:border-violet-700 transition-all duration-300 ease-in">
+                            PEEK
+                        </button>
+                        <button id="clearBtn"
+                            class="bg-blue-600 text-center py-3 rounded-lg border-2 border-indigo-900 hover:border-violet-700 transition-all duration-300 ease-in">
+                            CLEAR
+                        </button>
+                    </div>
+
+                    <!-- Stack Info -->
+                    <div class="mt-6 p-3 border border-violet-600 rounded-lg">
+                        <h3 class="text-xl mb-2">Stack Info</h3>
+                        <div class="text-lg space-y-1">
+                            <div class="flex justify-between">
+                                <span>Size:</span>
+                                <span id="stackSize" class="font-bold">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Top:</span>
+                                <span id="stackTop" class="font-bold">None</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Capacity:</span>
+                                <span id="stackCapacity" class="font-bold">10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Visualization -->
+                <div class="rounded-lg flex flex-col justify-between border-2 border-violet-700 w-full md:w-2/3 h-[500px] p-4">
+                    <!-- Stack Title -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-2xl">STACK VISUALIZATION</h2>
+                        <p class="text-lg text-gray-300">LIFO (Last In, First Out)</p>
+                    </div>
+
+                    <!-- Stack Container -->
+                    <div class="flex-1 flex flex-col-reverse justify-end items-center border-2 border-dashed border-violet-600 rounded-lg p-4 bg-white/5 backdrop-blur-sm">
+                        <div class="w-full h-full flex flex-col-reverse items-center" id="stackContainer">
+                            <!-- Stack elements will be inserted here -->
+                            <div class="text-gray-400 text-lg">Stack is empty</div>
+                        </div>
+                    </div>
+
+                    <!-- Top Pointer -->
+                    <div class="mt-4 text-center">
+                        <div class="inline-block px-4 py-2 bg-violet-700 rounded-lg">
+                            <span class="font-bold">TOP →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational Content -->
+        <section class="text-gray-200 leading-relaxed mt-10 w-full mb-8">
+            <div class="p-4 border-violet-700 border-2 rounded-lg mx-2">
+                <h2 class="text-2xl mb-4 text-center">Understanding Stack</h2>
+                <div class="space-y-4">
+                    <p>
+                        A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In First Out)</strong> principle. 
+                        The last element inserted is the first one to be removed.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                        <div class="border border-green-600 rounded-lg p-3">
+                            <h3 class="text-xl font-bold text-green-400 mb-2">PUSH Operation</h3>
+                            <p class="text-sm">
+                                Adds an element to the top of the stack. Time complexity: O(1)
+                            </p>
+                        </div>
+                        
+                        <div class="border border-red-600 rounded-lg p-3">
+                            <h3 class="text-xl font-bold text-red-400 mb-2">POP Operation</h3>
+                            <p class="text-sm">
+                                Removes the top element from the stack. Time complexity: O(1)
+                            </p>
+                        </div>
+                        
+                        <div class="border border-yellow-600 rounded-lg p-3">
+                            <h3 class="text-xl font-bold text-yellow-400 mb-2">PEEK Operation</h3>
+                            <p class="text-sm">
+                                Returns the top element without removing it. Time complexity: O(1)
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-3 border border-blue-600 rounded-lg">
+                        <h3 class="text-xl font-bold text-blue-400 mb-2">📝 Real-world Applications</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Function call management in programming languages</li>
+                            <li>Undo/Redo functionality in text editors</li>
+                            <li>Expression evaluation and syntax parsing</li>
+                            <li>Backtracking algorithms</li>
+                            <li>Browser history navigation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h1 class="bg-white/10 border-2 mb-2 border-violet-700 shadow-lg backdrop-blur-xl py-3 rounded-lg mx-2 mt-2 text-center">
+            Developed and Design by Ghulam Habib
+        </h1>
+    </footer>
+
+</body>
+
+</html>
