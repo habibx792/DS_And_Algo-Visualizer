@@ -26,7 +26,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .fade-in { animation: fadeIn 0.3s ease-out; }
-        
+
         #chat::-webkit-scrollbar {
             width: 6px;
         }
@@ -34,7 +34,7 @@
             background: #555;
             border-radius: 3px;
         }
-        
+
         pre {
             background: #1a1a2e !important;
             border-radius: 8px;
@@ -56,7 +56,7 @@
     </style>
 </head>
 <body class="bg-gradient-to-b from-navyDeep via-navySoft to-navyDark min-h-screen text-white">
-    
+
     <!-- Authentication check -->
     <script>
         if (localStorage.getItem('dsaLoggedIn') !== 'true') {
@@ -64,19 +64,19 @@
             window.location.href = 'login';
         }
     </script>
-    
+
     <!-- Navigation -->
-    <header class="sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
-        <nav class=" mx-auto px-6 py-4 flex justify-between items-center">
+    <header class="w-full sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
+        <nav class="text-2xl text-white  flex justify-between py-4 w-full px-4">
             <h1 class="text-3xl font-bold text-goldAccent ">DSA VIZ</h1>
-            
+
             <ul class="hidden md:flex gap-8 text-lg text-gray-300 font-medium">
                 <li><a href="/" class="hover:text-goldAccent">Home</a></li>
                 <li><a href="../HTML/dataStructur.html" class="hover:text-goldAccent">Data Structures</a></li>
                 <li><a href="../HTML/algoViz.html" class="hover:text-goldAccent">Algorithms</a></li>
                 <li><a href="../HTML/editor.html"  class="hover:text-goldAccent" >editor</a></li>
             </ul>
-            
+
             <!-- User info and logout -->
             <div class="flex items-center gap-4">
                 <span id="userName" class="text-goldAccent font-semibold"></span>
@@ -97,7 +97,7 @@
             <p class="text-gray-300 text-lg">
                 Ask anything about Data Structures and Algorithms
             </p>
-            
+
             <!-- User Welcome -->
             <div class="mt-4 inline-block bg-navySoft/50 px-6 py-3 rounded-lg">
                 <p class="text-gray-300">
@@ -131,7 +131,7 @@
 
             <!-- Chat Input -->
             <div class="p-5 border-t border-white/10 bg-navyDark/60 flex items-center space-x-3">
-                <input id="question" type="text" 
+                <input id="question" type="text"
                        placeholder="Ask about stacks, trees, time complexity..."
                        class="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-goldAccent outline-none">
                 <button id="sendBtn" class="bg-goldAccent hover:bg-white text-navyDeep px-6 py-3 rounded-lg font-semibold shadow-lg flex items-center space-x-2">
@@ -150,19 +150,19 @@
                     <div class="font-semibold text-goldAccent mb-1">Stack</div>
                     <p class="text-gray-300 text-sm">LIFO operations, Push, Pop</p>
                 </button>
-                
+
                 <button data-question="How binary trees work with traversal example"
                         class="quick-btn bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg transition text-left">
                     <div class="font-semibold text-goldAccent mb-1">Binary Tree</div>
                     <p class="text-gray-300 text-sm">Preorder, Inorder, Postorder</p>
                 </button>
-                
+
                 <button data-question="Explain linked list with insertion example"
                         class="quick-btn bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg transition text-left">
                     <div class="font-semibold text-goldAccent mb-1">Linked List</div>
                     <p class="text-gray-300 text-sm">Singly, Doubly, Circular</p>
                 </button>
-                
+
                 <button data-question="Explain quicksort algorithm with complexity"
                         class="quick-btn bg-white/10 border border-white/10 rounded-lg p-4 hover:border-goldAccent hover:shadow-lg transition text-left">
                     <div class="font-semibold text-goldAccent mb-1">Quick Sort</div>
@@ -182,7 +182,7 @@
                     <h3 class="font-bold text-white mb-2">Code Examples</h3>
                     <p class="text-gray-300 text-sm">Get real JavaScript code for DSA concepts</p>
                 </div>
-                
+
                 <div class="bg-navyDark/50 p-4 rounded-lg">
                     <div class="text-goldAccent text-2xl mb-2">
                         <i class="fas fa-clock"></i>
@@ -190,7 +190,7 @@
                     <h3 class="font-bold text-white mb-2">Complexity Analysis</h3>
                     <p class="text-gray-300 text-sm">Learn time and space complexity</p>
                 </div>
-                
+
                 <div class="bg-navyDark/50 p-4 rounded-lg">
                     <div class="text-goldAccent text-2xl mb-2">
                         <i class="fas fa-brain"></i>
@@ -202,13 +202,12 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-navyDark border-t border-white/10 py-6 px-4">
-        <div class="max-w-6xl mx-auto text-center text-gray-400">
-            <p>&copy; 2025 DSA Visualizer. All rights reserved.</p>
-            <p class="mt-2 text-sm">Built with ❤️ for DSA learners</p>
-        </div>
-    </footer>
+<footer class="mt-8 px-4 pb-6">
+    <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
+
+        <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
+    </div>
+</footer>
 
     <script src="/public/JS/mainPage.js"></script>
 </body>

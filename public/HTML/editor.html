@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DsaViz — Code Editor</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,7 +20,7 @@
             }
         }
     </script>
-    
+
     <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/dracula.min.css">
@@ -32,22 +32,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
-    
+
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
-    
+
     <style>
         * {
             font-family: "Inter", system-ui, sans-serif;
         }
-        
+
         .CodeMirror {
             height: 400px;
             border-radius: 0 0 0.75rem 0.75rem;
             font-size: 14px;
             line-height: 1.5;
         }
-        
+
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -62,11 +62,11 @@
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
         }
-        
+
         .toast.show {
             transform: translateY(0);
         }
-        
+
         .modal {
             position: fixed;
             inset: 0;
@@ -78,11 +78,11 @@
             justify-content: center;
             padding: 1rem;
         }
-        
+
         .modal.active {
             display: flex;
         }
-        
+
         .modal-content {
             background: #0c0d30;
             border: 1px solid rgb(255, 169, 30);
@@ -93,31 +93,31 @@
             overflow-y: auto;
             padding: 2rem;
         }
-        
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
-        
+
         ::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 4px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
             background: rgb(248, 178, 66);
             border-radius: 4px;
         }
-        
+
         .btn-animate {
             transition: all 0.2s;
         }
-        
+
         .btn-animate:hover {
             transform: translateY(-2px);
         }
-        
+
         .btn-animate:active {
             transform: translateY(0);
         }
@@ -128,7 +128,7 @@
     <header class="sticky top-0 z-50 bg-navyDeep/90 border-b border-white/10 backdrop-blur-md shadow-md">
         <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
             <h1 class="text-3xl font-bold text-goldAccent tracking-widest">
-                DsaViz
+                DSA VIZ
             </h1>
 
             <ul class="hidden md:flex gap-8 text-lg text-gray-500 font-medium">
@@ -256,7 +256,7 @@
                     <li>• Download code with proper extensions</li>
                 </ul>
             </div>
-            
+
             <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
                 <h4 class="text-lg font-semibold text-goldAccent mb-2"><i class="fas fa-code mr-2"></i>Supported Languages</h4>
                 <ul class="text-sm text-gray-300 space-y-1">
@@ -268,7 +268,7 @@
                     <li>• CSS (.css)</li>
                 </ul>
             </div>
-            
+
             <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
                 <h4 class="text-lg font-semibold text-goldAccent mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Note</h4>
                 <p class="text-sm text-gray-300">
@@ -331,13 +331,10 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
-    <footer class="bg-navyDeep border-t border-white/10 py-8 mt-16">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-gray-400">
-                © 2025 Ghulam Habib — Interactive Code Editor
-                <span class="text-goldAccent mx-2">❤</span>
-                for developers
-            </p>
+    <footer class="mt-8 px-4 pb-6">
+        <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
+
+            <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
         </div>
     </footer>
 

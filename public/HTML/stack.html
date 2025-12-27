@@ -14,9 +14,9 @@
 
 <body class="bg-indigo-950 bg-no-repeat min-h-screen">
 
-    <header id="dsNav" class=" z-50 top-0 flex justify-between w-full">
-        <nav class="text-3xl text-white flex border-2 border-violet-700 rounded-lg justify-between py-4 w-full">
-            <h1 class="ml-2">Stack</h1>
+    <header class="w-full sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
+        <nav class="text-3xl text-white  flex justify-between py-4 w-full px-4">
+        <h1 class="text-yellow-700 text-4xl font-bold ml-2">Stack</h1>
             <ul class="flex space-x-4">
                 <li>
                     <button
@@ -39,7 +39,7 @@
                 <!-- Left Panel - Controls -->
                 <div class="flex border-2 rounded-lg border-violet-700 flex-col p-4 w-full md:w-1/3">
                     <h2 class="text-2xl mb-6 text-center">Stack Operations</h2>
-                    
+
                     <!-- Value Input -->
                     <div class="flex flex-col gap-4 mb-6">
                         <div class="flex gap-2">
@@ -121,10 +121,10 @@
                 <h2 class="text-2xl mb-4 text-center">Understanding Stack</h2>
                 <div class="space-y-4">
                     <p>
-                        A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In First Out)</strong> principle. 
+                        A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In First Out)</strong> principle.
                         The last element inserted is the first one to be removed.
                     </p>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                         <div class="border border-green-600 rounded-lg p-3">
                             <h3 class="text-xl font-bold text-green-400 mb-2">PUSH Operation</h3>
@@ -132,14 +132,14 @@
                                 Adds an element to the top of the stack. Time complexity: O(1)
                             </p>
                         </div>
-                        
+
                         <div class="border border-red-600 rounded-lg p-3">
                             <h3 class="text-xl font-bold text-red-400 mb-2">POP Operation</h3>
                             <p class="text-sm">
                                 Removes the top element from the stack. Time complexity: O(1)
                             </p>
                         </div>
-                        
+
                         <div class="border border-yellow-600 rounded-lg p-3">
                             <h3 class="text-xl font-bold text-yellow-400 mb-2">PEEK Operation</h3>
                             <p class="text-sm">
@@ -147,7 +147,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <div class="mt-6 p-3 border border-blue-600 rounded-lg">
                         <h3 class="text-xl font-bold text-blue-400 mb-2">📝 Real-world Applications</h3>
                         <ul class="list-disc pl-5 space-y-1 text-sm">
@@ -165,7 +165,7 @@
 
     <footer class="mt-8 px-4 pb-6">
         <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
-             
+
             <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
         </div>
     </footer>

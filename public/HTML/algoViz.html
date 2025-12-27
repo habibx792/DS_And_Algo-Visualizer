@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algorithm Visualizer - DSA Visualizer</title>
-    
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,13 +24,13 @@
             }
         }
     </script>
-    
+
     <!-- External CSS -->
     <link rel="stylesheet" href="../CSS/algoVisCss.css">
-    
+
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
-    
+
     <style>
         .code-block {
             background: #1e1e2e;
@@ -42,14 +42,14 @@
             overflow-x: auto;
             margin: 15px 0;
         }
-        
+
         .keyword { color: #569cd6; }
         .function { color: #dcdcaa; }
         .string { color: #ce9178; }
         .number { color: #b5cea8; }
         .comment { color: #6a9955; }
         .operator { color: #d4d4d4; }
-        
+
         .complexity-card {
             background: rgba(32, 33, 59, 0.7);
             border-radius: 10px;
@@ -57,7 +57,7 @@
             margin: 15px 0;
             border-left: 4px solid #fca311;
         }
-        
+
         .complexity-card h4 {
             color: #fca311;
             margin-bottom: 10px;
@@ -70,9 +70,9 @@
     <header class="topbar sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
         <nav class="  py-4 flex justify-between items-center">
             <h1 class="text-3xl ml-2 font-bold text-goldAccent ">
-                Algorithm 
+                DSA VIZ
             </h1>
-            
+
             <!-- Navigation -->
             <div class="flex  items-center justify-end border-2 rounded-lg border-violet-700 p-2 mr-2">
                 <a href="mainPage.html" class="text-goldAccent hover:text-white font-semibold transition duration-300">
@@ -84,9 +84,9 @@
 
     <!-- MAIN CONTENT -->
     <main class="container mx-auto px-4 py-8">
-        
+
         <div class="hero card flex md:flex-row flex-col gap-6 p-6">
-           
+
             <div class="hero-left flex flex-col gap-5 w-full md:w-2/3">
                 <h2 class="text-2xl font-semibold">See Algorithms Working</h2>
                 <p class="text-gray-400">
@@ -94,7 +94,7 @@
                     size for better control.
                 </p>
 
-               
+
                 <div class="row controls space-y-3">
                     <input id="arrayInput" class="text-input w-full"
                            placeholder="e.g. 5,3,8,1,9"
@@ -233,7 +233,7 @@
                             <p><strong>Stable:</strong> <span id="stable">Yes</span></p>
                             <p><strong>In-Place:</strong> <span id="inPlace">Yes</span></p>
                         </div>
-                        
+
                         <div class="complexity-card">
                             <h4>Complexity Legend</h4>
                             <p><strong>O(1):</strong> Constant Time</p>
@@ -247,12 +247,11 @@
             </div>
         </section>
     </main>
-     <footer
-      class="bg-gradient-to-t from-black via-navySoft to-navy text-gray-400 text-center py-6 text-sm border-t border-white/10"
-    >
-      <div id="foot"></div>
+    <footer class="mt-8 px-4 pb-6">
+        <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
 
-      © 2025 DsaViz — Crafted for clarity and curiosity.
+            <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
+        </div>
     </footer>
 
     <script src="../JS/algoVisJs.js"></script>

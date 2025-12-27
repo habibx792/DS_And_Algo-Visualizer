@@ -22,14 +22,14 @@
             font-weight: bold;
             position: relative;
         }
-        
+
         .arrow {
             width: 60px;
             height: 3px;
             background: linear-gradient(90deg, rgba(139, 92, 246, 0.8) 0%, rgba(124, 58, 237, 0.8) 100%);
             position: relative;
         }
-        
+
         .arrow::after {
             content: '';
             position: absolute;
@@ -42,14 +42,14 @@
             border-top: 7px solid transparent;
             border-bottom: 7px solid transparent;
         }
-        
+
         .double-arrow {
             width: 40px;
             height: 3px;
             background: linear-gradient(90deg, rgba(139, 92, 246, 0.8) 0%, rgba(124, 58, 237, 0.8) 100%);
             position: relative;
         }
-        
+
         .double-arrow::before,
         .double-arrow::after {
             content: '';
@@ -59,17 +59,17 @@
             height: 0;
             border: 7px solid transparent;
         }
-        
+
         .double-arrow::before {
             left: -10px;
             border-right: 10px solid rgba(139, 92, 246, 1);
         }
-        
+
         .double-arrow::after {
             right: -10px;
             border-left: 10px solid rgba(139, 92, 246, 1);
         }
-        
+
         .circular-arrow {
             width: 40px;
             height: 40px;
@@ -80,22 +80,22 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .circular-arrow::after {
             content: '↻';
             color: rgba(139, 92, 246, 1);
             font-size: 20px;
             font-weight: bold;
         }
-        
+
         .node-element.insert-animation {
             animation: insertEffect 0.5s ease-out;
         }
-        
+
         .node-element.delete-animation {
             animation: deleteEffect 0.5s ease-out;
         }
-        
+
         @keyframes insertEffect {
             0% {
                 transform: scale(0.5);
@@ -107,7 +107,7 @@
                 opacity: 1;
             }
         }
-        
+
         @keyframes deleteEffect {
             0% {
                 transform: scale(1);
@@ -119,11 +119,11 @@
                 opacity: 0;
             }
         }
-        
+
         .message-animation {
             animation: messagePop 0.3s ease-out;
         }
-        
+
         @keyframes messagePop {
             0% {
                 transform: translateY(-10px);
@@ -134,7 +134,7 @@
                 opacity: 1;
             }
         }
-        
+
         .list-container {
             display: flex;
             flex-wrap: wrap;
@@ -145,16 +145,16 @@
             align-items: center;
             min-height: 200px;
         }
-        
+
         .list-container::-webkit-scrollbar {
             height: 8px;
         }
-        
+
         .list-container::-webkit-scrollbar-track {
             background: rgba(139, 92, 246, 0.2);
             border-radius: 4px;
         }
-        
+
         .list-container::-webkit-scrollbar-thumb {
             background: rgba(139, 92, 246, 0.5);
             border-radius: 4px;
@@ -163,9 +163,9 @@
 </head>
 
 <body class="bg-indigo-950 min-h-screen">
-    <header class="w-full">
-        <nav class="text-3xl text-white border-2 border-violet-700 rounded-lg flex justify-between py-4 w-full px-4">
-            <h1>Linked List </h1>
+    <header class="w-full sticky top-0 z-50 bg-navyDark/90 border-b border-white/10 shadow-md backdrop-blur-md">
+        <nav class="text-3xl text-white  flex justify-between py-4 w-full px-4">
+            <h1 class="text-yellow-700 text-4xl font-bold ml-2">Linked List </h1>
             <ul class="flex space-x-4">
                 <li>
                     <button class="border-2 border-indigo-800 text-white px-4 py-2 rounded hover:border-violet-700 transition-all duration-300">
@@ -186,7 +186,7 @@
                 <!-- Left Panel - Controls -->
                 <div class="flex border-2 rounded-lg border-violet-700 flex-col p-4 w-full md:w-1/3">
                     <h2 class="text-2xl mb-6 text-center border-b border-violet-600 pb-2">Linked List Controls</h2>
-                    
+
                     <!-- List Type Selection -->
                     <div class="mb-6">
                         <label class="block text-xl mb-3">List Type:</label>
@@ -363,7 +363,7 @@
         <section class="mt-10 mb-8">
             <div class="bg-gradient-to-br from-violet-900/30 to-purple-900/30 border-2 border-violet-700 rounded-2xl p-6">
                 <h2 class="text-3xl font-bold mb-6 text-center">📚 Understanding Linked List</h2>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-green-500">
                         <h3 class="text-xl font-bold text-green-300 mb-2">Node Structure</h3>
@@ -376,7 +376,7 @@
                             <li>• Circular: Last node points to first</li>
                         </ul>
                     </div>
-                    
+
                     <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-red-500">
                         <h3 class="text-xl font-bold text-red-300 mb-2">Time Complexities</h3>
                         <ul class="space-y-2 text-gray-300">
@@ -398,7 +398,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="bg-gray-900/50 p-4 rounded-xl border-l-4 border-blue-500">
                         <h3 class="text-xl font-bold text-blue-300 mb-2">Linked List Properties</h3>
                         <ul class="space-y-2 text-gray-300">
@@ -440,12 +440,11 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="mt-8 px-4 pb-6">
-        <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
-          
-            <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
-        </div>
-    </footer>
+<footer class="mt-8 px-4 pb-6">
+    <div class="bg-white/10 border-2 border-violet-700 shadow-lg backdrop-blur-xl py-5 rounded-2xl text-center">
+
+        <p class="text-gray-300">Interactive Data Structures & Algorithms Visualizer</p>
+    </div>
+</footer>
 </body>
 </html>
